@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'IOJ',
+  title: 'Insert Online Judge',
 };
 
 export default function RootLayout({
@@ -12,7 +12,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="antialiased h-screen w-screen">{children}</body>
+      <body className="w-screen h-screen antialiased">{children}</body>
     </html>
   );
 }
