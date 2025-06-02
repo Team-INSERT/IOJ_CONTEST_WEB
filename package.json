@@ -7,6 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint && yarn eslint ./src --ext .js,.jsx,.ts,.tsx",
+    "lint-staged": {
+      "**/*.{ts,tsx}": [
+        "eslint --fix",
+        "prettier --write"
+      ]
+    },
     "lint:fix": "next lint && eslint . --ext .ts,.tsx --fix",
     "format": "prettier --write .",
     "prepare": "husky install"
