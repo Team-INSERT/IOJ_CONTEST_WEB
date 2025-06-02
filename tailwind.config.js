@@ -114,7 +114,7 @@ module.exports = {
             fontFamily: 'Pretendard-Regular',
           },
         ],
-        st: [
+        stext: [
           '15px',
           {
             fontStyle: 'normal',
@@ -130,6 +130,87 @@ module.exports = {
             fontWeight: '400',
             lineHeight: 'normal',
             fontFamily: 'Pretendard-Regular',
+          },
+        ],
+        Nbt3: [
+          '72px',
+          {
+            fontStyle: 'normal',
+            fontWeight: '700',
+            lineHeight: 'normal',
+            fontFamily: 'NEXON-Football-Gothic',
+          },
+        ],
+        Nbt2: [
+          '58px',
+          {
+            fontStyle: 'normal',
+            fontWeight: '700',
+            lineHeight: 'normal',
+            fontFamily: 'NEXON-Football-Gothic',
+          },
+        ],
+        Nbt1: [
+          '46px',
+          {
+            fontStyle: 'normal',
+            fontWeight: '700',
+            lineHeight: 'normal',
+            fontFamily: 'NEXON-Football-Gothic',
+          },
+        ],
+        Nt: [
+          '37px',
+          {
+            fontStyle: 'normal',
+            fontWeight: '700',
+            lineHeight: 'normal',
+            fontFamily: 'NEXON-Football-Gothic',
+          },
+        ],
+        Nst: [
+          '37px',
+          {
+            fontStyle: 'normal',
+            fontWeight: '700',
+            lineHeight: 'normal',
+            fontFamily: 'NEXON-Football-Gothic',
+          },
+        ],
+        Nbtext: [
+          '37px',
+          {
+            fontStyle: 'normal',
+            fontWeight: '700',
+            lineHeight: 'normal',
+            fontFamily: 'NEXON-Football-Gothic',
+          },
+        ],
+        Ntext: [
+          '19px',
+          {
+            fontStyle: 'normal',
+            fontWeight: '700',
+            lineHeight: 'normal',
+            fontFamily: 'NEXON-Football-Gothic',
+          },
+        ],
+        Nstext: [
+          '19px',
+          {
+            fontStyle: 'normal',
+            fontWeight: '700',
+            lineHeight: 'normal',
+            fontFamily: 'NEXON-Football-Gothic',
+          },
+        ],
+        Ncaption: [
+          '12px',
+          {
+            fontStyle: 'normal',
+            fontWeight: '700',
+            lineHeight: 'normal',
+            fontFamily: 'NEXON-Football-Gothic',
           },
         ],
       },
