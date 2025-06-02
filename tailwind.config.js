@@ -196,7 +196,7 @@ module.exports = {
           },
         ],
         Nstext: [
-          '19px',
+          '15px',
           {
             fontStyle: 'normal',
             fontWeight: '700',
@@ -213,6 +213,9 @@ module.exports = {
             fontFamily: 'NEXON-Football-Gothic',
           },
         ],
+      },
+      boxShadow: {
+        defaultShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
       },
     },
   },
