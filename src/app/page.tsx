@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import React from 'react';
 
 export const contestDetail = [
@@ -32,18 +33,19 @@ const Home = () => {
 
       <div className="w-[1089px] flex flex-col gap-[13px] px-4">
         {contestDetail.map((detail) => (
-          <div
-            key={detail.id}
-            className="bg-[url('/assets/contest.svg')] bg-[length:100%_100%] bg-no-repeat w-full h-[128px] cursor-pointer"
-            onClick={() => {}}
-          >
-            <div className="pl-[7.5rem] flex flex-col justify-center h-full">
-              <div className="text-Nbt1 text-gray-900">{detail.title}</div>
-              <div className="text-Nstext text-gray-600">
-                {`${detail.startTime} ~ ${detail.endTime}`}
+          <Link href={`/contest/${detail.id}`} key={detail.id}>
+            <div
+              className="bg-[url('/assets/contest.svg')] bg-[length:100%_100%] bg-no-repeat w-full h-[128px] cursor-pointer"
+              onClick={() => {}}
+            >
+              <div className="pl-[7.5rem] flex flex-col justify-center h-full">
+                <div className="text-gray-900 text-Nbt1">{detail.title}</div>
+                <div className="text-gray-600 text-Nstext">
+                  {`${detail.startTime} ~ ${detail.endTime}`}
+                </div>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
