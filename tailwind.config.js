@@ -50,6 +50,89 @@ module.exports = {
           skyblue: '#5CE2FF',
         },
       },
+      fontSize: {
+        bt3: [
+          '73px',
+          {
+            fontStyle: 'normal',
+            fontWeight: '700',
+            lineHeight: 'normal',
+            fontFamily: 'Pretendard-Bold',
+          },
+        ],
+        bt2: [
+          '59px',
+          {
+            fontStyle: 'normal',
+            fontWeight: '700',
+            lineHeight: 'normal',
+            fontFamily: 'Pretendard-Bold',
+          },
+        ],
+        bt1: [
+          '47px',
+          {
+            fontStyle: 'normal',
+            fontWeight: '700',
+            lineHeight: 'normal',
+            fontFamily: 'Pretendard-Bold',
+          },
+        ],
+        bt1: [
+          '38px',
+          {
+            fontStyle: 'normal',
+            fontWeight: '700',
+            lineHeight: 'normal',
+            fontFamily: 'Pretendard-Bold',
+          },
+        ],
+        st: [
+          '30px',
+          {
+            fontStyle: 'normal',
+            fontWeight: '700',
+            lineHeight: 'normal',
+            fontFamily: 'Pretendard-Bold',
+          },
+        ],
+        bt: [
+          '24px',
+          {
+            fontStyle: 'normal',
+            fontWeight: '600',
+            lineHeight: 'normal',
+            fontFamily: 'Pretendard-SemiBold',
+          },
+        ],
+        text: [
+          '19px',
+          {
+            fontStyle: 'normal',
+            fontWeight: '400',
+            lineHeight: 'normal',
+            fontFamily: 'Pretendard-Regular',
+          },
+        ],
+        st: [
+          '15px',
+          {
+            fontStyle: 'normal',
+            fontWeight: '700',
+            lineHeight: 'normal',
+            fontFamily: 'Pretendard-Bold',
+          },
+        ],
+        caption: [
+          '12px',
+          {
+            fontStyle: 'normal',
+            fontWeight: '400',
+            lineHeight: 'normal',
+            fontFamily: 'Pretendard-Regular',
+          },
+        ],
+      },
     },
   },
   plugins: [],
