@@ -1,0 +1,36 @@
+name: 🐞 Bug Report
+description: 버그 리포트를 위한 템플릿
+title: '[🐞 BugFix]'
+labels: ['🐞 Bugfix']
+assignees: []
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: 🐞 버그 설명
+      description: 어떤 문제가 발생했는지 구체적으로 작성해 주세요.
+      placeholder: 로그인 시 에러가 발생하며, 콘솔에 500 에러가 출력됩니다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 🔁 재현 방법
+      description: 버그를 재현하기 위한 단계를 설명해 주세요.
+      placeholder: |
+        1. 로그인 페이지로 이동
+        2. 이메일/비밀번호 입력
+        3. 로그인 버튼 클릭
+    validations:
+      required: false
+
+  - type: input
+    id: environment
+    attributes:
+      label: 🌐 환경 정보
+      description: 발생한 환경 정보를 작성해 주세요.
+      placeholder: ex) Chrome 123.0 / macOS Sonoma 14.3
+    validations:
+      required: false

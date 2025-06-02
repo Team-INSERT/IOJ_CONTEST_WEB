@@ -1,0 +1,27 @@
+name: ✨ Feature Request
+description: 새로운 기능 요청을 위한 템플릿
+title: '[✨ Feature]'
+labels: ['✨ Feature']
+assignees: []
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: 📌 기능 설명
+      description: 구현하고자 하는 기능에 대해 자세히 설명해 주세요.
+      placeholder: 이 기능은 사용자가 게시글을 북마크할 수 있도록 합니다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: todo
+    attributes:
+      label: 📋 작업 항목
+      description: 구현을 위해 어떤 작업이 필요한지 리스트 형식으로 작성해 주세요.
+      placeholder: |
+        - [ ] 북마크 버튼 UI 추가
+        - [ ] API 연동
+        - [ ] 상태 관리 적용
+    validations:
+      required: true

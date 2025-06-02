@@ -1,0 +1,15 @@
+name: 🙋 Question
+description: 질문을 위한 템플릿
+title: '[🙋 Question]'
+labels: ['🙋 Question']
+assignees: []
+
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: 📝 질문 작성
+      description: 어떤 부분이 궁금한지 작성해주세요.
+      placeholder: ~~에서 왜 이렇게 처리한지 궁금해요!
+    validations:
+      required: true
