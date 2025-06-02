@@ -7,7 +7,7 @@ module.exports = {
   ],
   theme: {
     extend: {
-      olors: {
+      colors: {
         ut: {
           white: '#FFF',
           pink: '#FF48AB',
