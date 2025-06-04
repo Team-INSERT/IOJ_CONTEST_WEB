@@ -228,6 +228,14 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      addUtilities({
+        '.border-r-8-transparent': {
+          borderRight: '8px solid transparent',
+        },
+      });
+    },
+  ],
   mode: 'jit',
 };

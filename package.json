@@ -31,14 +31,14 @@
     ]
   },
   "dependencies": {
-    "@codemirror/lang-cpp": "^6.0.2",
-    "@codemirror/lang-java": "^6.0.1",
-    "@codemirror/lang-python": "^6.2.1",
-    "@codemirror/state": "^6.5.2",
     "@uiw/react-codemirror": "^4.23.12",
+    "ace-builds": "^1.42.0",
     "next": "15.3.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-ace": "^14.0.1",
+    "react-dom": "^19.0.0",
+    "vscode-jsonrpc": "^8.2.1",
+    "vscode-languageserver-protocol": "^3.17.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^19.8.0",

@@ -1,11 +1,10 @@
 'use client';
 
+import CodeEditor from '@/components/CodeEditor';
 import CodeHeader from '@/components/Contest/CodeHeader';
 import StarStatus from '@/components/Contest/StarStatus';
-import ReactCodeMirror from '@uiw/react-codemirror';
-import { python } from '@codemirror/lang-python';
 import { useParams } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const exampleData = {
   title: 'a*b 출력하기',
@@ -31,11 +30,61 @@ const exampleData = {
   ],
 };
 
+const defaultCode = {
+  c: `int main() {
+  std::cout<<"Hello World";
+  return 0;
+}`,
+  c_cpp: `#include <iostream>
+
+  using namespace std;
+
+  int main() {
+    cout<<"Hello World";
+    return 0;
+  }`,
+  java: `import java.util.*;
+
+  public class main {
+    public static void main(String[] args) {
+      System.out.println("Hello World");
+    }
+}`,
+  python: `a, b = map(int, input().split())
+print(a * b)`,
+};
+
 const Code = () => {
   const params = useParams();
   const [activeTab, setActiveTab] = useState<'run' | 'testcase' | 'result'>(
     'run'
   );
+
+  const [code, setCode] = useState('');
+  const [language, setLanguage] = useState<'python' | 'java' | 'c_cpp' | 'c'>(
+    'python'
+  );
+
+  useEffect(() => {
+    const CodeType = localStorage.getItem('code');
+    if (CodeType === 'c') {
+      setCode(defaultCode.c);
+      setLanguage('c');
+    } else if (CodeType === 'c_cpp') {
+      setCode(defaultCode.c_cpp);
+      setLanguage('c_cpp');
+    } else if (CodeType === 'java') {
+      setCode(defaultCode.java);
+      setLanguage('java');
+    } else if (CodeType === 'python') {
+      setCode(defaultCode.python);
+      setLanguage('python');
+    } else {
+      setCode(defaultCode.python);
+      setLanguage('python');
+      localStorage.setItem('code', 'python');
+    }
+  }, []);
 
   return (
     <>
@@ -114,10 +163,34 @@ const Code = () => {
         <div className="flex flex-col w-1/2 h-full bg-[#272527]">
           {/* 상단 툴바 */}
           <div className="flex items-center justify-between px-5 py-2 border-b border-zinc-700">
-            <div className="font-semibold text-white">Main.py</div>
+            <div className="font-semibold text-white">
+              {language === 'python'
+                ? 'main.py'
+                : language === 'java'
+                  ? 'main.java'
+                  : language === 'c_cpp'
+                    ? 'main.cpp'
+                    : 'main.c'}
+            </div>
             <div className="flex gap-2">
-              <select className="px-2 py-1 text-sm text-white bg-blue-500 rounded">
-                <option>Python</option>
+              <select
+                className="px-2 py-1 text-sm text-white bg-blue-500 rounded border-r-8-transparent"
+                onChange={(e) => {
+                  const value = e.target.value as
+                    | 'python'
+                    | 'java'
+                    | 'c_cpp'
+                    | 'c';
+                  setLanguage(value);
+                  setCode(defaultCode[value]);
+                  localStorage.setItem('code', value);
+                }}
+                value={language}
+              >
+                <option value="python">Python</option>
+                <option value="java">Java</option>
+                <option value="c">C</option>
+                <option value="c_cpp">C++</option>
               </select>
               <button className="px-3 py-1 text-sm text-white bg-blue-500 rounded">
                 테스트케이스
@@ -133,13 +206,7 @@ const Code = () => {
 
           {/* 코드 에디터 */}
           <div className="flex-1 overflow-y-scroll">
-            <ReactCodeMirror
-              value="print('Hello, World!')"
-              height="100%"
-              extensions={[python()]}
-              theme="dark"
-              className="h-full bg-[#272527]"
-            />
+            <CodeEditor value={code} onChange={setCode} mode={language} />
           </div>
 
           {/* 하단 탭 */}
