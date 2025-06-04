@@ -159,6 +159,15 @@ module.exports = {
             fontFamily: 'NEXON-Football-Gothic',
           },
         ],
+        Nbt: [
+          '24px',
+          {
+            fontStyle: 'normal',
+            fontWeight: '700',
+            lineHeight: 'normal',
+            fontFamily: 'NEXON-Football-Gothic',
+          },
+        ],
         Nt: [
           '37px',
           {
