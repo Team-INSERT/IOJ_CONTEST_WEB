@@ -104,45 +104,49 @@ const Code = () => {
             <span className="text-ut-insertBlue">메모리 제한</span>:{' '}
             {exampleData.memoryLimit} MB
           </div>
-          <div className="mt-6 space-y-4">
-            <div>
-              <h3 className="border-b-2 border-ut-insertBlue w-fit text-bt">
+          <div className="mt-6 space-y-6">
+            <div className="flex flex-col gap-3">
+              <h3 className="pb-1 border-b-2 border-ut-insertBlue w-fit text-bt">
                 문제
               </h3>
               <p>{exampleData.content}</p>
             </div>
-            <div>
-              <h3 className="border-b-2 border-ut-insertBlue w-fit text-bt">
+            <div className="flex flex-col gap-3">
+              <h3 className="pb-1 border-b-2 border-ut-insertBlue w-fit text-bt">
                 입력
               </h3>
               <p>{exampleData.inputContent}</p>
             </div>
-            <div>
-              <h3 className="border-b-2 border-ut-insertBlue w-fit text-bt">
+            <div className="flex flex-col gap-3">
+              <h3 className="pb-1 border-b-2 border-ut-insertBlue w-fit text-bt">
                 출력
               </h3>
               <p>{exampleData.outputContent}</p>
             </div>
             <div className="grid grid-cols-2 gap-5 mt-14">
               <div>
-                <h4 className="mb-5 border-b-2 border-ut-insertBlue w-fit text-bt">
+                <h4 className="pb-1 mb-5 border-b-2 border-ut-insertBlue w-fit text-bt">
                   예제 입력
                 </h4>
-                {exampleData.testcases.map((t, i) => (
-                  <div key={i} className="p-3 border rounded-md bg-gray-50">
-                    {t.input}
-                  </div>
-                ))}
+                <div className="flex flex-col gap-3">
+                  {exampleData.testcases.map((t, i) => (
+                    <div key={i} className="p-3 border rounded-md bg-gray-50">
+                      {t.input}
+                    </div>
+                  ))}
+                </div>
               </div>
               <div>
-                <h4 className="mb-5 border-b-2 border-ut-insertBlue w-fit text-bt">
+                <h4 className="pb-1 mb-5 border-b-2 border-ut-insertBlue w-fit text-bt">
                   예제 출력
                 </h4>
-                {exampleData.testcases.map((t, i) => (
-                  <div key={i} className="p-3 border rounded-md bg-gray-50">
-                    {t.output}
-                  </div>
-                ))}
+                <div className="flex flex-col gap-3">
+                  {exampleData.testcases.map((t, i) => (
+                    <div key={i} className="p-3 border rounded-md bg-gray-50">
+                      {t.output}
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -169,7 +173,7 @@ const Code = () => {
             </div>
             <div className="flex gap-2">
               <select
-                className="px-2 py-1 text-sm text-white bg-blue-500 rounded"
+                className="px-2 py-1 text-sm text-white bg-blue-500 rounded border-r-8-transparent"
                 onChange={(e) => {
                   const val = e.target.value as
                     | 'python'
