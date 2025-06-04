@@ -3,6 +3,9 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Insert Online Judge',
+  icons: {
+    icon: '/assets/insertLogo.svg',
+  },
 };
 
 export default function RootLayout({
