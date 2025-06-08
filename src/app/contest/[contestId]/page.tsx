@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
-import QuestionStatus from '@/components/Contest/QuestionStatus';
-import RemainingTime from '@/components/Contest/RemainingTime';
-import StarStatus from '@/components/Contest/StarStatus';
+import QuestionStatus from '@/components/QuestionStatus';
+import RemainingTime from '@/components/RemainingTime';
+import StarStatus from '@/components/StarStatus';
 import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import GradingModal from '@/components/Contest/GradingModal';
+import GradingModal from '@/components/GradingModal';
 
 export const contestRanking = [
   {

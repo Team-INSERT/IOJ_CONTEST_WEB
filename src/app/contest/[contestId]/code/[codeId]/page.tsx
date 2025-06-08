@@ -1,8 +1,8 @@
 'use client';
 
 import CodeEditor from '@/components/CodeEditor';
-import CodeHeader from '@/components/Contest/CodeHeader';
-import StarStatus from '@/components/Contest/StarStatus';
+import CodeHeader from '@/components/CodeHeader';
+import StarStatus from '@/components/StarStatus';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 
