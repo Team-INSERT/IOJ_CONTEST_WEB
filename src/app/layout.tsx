@@ -1,3 +1,5 @@
+import ReactQueryProvider from './providers/react-query-provider';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { Metadata } from 'next';
 import './globals.css';
 
@@ -15,7 +17,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="w-screen h-screen antialiased">{children}</body>
+      <body className="w-screen h-screen antialiased">
+        <ReactQueryProvider>
+          {children} <ReactQueryDevtools initialIsOpen={false} />
+        </ReactQueryProvider>
+      </body>
     </html>
   );
 }
