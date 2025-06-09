@@ -1,9 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import CodeEditor from '@/components/CodeEditor';
 import CodeHeader from '@/components/CodeHeader';
 import Loading from '@/components/Loading';
 import StarStatus from '@/components/StarStatus';
+import { usePostSubmitProblem } from '@/lib/service/contest/contest.mutation';
 import {
   useGetContestById,
   useGetContestProblemById,
@@ -70,11 +72,54 @@ const Code = () => {
     document.addEventListener('mouseup', stopDragging);
   };
 
+  // 문제데이터, 대회 데이터 불러오기
   const { data: codeData, isLoading: codeLoading } =
     useGetContestProblemById(codeId);
   const { data: contestDetail, isLoading: contestLoading } = useGetContestById(
     PathUtil(pathname, 1)
   );
+
+  // 제출해서 정답확인하는 부분
+  const { mutate: submitCode } = usePostSubmitProblem();
+  const postData = {
+    id: codeId,
+    sourcecode: code,
+    language: language,
+  };
+
+  type SubmitState =
+    | { id: number; status: 'loading' }
+    | { id: number; status: 'done'; data: any };
+
+  const [submitResult, setSubmitResult] = useState<SubmitState[]>([]);
+  const isSubmitting = submitResult.some((item) => item.status === 'loading');
+
+  const handleSubmit = () => {
+    setActiveTab('result');
+
+    const id = Date.now();
+
+    setSubmitResult((prev) => [{ id, status: 'loading' }, ...prev]);
+
+    submitCode(postData, {
+      onSuccess: (data) => {
+        setSubmitResult((prev) =>
+          prev.map((item) =>
+            item.id === id ? { id, status: 'done', data } : item
+          )
+        );
+      },
+      onError: () => {
+        setSubmitResult((prev) =>
+          prev.map((item) =>
+            item.id === id
+              ? { id, status: 'done', data: { error: '제출 실패' } }
+              : item
+          )
+        );
+      },
+    });
+  };
 
   if (codeLoading || contestLoading)
     return <Loading text={'문제 불러오는 중...'} />;
@@ -194,7 +239,15 @@ const Code = () => {
               <button className="px-3 py-1 text-white bg-blue-500 rounded">
                 실행
               </button>
-              <button className="px-3 py-1 text-white bg-green-500 rounded">
+              <button
+                className={`px-3 py-1 text-white rounded ${
+                  isSubmitting
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-green-500'
+                }`}
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+              >
                 제출
               </button>
             </div>
@@ -236,7 +289,39 @@ const Code = () => {
                 {activeTab === 'run' &&
                   '프로세스가 시작되었습니다. (입력값을 직접 입력해주세요.)\n>\n프로세스가 종료되었습니다.'}
                 {activeTab === 'testcase' && '테스트케이스 준비 중...'}
-                {activeTab === 'result' && '제출 결과 없음'}
+                {activeTab === 'result' && (
+                  <div className="overflow-y-auto">
+                    {submitResult.map((item, i) => (
+                      <div
+                        key={i}
+                        className="mb-2 w-full py-[0.81rem] pl-4 bg-gray-900"
+                      >
+                        {item.status === 'loading' && (
+                          <div className="text-white text-caption">
+                            처리중...
+                          </div>
+                        )}
+                        {item.status === 'done' && (
+                          <div className="text-white text-caption">
+                            {item.data === 'ACCEPTED'
+                              ? '정답입니다!'
+                              : item.data === 'WRONG_ANSWER'
+                                ? '오답입니다.'
+                                : item.data === 'COMPILATION_ERROR'
+                                  ? '컴파일 에러가 발생했습니다.'
+                                  : item.data === 'OUT_OF_MEMORY'
+                                    ? '메모리 초과입니다.'
+                                    : item.data === 'TIME_LIMIT_EXCEEDED'
+                                      ? '시간 초과입니다.'
+                                      : item.data === 'RUNTIME_ERROR'
+                                        ? '런타임 에러가 발생했습니다.'
+                                        : '알 수 없는 결과입니다.'}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>
