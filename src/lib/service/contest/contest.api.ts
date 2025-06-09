@@ -7,6 +7,11 @@ const getContestList = async (params: { page?: number; size?: number }) => {
   return data;
 };
 
-const contestApi = { getContestList };
+const getContestById = async (id: number) => {
+  const { data } = await customAxios.get(`/contest/${id}`);
+  return data;
+};
+
+const contestApi = { getContestList, getContestById };
 
 export default contestApi;

@@ -8,3 +8,10 @@ export const useGetContestList = (params: { page?: number; size?: number }) => {
     queryFn: () => API.getContestList(params),
   });
 };
+
+export const useGetContestById = (id: number) => {
+  return useQuery({
+    queryKey: [contestKeys.getContestById, id],
+    queryFn: () => API.getContestById(id),
+  });
+};
