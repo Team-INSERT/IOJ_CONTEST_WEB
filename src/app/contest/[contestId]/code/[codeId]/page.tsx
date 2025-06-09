@@ -2,6 +2,7 @@
 
 import CodeEditor from '@/components/CodeEditor';
 import CodeHeader from '@/components/CodeHeader';
+import Loading from '@/components/Loading';
 import StarStatus from '@/components/StarStatus';
 import { useGetContestProblemById } from '@/lib/service/contest/contest.query';
 import { defaultCode, PathUtil } from '@/lib/util';
@@ -31,9 +32,6 @@ const Code = () => {
     setLanguage(validLanguage);
     setCode(defaultCode[validLanguage]);
   }, []);
-
-  const { data: codeData } = useGetContestProblemById(codeId);
-  console.log(codeData);
 
   const handleMouseMove = (e: MouseEvent) => {
     if (containerRef.current) {
@@ -68,6 +66,10 @@ const Code = () => {
     document.addEventListener('mousemove', handleMouseMove);
     document.addEventListener('mouseup', stopDragging);
   };
+
+  const { data: codeData, isLoading } = useGetContestProblemById(codeId);
+
+  if (isLoading) return <Loading text={'문제 불러오는 중...'} />;
 
   return (
     <>
