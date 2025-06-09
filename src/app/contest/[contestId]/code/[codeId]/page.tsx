@@ -1,15 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import CodeEditor from '@/components/CodeEditor';
 import CodeHeader from '@/components/CodeHeader';
 import Loading from '@/components/Loading';
 import StarStatus from '@/components/StarStatus';
+import SubmitResultPanel from '@/components/SubmitResultPanelProps';
 import { usePostSubmitProblem } from '@/lib/service/contest/contest.mutation';
 import {
   useGetContestById,
   useGetContestProblemById,
 } from '@/lib/service/contest/contest.query';
+import { SubmitState } from '@/lib/types/contestSubmitType';
 import { defaultCode, PathUtil } from '@/lib/util';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
@@ -87,11 +88,8 @@ const Code = () => {
     language: language,
   };
 
-  type SubmitState =
-    | { id: number; status: 'loading' }
-    | { id: number; status: 'done'; data: any };
-
   const [submitResult, setSubmitResult] = useState<SubmitState[]>([]);
+  console.log(submitResult);
   const isSubmitting = submitResult.some((item) => item.status === 'loading');
 
   const handleSubmit = () => {
@@ -290,37 +288,7 @@ const Code = () => {
                   '프로세스가 시작되었습니다. (입력값을 직접 입력해주세요.)\n>\n프로세스가 종료되었습니다.'}
                 {activeTab === 'testcase' && '테스트케이스 준비 중...'}
                 {activeTab === 'result' && (
-                  <div className="overflow-y-auto">
-                    {submitResult.map((item, i) => (
-                      <div
-                        key={i}
-                        className="mb-2 w-full py-[0.81rem] pl-4 bg-gray-900"
-                      >
-                        {item.status === 'loading' && (
-                          <div className="text-white text-caption">
-                            처리중...
-                          </div>
-                        )}
-                        {item.status === 'done' && (
-                          <div className="text-white text-caption">
-                            {item.data === 'ACCEPTED'
-                              ? '정답입니다!'
-                              : item.data === 'WRONG_ANSWER'
-                                ? '오답입니다.'
-                                : item.data === 'COMPILATION_ERROR'
-                                  ? '컴파일 에러가 발생했습니다.'
-                                  : item.data === 'OUT_OF_MEMORY'
-                                    ? '메모리 초과입니다.'
-                                    : item.data === 'TIME_LIMIT_EXCEEDED'
-                                      ? '시간 초과입니다.'
-                                      : item.data === 'RUNTIME_ERROR'
-                                        ? '런타임 에러가 발생했습니다.'
-                                        : '알 수 없는 결과입니다.'}
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
+                  <SubmitResultPanel submitResult={submitResult} />
                 )}
               </div>
             </div>
