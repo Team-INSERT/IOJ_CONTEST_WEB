@@ -15,3 +15,10 @@ export const useGetContestById = (id: number) => {
     queryFn: () => API.getContestById(id),
   });
 };
+
+export const useGetContestProblemById = (id: number) => {
+  return useQuery({
+    queryKey: [contestKeys.getContestProblem, id],
+    queryFn: () => API.getContestProblem(id),
+  });
+};
