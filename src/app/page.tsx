@@ -1,8 +1,10 @@
 'use client';
 
+import { customAxios } from '@/lib/api';
 import { useGetContestList } from '@/lib/service/contest/contest.query';
-import { FormatUtil } from '@/lib/util';
-import Link from 'next/link';
+import { AlertUtil, FormatUtil } from '@/lib/util';
+import { AxiosError } from 'axios';
+import { useRouter } from 'next/navigation';
 import React from 'react';
 
 interface ContestDetail {
@@ -14,28 +16,44 @@ interface ContestDetail {
 
 const Home = () => {
   const { data: contestDetail } = useGetContestList({});
+  const router = useRouter();
+
+  const handleClick = async (id: number) => {
+    try {
+      await customAxios.get(`/api/contests/${id}`);
+      router.push(`/contest/${id}`);
+    } catch (error: unknown) {
+      const axiosError = error as AxiosError;
+      if (
+        axiosError.response?.status === 404 ||
+        axiosError.response?.status === 403
+      ) {
+        AlertUtil.error('접근권한이 없는 대회입니다.');
+      } else {
+        AlertUtil.error('대회 정보를 불러오는 데 실패했습니다.');
+      }
+    }
+  };
 
   return (
     <div className="w-full flex flex-col items-center min-h-screen py-[88px]">
       <div className="w-[1089px] flex justify-between items-start px-4">
         <h1 className="text-Nbt1 text-gray-900 pb-7 pl-[15px]">대회목록</h1>
       </div>
-
       <div className="w-[1089px] flex flex-col gap-[13px] px-4">
         {contestDetail?.map((detail: ContestDetail) => (
-          <Link href={`/contest/${detail.id}`} key={detail.id}>
-            <div
-              className="bg-[url('/assets/contest.svg')] bg-[length:100%_100%] bg-no-repeat w-full h-[128px] cursor-pointer"
-              onClick={() => {}}
-            >
-              <div className="pl-[7.5rem] flex flex-col justify-center h-full">
-                <div className="text-gray-900 text-Nbt1">{detail.title}</div>
-                <div className="text-gray-600 text-Nstext">
-                  {FormatUtil.formatDateRange(detail.startTime, detail.endTime)}
-                </div>
+          <div
+            className="bg-[url('/assets/contest.svg')] bg-[length:100%_100%] bg-no-repeat w-full h-[128px] cursor-pointer"
+            onClick={() => handleClick(detail.id)}
+            key={detail.id}
+          >
+            <div className="pl-[7.5rem] flex flex-col justify-center h-full">
+              <div className="text-gray-900 text-Nbt1">{detail.title}</div>
+              <div className="text-gray-600 text-Nstext">
+                {FormatUtil.formatDateRange(detail.startTime, detail.endTime)}
               </div>
             </div>
-          </Link>
+          </div>
         ))}
       </div>
     </div>
