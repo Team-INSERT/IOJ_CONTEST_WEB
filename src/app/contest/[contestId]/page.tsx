@@ -29,7 +29,7 @@ const Contest = () => {
           <button
             className="px-4 py-2 text-white rounded bg-ut-warningRed text-stext"
             onClick={() => {
-              navigate.back();
+              navigate.push('/');
             }}
           >
             뒤로가기

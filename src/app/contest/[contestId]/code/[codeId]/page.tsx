@@ -81,7 +81,10 @@ const Code = () => {
 
   return (
     <>
-      <CodeHeader endTime={contestDetail?.endTime} />
+      <CodeHeader
+        endTime={contestDetail?.endTime}
+        problems={contestDetail.problems}
+      />
       <div ref={containerRef} className="flex w-full h-full pt-[48px]">
         <div
           style={{ width: `${leftWidth}%` }}
