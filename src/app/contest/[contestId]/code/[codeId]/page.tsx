@@ -41,7 +41,7 @@ const Code = () => {
   const isDraggingColumn = useRef(false);
   const isDraggingRow = useRef(false);
   const [leftWidth, setLeftWidth] = useState(45);
-  const [editorHeight, setEditorHeight] = useState(70);
+  const [editorHeight, setEditorHeight] = useState(60);
 
   const [activeTab, setActiveTab] = useState('run');
   const [code, setCode] = useState('');
@@ -134,7 +134,7 @@ const Code = () => {
         const containerWidth =
           containerRef.current.getBoundingClientRect().width;
         const newLeft = (e.clientX / containerWidth) * 100;
-        if (newLeft > 30 && newLeft < 70) setLeftWidth(newLeft);
+        if (newLeft > 30 && newLeft < 60) setLeftWidth(newLeft);
       }
       if (isDraggingRow.current) {
         const containerHeight =
@@ -299,7 +299,20 @@ const Code = () => {
               <button
                 className="px-3 py-1 text-white bg-blue-500 rounded"
                 onClick={() => {
+                  if (confirm('코드가 초기화됩니다 진행하시겠습니까?')) {
+                    setCode(defaultCode[language]);
+                    handleCodeChange(defaultCode[language]);
+                  }
+                }}
+              >
+                초기화
+              </button>
+
+              <button
+                className="px-3 py-1 text-white bg-blue-500 rounded"
+                onClick={() => {
                   handleCodeChange(code);
+                  setAlerthandler('success', '코드가 저장되었습니다.');
                 }}
               >
                 저장
