@@ -34,7 +34,7 @@ const CodeHeader = ({ endTime, problems }: ContestDetail) => {
   };
 
   return (
-    <div className="absolute top-0 flex items-center justify-between w-full h-12 px-6 text-white bg-zinc-800">
+    <div className="absolute top-0 flex items-center justify-between w-full px-6 text-white h-16 bg-[#333333]">
       <div className="flex items-center gap-2">
         <button
           className="px-3 py-1 text-sm rounded bg-zinc-600 disabled:opacity-40"

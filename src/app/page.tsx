@@ -52,7 +52,7 @@ const Home = () => {
             onClick={() => handleClick(detail.id)}
             key={detail.id}
           >
-            <div className="pl-[7.5rem] flex flex-col justify-center h-full">
+            <div className="pl-[7.5rem] flex flex-col justify-center h-full gap-1">
               <div className="text-gray-900 text-Nbt1">{detail.title}</div>
               <div className="text-gray-600 text-Nstext">
                 {FormatUtil.formatDateRange(detail.startTime, detail.endTime)}
