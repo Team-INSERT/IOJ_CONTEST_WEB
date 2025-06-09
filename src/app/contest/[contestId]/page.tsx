@@ -38,7 +38,7 @@ const Contest = () => {
       </div>
 
       <div className="relative bg-white rounded-lg flex flex-col items-center py-[56px] mb-14 border border-transparent before:content-[''] before:absolute before:inset-[-3px] before:rounded-lg before:bg-gradient-to-br before:from-[#007CFF] before:to-[#FF48AB] before:-z-10">
-        <div className="pb-[28px]">
+        <div className="pb-[28px] text-bt3">
           <RemainingTime targetDate={contestDetail?.endTime} />
         </div>
         <div className="w-[60%] border-t border-gray-300" />

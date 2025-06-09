@@ -3,8 +3,13 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import Clock from '@/assets/Clock';
+import RemainingTime from './RemainingTime';
 
-const CodeHeader = () => {
+interface ContestDetail {
+  endTime: string;
+}
+
+const CodeHeader = ({ endTime }: ContestDetail) => {
   const router = useRouter();
 
   return (
@@ -17,7 +22,9 @@ const CodeHeader = () => {
 
       <div className="flex items-center justify-center gap-2 px-4 py-1 text-sm border border-white rounded">
         <Clock />
-        <span>00 : 00 : 00</span>
+        <span className="text-bt">
+          <RemainingTime targetDate={endTime} />
+        </span>
       </div>
 
       <div className="flex items-center gap-2">

@@ -38,7 +38,7 @@ const RemainingTime = ({ targetDate }: OwnProps) => {
     return () => clearInterval(interval);
   }, [target]);
 
-  return <div className="text-bt2">{remaining}</div>;
+  return <div>{remaining}</div>;
 };
 
 export default RemainingTime;

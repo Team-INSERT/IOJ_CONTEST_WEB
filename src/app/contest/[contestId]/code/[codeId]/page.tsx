@@ -4,7 +4,10 @@ import CodeEditor from '@/components/CodeEditor';
 import CodeHeader from '@/components/CodeHeader';
 import Loading from '@/components/Loading';
 import StarStatus from '@/components/StarStatus';
-import { useGetContestProblemById } from '@/lib/service/contest/contest.query';
+import {
+  useGetContestById,
+  useGetContestProblemById,
+} from '@/lib/service/contest/contest.query';
 import { defaultCode, PathUtil } from '@/lib/util';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
@@ -67,13 +70,18 @@ const Code = () => {
     document.addEventListener('mouseup', stopDragging);
   };
 
-  const { data: codeData, isLoading } = useGetContestProblemById(codeId);
+  const { data: codeData, isLoading: codeLoading } =
+    useGetContestProblemById(codeId);
+  const { data: contestDetail, isLoading: contestLoading } = useGetContestById(
+    PathUtil(pathname, 1)
+  );
 
-  if (isLoading) return <Loading text={'문제 불러오는 중...'} />;
+  if (codeLoading || contestLoading)
+    return <Loading text={'문제 불러오는 중...'} />;
 
   return (
     <>
-      <CodeHeader />
+      <CodeHeader endTime={contestDetail?.endTime} />
       <div ref={containerRef} className="flex w-full h-full pt-[48px]">
         <div
           style={{ width: `${leftWidth}%` }}
