@@ -1,30 +1,20 @@
 'use client';
 
+import { useGetContestList } from '@/lib/service/contest/contest.query';
+import { FormatUtil } from '@/lib/util';
 import Link from 'next/link';
 import React from 'react';
 
-export const contestDetail = [
-  {
-    id: 1,
-    title: '2024학년도 1학년 알고리즘 대회',
-    startTime: '09/17 13:30',
-    endTime: '09/17 14:30',
-  },
-  {
-    id: 2,
-    title: '2024학년도 2학년 알고리즘 대회',
-    startTime: '09/17 13:30',
-    endTime: '09/17 14:30',
-  },
-  {
-    id: 3,
-    title: '2024학년도 3학년 알고리즘 대회',
-    startTime: '09/17 13:30',
-    endTime: '09/17 14:30',
-  },
-];
+interface ContestDetail {
+  id: number;
+  title: string;
+  startTime: string;
+  endTime: string;
+}
 
 const Home = () => {
+  const { data: contestDetail } = useGetContestList({});
+
   return (
     <div className="w-full flex flex-col items-center min-h-screen py-[88px]">
       <div className="w-[1089px] flex justify-between items-start px-4">
@@ -32,7 +22,7 @@ const Home = () => {
       </div>
 
       <div className="w-[1089px] flex flex-col gap-[13px] px-4">
-        {contestDetail.map((detail) => (
+        {contestDetail?.map((detail: ContestDetail) => (
           <Link href={`/contest/${detail.id}`} key={detail.id}>
             <div
               className="bg-[url('/assets/contest.svg')] bg-[length:100%_100%] bg-no-repeat w-full h-[128px] cursor-pointer"
@@ -41,7 +31,7 @@ const Home = () => {
               <div className="pl-[7.5rem] flex flex-col justify-center h-full">
                 <div className="text-gray-900 text-Nbt1">{detail.title}</div>
                 <div className="text-gray-600 text-Nstext">
-                  {`${detail.startTime} ~ ${detail.endTime}`}
+                  {FormatUtil.formatDateRange(detail.startTime, detail.endTime)}
                 </div>
               </div>
             </div>
