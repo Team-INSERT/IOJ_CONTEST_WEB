@@ -6,7 +6,10 @@ import Loading from '@/components/Loading';
 import ProblemDetailPanel from '@/components/ProblemDetailPanel';
 import SubmitResultPanel from '@/components/SubmitResultPanelProps';
 import EditorCustomModal from '@/components/EditorCustomModal';
-import { usePostSubmitProblem } from '@/lib/service/contest/contest.mutation';
+import {
+  usePostSubmitProblem,
+  usePostSubmitTestcase,
+} from '@/lib/service/contest/contest.mutation';
 import {
   useGetContestById,
   useGetContestProblemById,
@@ -16,6 +19,7 @@ import { defaultCode, PathUtil } from '@/lib/util';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { Settings } from 'lucide-react';
+import TestcaseResultPanel from '@/components/TestcaseResultPanel';
 
 interface EditorSettings {
   fontSize: number;
@@ -118,6 +122,12 @@ const Code = () => {
     document.addEventListener('mouseup', stopDragging);
   };
 
+  const postData = {
+    id: codeId,
+    sourcecode: code,
+    language: language,
+  };
+
   // 문제데이터, 대회 데이터 불러오기
   const { data: codeData, isLoading: codeLoading } =
     useGetContestProblemById(codeId);
@@ -127,17 +137,10 @@ const Code = () => {
 
   // 제출해서 정답확인하는 부분
   const { mutate: submitCode } = usePostSubmitProblem();
-  const postData = {
-    id: codeId,
-    sourcecode: code,
-    language: language,
-  };
-
   const [submitResult, setSubmitResult] = useState<SubmitState[]>([]);
-  console.log(submitResult);
   const isSubmitting = submitResult.some((item) => item.status === 'loading');
 
-  const handleSubmit = () => {
+  const handleProblemSubmit = () => {
     setActiveTab('result');
 
     const id = Date.now();
@@ -160,6 +163,27 @@ const Code = () => {
               : item
           )
         );
+      },
+    });
+  };
+
+  // 테스트 케이스 제출해서 확인하는 부분
+  const { mutate: submitTestcase } = usePostSubmitTestcase();
+  const [testcaseData, setTestcaseData] = useState([]);
+  const [isTestcaseSubmitting, setIsTestcaseSubmitting] = useState(false);
+
+  const handleTestcaseSubmit = () => {
+    setActiveTab('testcase');
+    setIsTestcaseSubmitting(true);
+
+    submitTestcase(postData, {
+      onSuccess: (data) => {
+        setTestcaseData(data);
+        setIsTestcaseSubmitting(false);
+      },
+      onError: () => {
+        console.error('테스트 케이스 제출 실패');
+        setIsTestcaseSubmitting(false);
       },
     });
   };
@@ -227,11 +251,16 @@ const Code = () => {
                 <option value="C">C</option>
                 <option value="CPP">C++</option>
               </select>
-
-              {/* 에디터 설정 버튼 추가 */}
-
-              <button className="px-3 py-1 text-white bg-blue-500 rounded">
-                테스트케이스
+              <button
+                className={`px-3 py-1 text-white rounded ${
+                  isTestcaseSubmitting
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-blue-500'
+                }`}
+                onClick={handleTestcaseSubmit}
+                disabled={isTestcaseSubmitting}
+              >
+                {isTestcaseSubmitting ? '실행 중...' : '테스트케이스'}
               </button>
               <button className="px-3 py-1 text-white bg-blue-500 rounded">
                 실행
@@ -242,10 +271,10 @@ const Code = () => {
                     ? 'bg-gray-400 cursor-not-allowed'
                     : 'bg-green-500'
                 }`}
-                onClick={handleSubmit}
+                onClick={handleProblemSubmit}
                 disabled={isSubmitting}
               >
-                제출
+                {isSubmitting ? '실행 중...' : '제출'}
               </button>
             </div>
           </div>
@@ -288,10 +317,15 @@ const Code = () => {
                   </button>
                 ))}
               </div>
-              <div className="p-4 whitespace-pre-wrap h-full bg-[#131313]">
+              <div className="p-4 whitespace-pre-wrap min-h-[calc(100%-40px)] h-fit bg-[#131313]">
                 {activeTab === 'run' &&
                   '프로세스가 시작되었습니다. (입력값을 직접 입력해주세요.)\n>\n프로세스가 종료되었습니다.'}
-                {activeTab === 'testcase' && '테스트케이스 준비 중...'}
+                {activeTab === 'testcase' && (
+                  <TestcaseResultPanel
+                    testcaseData={testcaseData}
+                    isLoading={isTestcaseSubmitting}
+                  />
+                )}
                 {activeTab === 'result' && (
                   <SubmitResultPanel submitResult={submitResult} />
                 )}

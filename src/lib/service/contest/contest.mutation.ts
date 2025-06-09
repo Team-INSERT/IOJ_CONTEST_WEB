@@ -6,3 +6,9 @@ export const usePostSubmitProblem = () => {
     mutationFn: contestApi.postSubmitProblem,
   });
 };
+
+export const usePostSubmitTestcase = () => {
+  return useMutation({
+    mutationFn: contestApi.postSubmitTestcase,
+  });
+};

@@ -9,3 +9,11 @@ type JudgeStatus =
 export type SubmitState =
   | { id: number; status: 'loading' }
   | { id: number; status: 'done'; data: JudgeStatus | { error: string } };
+
+export type ContestTestcaseType = {
+  index?: number;
+  input?: string;
+  output?: string;
+  expectOutput?: string;
+  verdict?: string;
+};

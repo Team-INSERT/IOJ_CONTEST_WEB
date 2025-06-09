@@ -26,11 +26,21 @@ const postSubmitProblem = async (form: {
   return data;
 };
 
+const postSubmitTestcase = async (form: {
+  id: number;
+  sourcecode: string;
+  language: 'C' | 'CPP' | 'JAVA' | 'PYTHON';
+}) => {
+  const { data } = await customAxios.post(`/problem/submit/testcases`, form);
+  return data;
+};
+
 const contestApi = {
   getContestList,
   getContestById,
   getContestProblem,
   postSubmitProblem,
+  postSubmitTestcase,
 };
 
 export default contestApi;
