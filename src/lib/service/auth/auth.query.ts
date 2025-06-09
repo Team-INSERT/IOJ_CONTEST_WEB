@@ -1,10 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
-import authApi from './auth.api';
 import { authKeys } from './auth.keys';
+import API from './auth.api';
 
 export const useGetLoginLink = () => {
   return useQuery({
-    queryKey: [authKeys.loginLink],
-    queryFn: authApi.getLoginLink,
+    queryKey: [authKeys.useGetLoginLink],
+    queryFn: API.getLoginLink,
   });
 };

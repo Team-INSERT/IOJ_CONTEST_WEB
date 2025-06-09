@@ -5,6 +5,6 @@ const getLoginLink = async () => {
   return data;
 };
 
-const authApi = { getLoginLink };
+const API = { getLoginLink };
 
-export default authApi;
+export default API;

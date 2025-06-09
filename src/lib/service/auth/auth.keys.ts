@@ -1,3 +1,3 @@
 export const authKeys = {
-  loginLink: 'auth.query.loginLink',
+  useGetLoginLink: 'auth.query.useGetLoginLink',
 };
