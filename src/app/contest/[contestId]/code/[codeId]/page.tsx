@@ -20,6 +20,7 @@ import { usePathname } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 import { Settings } from 'lucide-react';
 import TestcaseResultPanel from '@/components/TestcaseResultPanel';
+import SlideAlert from '@/components/SlideAlert';
 
 interface EditorSettings {
   fontSize: number;
@@ -47,6 +48,19 @@ const Code = () => {
   const [language, setLanguage] = useState<'PYTHON' | 'JAVA' | 'C' | 'CPP'>(
     'PYTHON'
   );
+
+  const [alertStatus, setAlertStatus] = useState<'success' | 'error' | null>(
+    null
+  );
+  const [alertMessage, setAlertMessage] = useState('');
+
+  const setAlerthandler = (
+    status: 'success' | 'error' | null,
+    message: string
+  ) => {
+    setAlertStatus(status);
+    setAlertMessage(message);
+  };
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -148,12 +162,6 @@ const Code = () => {
     document.addEventListener('mouseup', stopDragging);
   };
 
-  const postData = {
-    id: codeId,
-    sourcecode: code,
-    language: language,
-  };
-
   // 문제데이터, 대회 데이터 불러오기
   const { data: codeData, isLoading: codeLoading } =
     useGetContestProblemById(codeId);
@@ -173,24 +181,43 @@ const Code = () => {
 
     setSubmitResult((prev) => [{ id, status: 'loading' }, ...prev]);
 
-    submitCode(postData, {
-      onSuccess: (data) => {
-        setSubmitResult((prev) =>
-          prev.map((item) =>
-            item.id === id ? { id, status: 'done', data } : item
-          )
-        );
+    submitCode(
+      {
+        contestId: PathUtil(pathname, 1),
+        problemId: PathUtil(pathname, 3),
+        sourcecode: code,
+        language: language,
       },
-      onError: () => {
-        setSubmitResult((prev) =>
-          prev.map((item) =>
-            item.id === id
-              ? { id, status: 'done', data: { error: '제출 실패' } }
-              : item
-          )
-        );
-      },
-    });
+      {
+        onSuccess: (data) => {
+          setSubmitResult((prev) =>
+            prev.map((item) =>
+              item.id === id ? { id, status: 'done', data } : item
+            )
+          );
+          setAlerthandler(
+            'success',
+            data === 'ACCEPTED'
+              ? '정답입니다!'
+              : '아래 콘솔을 확인해 문제를 해결하세요'
+          );
+        },
+        onError: () => {
+          setSubmitResult((prev) =>
+            prev.map((item) =>
+              item.id === id
+                ? {
+                    id,
+                    status: 'done',
+                    data: { error: '제출 실패 이미 해결된 문제입니다.' },
+                  }
+                : item
+            )
+          );
+          setAlerthandler('error', '이미 해결된 문제입니다.');
+        },
+      }
+    );
   };
 
   // 테스트 케이스 제출해서 확인하는 부분
@@ -202,16 +229,23 @@ const Code = () => {
     setActiveTab('testcase');
     setIsTestcaseSubmitting(true);
 
-    submitTestcase(postData, {
-      onSuccess: (data) => {
-        setTestcaseData(data);
-        setIsTestcaseSubmitting(false);
+    submitTestcase(
+      {
+        id: codeId,
+        sourcecode: code,
+        language,
       },
-      onError: () => {
-        console.error('테스트 케이스 제출 실패');
-        setIsTestcaseSubmitting(false);
-      },
-    });
+      {
+        onSuccess: (data) => {
+          setTestcaseData(data);
+          setIsTestcaseSubmitting(false);
+        },
+        onError: () => {
+          console.error('테스트 케이스 제출 실패');
+          setIsTestcaseSubmitting(false);
+        },
+      }
+    );
   };
 
   if (codeLoading || contestLoading)
@@ -376,6 +410,7 @@ const Code = () => {
         editorSettings={editorSettings}
         onSettingsChange={handleSettingsChange}
       />
+      {alertStatus && <SlideAlert message={alertMessage} type={alertStatus} />}
     </>
   );
 };

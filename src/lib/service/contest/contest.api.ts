@@ -18,11 +18,12 @@ const getContestProblem = async (id: number) => {
 };
 
 const postSubmitProblem = async (form: {
-  id: number;
+  contestId: number;
+  problemId: number;
   sourcecode: string;
   language: 'C' | 'CPP' | 'JAVA' | 'PYTHON';
 }) => {
-  const { data } = await customAxios.post(`/problem/submit`, form);
+  const { data } = await customAxios.post(`/contest/execution`, form);
   return data;
 };
 

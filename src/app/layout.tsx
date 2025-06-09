@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="w-screen h-screen antialiased">
+      <body className="w-screen h-screen antialiased overscroll-none">
         <ReactQueryProvider>
           {children} <ReactQueryDevtools initialIsOpen={false} />
         </ReactQueryProvider>
