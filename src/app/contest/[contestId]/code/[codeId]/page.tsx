@@ -3,33 +3,14 @@
 import CodeEditor from '@/components/CodeEditor';
 import CodeHeader from '@/components/CodeHeader';
 import StarStatus from '@/components/StarStatus';
-import { useParams } from 'next/navigation';
+import { useGetContestProblemById } from '@/lib/service/contest/contest.query';
+import { defaultCode, PathUtil } from '@/lib/util';
+import { usePathname } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
 
-const exampleData = {
-  title: 'a*b 출력하기',
-  content: 'a와 b를 입력받아 a*b를 곱한 값을 출력하세요',
-  inputContent: '첫째 줄에 A와 B가 주어진다. (0 < A, B < 10)',
-  outputContent: '첫째 줄에 A*B를 출력한다.',
-  level: 1,
-  memoryLimit: 100,
-  timeLimit: 1,
-  testcases: [
-    { input: '8\n10', output: '80\n' },
-    { input: '6\n9', output: '54\n' },
-    { input: '3\n4', output: '12\n' },
-  ],
-};
-
-const defaultCode = {
-  c: `#include <stdio.h>\n\nint main() {\n  int a, b;\n  scanf("%d %d", &a, &b);\n  printf("%d\\n", a * b);\n  return 0;\n}`,
-  c_cpp: `#include <iostream>\n\nusing namespace std;\n\nint main() {\n  int a, b;\n  cin >> a >> b;\n  cout << a * b << endl;\n  return 0;\n}`,
-  java: `import java.util.*;\n\npublic class Main {\n  public static void main(String[] args) {\n    Scanner sc = new Scanner(System.in);\n    int a = sc.nextInt();\n    int b = sc.nextInt();\n    System.out.println(a * b);\n  }\n}`,
-  python: `a, b = map(int, input().split())\nprint(a * b)`,
-};
-
 const Code = () => {
-  const params = useParams();
+  const pathname = usePathname();
+  const codeId = PathUtil(pathname, 3);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const isDraggingColumn = useRef(false);
   const isDraggingRow = useRef(false);
@@ -50,6 +31,9 @@ const Code = () => {
     setLanguage(validLanguage);
     setCode(defaultCode[validLanguage]);
   }, []);
+
+  const { data: codeData } = useGetContestProblemById(codeId);
+  console.log(codeData);
 
   const handleMouseMove = (e: MouseEvent) => {
     if (containerRef.current) {
@@ -93,35 +77,35 @@ const Code = () => {
           style={{ width: `${leftWidth}%` }}
           className="px-10 py-6 overflow-auto select-none"
         >
-          <h2 className="text-gray-700 text-text">{params.codeId}</h2>
+          <h2 className="text-gray-700 text-text">{codeId}</h2>
           <div className="flex justify-between pb-3 text-bt1">
-            <div>{exampleData.title}</div>
-            <StarStatus level={exampleData.level} />
+            <div>{codeData?.title}</div>
+            <StarStatus level={codeData?.level} />
           </div>
           <div className="pt-1 text-gray-500 border-t text-caption">
             <span className="text-ut-insertBlue">시간 제한</span>:{' '}
-            {exampleData.timeLimit} Sec &nbsp;|&nbsp;
+            {codeData?.timeLimit} Sec &nbsp;|&nbsp;
             <span className="text-ut-insertBlue">메모리 제한</span>:{' '}
-            {exampleData.memoryLimit} MB
+            {codeData?.memoryLimit} MB
           </div>
           <div className="mt-6 space-y-6">
             <div className="flex flex-col gap-3">
               <h3 className="pb-1 border-b-2 border-ut-insertBlue w-fit text-bt">
                 문제
               </h3>
-              <p>{exampleData.content}</p>
+              <p>{codeData?.content}</p>
             </div>
             <div className="flex flex-col gap-3">
               <h3 className="pb-1 border-b-2 border-ut-insertBlue w-fit text-bt">
                 입력
               </h3>
-              <p>{exampleData.inputContent}</p>
+              <p>{codeData?.inputContent}</p>
             </div>
             <div className="flex flex-col gap-3">
               <h3 className="pb-1 border-b-2 border-ut-insertBlue w-fit text-bt">
                 출력
               </h3>
-              <p>{exampleData.outputContent}</p>
+              <p>{codeData?.outputContent}</p>
             </div>
             <div className="grid grid-cols-2 gap-5 mt-14">
               <div>
@@ -129,11 +113,13 @@ const Code = () => {
                   예제 입력
                 </h4>
                 <div className="flex flex-col gap-3">
-                  {exampleData.testcases.map((t, i) => (
-                    <div key={i} className="p-3 border rounded-md bg-gray-50">
-                      {t.input}
-                    </div>
-                  ))}
+                  {codeData?.testcases.map(
+                    (data: { input: string }, i: number) => (
+                      <div key={i} className="p-3 border rounded-md bg-gray-50">
+                        {data.input}
+                      </div>
+                    )
+                  )}
                 </div>
               </div>
               <div>
@@ -141,11 +127,13 @@ const Code = () => {
                   예제 출력
                 </h4>
                 <div className="flex flex-col gap-3">
-                  {exampleData.testcases.map((t, i) => (
-                    <div key={i} className="p-3 border rounded-md bg-gray-50">
-                      {t.output}
-                    </div>
-                  ))}
+                  {codeData?.testcases.map(
+                    (data: { output: string }, i: number) => (
+                      <div key={i} className="p-3 border rounded-md bg-gray-50">
+                        {data.output}
+                      </div>
+                    )
+                  )}
                 </div>
               </div>
             </div>
