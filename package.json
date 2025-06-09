@@ -40,6 +40,8 @@
     "react": "^19.0.0",
     "react-ace": "^14.0.1",
     "react-dom": "^19.0.0",
+    "sass": "^1.89.1",
+    "sweetalert2": "^11.22.0",
     "vscode-jsonrpc": "^8.2.1",
     "vscode-languageserver-protocol": "^3.17.5"
   },
