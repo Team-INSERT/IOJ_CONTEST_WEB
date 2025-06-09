@@ -62,6 +62,12 @@ const Code = () => {
     wordWrap: false,
   });
 
+  const getLocalStorageKey = (
+    contestId: string,
+    problemId: string,
+    lang: string
+  ) => `code_${contestId}_${problemId}_${lang}`;
+
   useEffect(() => {
     // 로컬 스토리지에서 언어 설정 불러오기
     const savedLanguage = localStorage.getItem('code') || 'PYTHON';
@@ -69,7 +75,15 @@ const Code = () => {
       ? (savedLanguage as 'PYTHON' | 'JAVA' | 'C' | 'CPP')
       : 'PYTHON';
     setLanguage(validLanguage);
-    setCode(defaultCode[validLanguage]);
+
+    const contestId = PathUtil(pathname, 1);
+    const problemKey = getLocalStorageKey(
+      String(contestId),
+      String(codeId),
+      validLanguage
+    );
+    const savedCode = localStorage.getItem(problemKey);
+    setCode(savedCode || defaultCode[validLanguage]);
 
     // 로컬 스토리지에서 에디터 설정 불러오기
     const savedSettings = localStorage.getItem('editorSettings');
@@ -80,7 +94,19 @@ const Code = () => {
         console.error('에디터 설정 로드 실패:', error);
       }
     }
-  }, []);
+  }, [codeId, pathname, language]);
+
+  const handleCodeChange = (newCode: string) => {
+    setCode(newCode);
+
+    const contestId = PathUtil(pathname, 1);
+    const problemKey = getLocalStorageKey(
+      String(contestId),
+      String(codeId),
+      language
+    );
+    localStorage.setItem(problemKey, newCode);
+  };
 
   // 에디터 설정 변경 핸들러
   const handleSettingsChange = (newSettings: EditorSettings) => {
@@ -236,6 +262,15 @@ const Code = () => {
                 설정
               </button>
 
+              <button
+                className="px-3 py-1 text-white bg-blue-500 rounded"
+                onClick={() => {
+                  handleCodeChange(code);
+                }}
+              >
+                저장
+              </button>
+
               <select
                 className="px-2 py-1 text-sm text-white bg-blue-500 rounded border-r-8-transparent"
                 onChange={(e) => {
@@ -251,6 +286,7 @@ const Code = () => {
                 <option value="C">C</option>
                 <option value="CPP">C++</option>
               </select>
+
               <button
                 className={`px-3 py-1 text-white rounded ${
                   isTestcaseSubmitting
@@ -262,9 +298,7 @@ const Code = () => {
               >
                 {isTestcaseSubmitting ? '실행 중...' : '테스트케이스'}
               </button>
-              <button className="px-3 py-1 text-white bg-blue-500 rounded">
-                실행
-              </button>
+
               <button
                 className={`px-3 py-1 text-white rounded ${
                   isSubmitting
@@ -286,7 +320,7 @@ const Code = () => {
             >
               <CodeEditor
                 value={code}
-                onChange={setCode}
+                onChange={handleCodeChange}
                 mode={language}
                 editorSettings={editorSettings}
               />

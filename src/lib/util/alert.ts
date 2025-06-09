@@ -55,6 +55,16 @@ const AlertUtil = {
         cancelButton: `${baseButtonClass} bg-gray-300 text-gray-800 hover:bg-gray-400 focus:ring-gray-300`,
       },
     }),
+
+  sideConfirm: (text: string, title = '확인') =>
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title,
+      text,
+      showConfirmButton: false,
+      timer: 1200,
+    }),
 };
 
 export default AlertUtil;
