@@ -1,5 +1,6 @@
 'use client';
 
+import Loading from '@/components/Loading';
 import { customAxios } from '@/lib/api';
 import { useGetContestList } from '@/lib/service/contest/contest.query';
 import { AlertUtil, FormatUtil } from '@/lib/util';
@@ -15,8 +16,12 @@ interface ContestDetail {
 }
 
 const Home = () => {
-  const { data: contestDetail } = useGetContestList({});
+  const { data: contestDetail, isLoading } = useGetContestList({});
   const router = useRouter();
+
+  if (isLoading) {
+    return <Loading text={'대회목록 불러오는 중...'} />;
+  }
 
   const handleClick = async (id: number) => {
     try {
