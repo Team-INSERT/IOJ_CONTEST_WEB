@@ -43,7 +43,7 @@ const CodeHeader = ({ endTime, problems }: ContestDetail) => {
         >
           이전
         </button>
-        <span className="text-sm">
+        <span className="text-Nstext">
           {currentIndex + 1} / {problems.length}
         </span>
         <button
@@ -55,7 +55,7 @@ const CodeHeader = ({ endTime, problems }: ContestDetail) => {
         </button>
       </div>
 
-      <div className="flex items-center justify-center gap-2 px-4 py-1 text-sm border border-white rounded">
+      <div className="flex items-center justify-center gap-2 px-4 py-2 text-sm border border-white rounded">
         <Clock />
         <span className="text-text">
           <RemainingTime targetDate={endTime} />
