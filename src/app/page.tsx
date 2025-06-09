@@ -25,7 +25,7 @@ const Home = () => {
 
   const handleClick = async (id: number) => {
     try {
-      await customAxios.get(`/api/contests/${id}`);
+      await customAxios.get(`/contest/${id}`);
       router.push(`/contest/${id}`);
     } catch (error: unknown) {
       const axiosError = error as AxiosError;
