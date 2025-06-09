@@ -1,9 +1,13 @@
 import React from 'react';
 
-const Loading = () => {
+interface LoadingProps {
+  text?: string | null;
+}
+
+const Loading = ({ text }: LoadingProps) => {
   return (
     <div className="flex items-center justify-center w-screen h-screen">
-      <div className="text-bt3">Loading...</div>
+      <div className="text-bt3">{text === null ? 'Loading...' : text}</div>
     </div>
   );
 };
