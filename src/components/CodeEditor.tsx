@@ -17,13 +17,23 @@ import 'ace-builds/src-noconflict/snippets/c_cpp';
 interface CodeEditorProps {
   value: string;
   onChange: (val: string) => void;
-  mode?: 'python' | 'java' | 'c_cpp' | 'c';
+  mode?: 'PYTHON' | 'JAVA' | 'CPP' | 'C';
 }
 
 export default function CodeEditor({ value, onChange, mode }: CodeEditorProps) {
   return (
     <AceEditor
-      mode={mode || 'python'}
+      mode={
+        mode == 'PYTHON'
+          ? 'python'
+          : mode === 'C'
+            ? 'c'
+            : mode === 'CPP'
+              ? 'c_pp'
+              : mode === 'JAVA'
+                ? 'java'
+                : 'python'
+      }
       theme="monokai"
       name="editor"
       value={value}

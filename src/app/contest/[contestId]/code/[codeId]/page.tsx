@@ -23,15 +23,15 @@ const Code = () => {
 
   const [activeTab, setActiveTab] = useState('run');
   const [code, setCode] = useState('');
-  const [language, setLanguage] = useState<'python' | 'java' | 'c' | 'c_cpp'>(
-    'python'
+  const [language, setLanguage] = useState<'PYTHON' | 'JAVA' | 'C' | 'CPP'>(
+    'PYTHON'
   );
 
   useEffect(() => {
-    const saved = localStorage.getItem('code') || 'python';
-    const validLanguage = ['python', 'java', 'c', 'c_cpp'].includes(saved)
-      ? (saved as 'python' | 'java' | 'c' | 'c_cpp')
-      : 'python';
+    const saved = localStorage.getItem('code') || 'PYTHON';
+    const validLanguage = ['PYTHON', 'JAVA', 'C', 'CPP'].includes(saved)
+      ? (saved as 'PYTHON' | 'JAVA' | 'C' | 'CPP')
+      : 'PYTHON';
     setLanguage(validLanguage);
     setCode(defaultCode[validLanguage]);
   }, []);
@@ -164,11 +164,11 @@ const Code = () => {
         >
           <div className="flex items-center justify-between px-5 py-2 border-b border-zinc-700">
             <div className="font-semibold text-white">
-              {language === 'python'
+              {language === 'PYTHON'
                 ? 'main.py'
-                : language === 'java'
+                : language === 'JAVA'
                   ? 'main.java'
-                  : language === 'c_cpp'
+                  : language === 'CPP'
                     ? 'main.cpp'
                     : 'main.c'}
             </div>
@@ -176,21 +176,17 @@ const Code = () => {
               <select
                 className="px-2 py-1 text-sm text-white bg-blue-500 rounded border-r-8-transparent"
                 onChange={(e) => {
-                  const val = e.target.value as
-                    | 'python'
-                    | 'java'
-                    | 'c'
-                    | 'c_cpp';
+                  const val = e.target.value as 'PYTHON' | 'JAVA' | 'C' | 'CPP';
                   setLanguage(val);
                   setCode(defaultCode[val]);
                   localStorage.setItem('code', val);
                 }}
                 value={language}
               >
-                <option value="python">Python</option>
-                <option value="java">Java</option>
-                <option value="c">C</option>
-                <option value="c_cpp">C++</option>
+                <option value="PYTHON">Python</option>
+                <option value="JAVA">Java</option>
+                <option value="C">C</option>
+                <option value="CPP">C++</option>
               </select>
               <button className="px-3 py-1 text-white bg-blue-500 rounded">
                 테스트케이스
