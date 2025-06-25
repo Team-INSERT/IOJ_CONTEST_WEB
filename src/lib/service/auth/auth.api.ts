@@ -5,6 +5,11 @@ const getLoginLink = async () => {
   return data;
 };
 
-const API = { getLoginLink };
+const postCode = async (code: string) => {
+  const { data } = await customAxios.post('/auth', { accessToken: code });
+  return data;
+};
+
+const API = { getLoginLink, postCode };
 
 export default API;
