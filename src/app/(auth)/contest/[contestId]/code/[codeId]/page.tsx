@@ -21,6 +21,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Settings } from 'lucide-react';
 import TestcaseResultPanel from '@/components/TestcaseResultPanel';
 import SlideAlert from '@/components/SlideAlert';
+import TestCaseModal from '@/components/TestCaseModal';
 
 interface EditorSettings {
   fontSize: number;
@@ -62,7 +63,8 @@ const Code = () => {
     setAlertMessage(message);
   };
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
+  const [isTestCaseModalOpen, setIsTestCaseModalOpen] = useState(false);
 
   const [editorSettings, setEditorSettings] = useState<EditorSettings>({
     fontSize: 14,
@@ -288,7 +290,7 @@ const Code = () => {
             </div>
             <div className="flex gap-2">
               <button
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => setIsSettingModalOpen(true)}
                 className="flex items-center gap-1 px-3 py-1 text-white bg-gray-600 rounded hover:bg-gray-700"
                 title="에디터 설정"
               >
@@ -333,6 +335,15 @@ const Code = () => {
                 <option value="C">C</option>
                 <option value="CPP">C++</option>
               </select>
+
+              <button
+                className="px-3 py-1 text-white bg-blue-500 rounded"
+                onClick={() => {
+                  setIsTestCaseModalOpen(true);
+                }}
+              >
+                테스트케이스 추가
+              </button>
 
               <button
                 className={`px-3 py-1 text-white rounded ${
@@ -418,10 +429,15 @@ const Code = () => {
 
       {/* 에디터 커스텀 모달 */}
       <EditorCustomModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
+        isOpen={isSettingModalOpen}
+        onClose={() => setIsSettingModalOpen(false)}
         editorSettings={editorSettings}
         onSettingsChange={handleSettingsChange}
+      />
+      {/* 테스트 케이스 추가 모달 */}
+      <TestCaseModal
+        isOpen={isTestCaseModalOpen}
+        onClose={() => setIsTestCaseModalOpen(false)}
       />
       {alertStatus && <SlideAlert message={alertMessage} type={alertStatus} />}
     </>
