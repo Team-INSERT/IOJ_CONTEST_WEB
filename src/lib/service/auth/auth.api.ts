@@ -10,6 +10,11 @@ const postCode = async (code: string) => {
   return data;
 };
 
-const API = { getLoginLink, postCode };
+const getUserInfo = async () => {
+  const { data } = await customAxios.get('/user');
+  return data;
+};
+
+const API = { getLoginLink, postCode, getUserInfo };
 
 export default API;

@@ -8,3 +8,10 @@ export const useGetLoginLink = () => {
     queryFn: API.getLoginLink,
   });
 };
+
+export const useGetUserInfo = () => {
+  return useQuery({
+    queryKey: [authKeys.useGetUserInfo],
+    queryFn: API.getUserInfo,
+  });
+};
