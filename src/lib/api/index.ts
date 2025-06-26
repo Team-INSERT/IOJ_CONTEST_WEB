@@ -35,6 +35,7 @@ customAxios.interceptors.response.use(
       return customAxios(request);
     } catch (refreshError) {
       Storage.clear();
+      window.location.href = '/login';
       return Promise.reject(refreshError);
     }
   }

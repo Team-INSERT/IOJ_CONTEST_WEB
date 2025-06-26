@@ -37,7 +37,7 @@ const Callback = () => {
   return (
     <Suspense>
       <main>
-        <Loading />
+        <Loading text={'로딩중...'} />
       </main>
     </Suspense>
   );
