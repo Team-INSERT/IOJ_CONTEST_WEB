@@ -272,12 +272,34 @@ const Code = () => {
     const storedTestcases = (() => {
       try {
         const stored = localStorage.getItem(problemKey);
-        return stored ? JSON.parse(stored) : [];
+        console.log(stored);
+        let result: { input: string; expectedOutput: string }[] = [];
+        if (Array.isArray(codeData?.testcases)) {
+          result = codeData.testcases.map(
+            ({ input, output }: { input: string; output: string }) => ({
+              input,
+              expectedOutput: output,
+            })
+          );
+        }
+        if (stored) {
+          try {
+            const parsed = JSON.parse(stored);
+            if (Array.isArray(parsed)) {
+              result = result.concat(parsed);
+            }
+          } catch (e) {
+            console.error('저장된 테스트케이스 파싱 실패', e);
+          }
+        }
+        return result;
       } catch (e) {
         console.error('테스트케이스 파싱 실패', e);
         return [];
       }
     })();
+
+    console.log(storedTestcases);
 
     if (storedTestcases.length === 0) {
       setAlerthandler('error', '저장된 테스트케이스가 없습니다.');

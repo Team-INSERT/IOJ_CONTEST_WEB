@@ -175,9 +175,7 @@ const TestCaseModal = ({
         </section>
         <button
           onClick={() => {
-            if (testCases.length > 0) {
-              handleCreateTestcase();
-            }
+            handleCreateTestcase();
           }}
           className="w-fit ml-auto py-3 px-[63px] bg-ut-insertBlue rounded text-white text-[1.1875rem] font-bold"
         >
