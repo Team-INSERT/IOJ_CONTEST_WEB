@@ -1,6 +1,5 @@
 import RemoveIcon from '@/assets/RemoveIcon';
-import { usePostCreateTestcase } from '@/lib/service/contest/contest.mutation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface TestCaseModalProps {
   isOpen: boolean;
@@ -10,74 +9,81 @@ interface TestCaseModalProps {
   language: 'C' | 'CPP' | 'JAVA' | 'PYTHON';
   onAlert: (status: 'success' | 'error', message: string) => void;
   onTestcaseCreated: (id: string) => void;
-  initialTestcases: { input: string; output: string }[];
+  initialTestcases: { input: string; expectedOutput: string }[];
+  problemKey: string;
 }
 
 const TestCaseModal = ({
   isOpen,
   onClose,
   problemId,
-  sourcecode,
-  language,
   onAlert,
-  onTestcaseCreated,
   initialTestcases,
+  problemKey,
 }: TestCaseModalProps) => {
   const [testCases, setTestCases] = useState<
-    { input: string; output: string }[]
+    { input: string; expectedOutput: string }[]
   >([]);
 
+  const STORAGE_KEY = problemKey;
+
+  const loadTestcases = () => {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
+    }
+  };
+
+  const saveTestcases = (data: { input: string; expectedOutput: string }[]) => {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    } catch (err) {
+      console.error('저장 실패:', err);
+    }
+  };
+
+  useEffect(() => {
+    if (isOpen) {
+      const parsed = loadTestcases();
+      if (Array.isArray(parsed)) {
+        setTestCases(parsed);
+      } else {
+        setTestCases([]);
+      }
+    }
+  }, [isOpen, problemId]);
+
   const handleAdd = () => {
-    setTestCases((prev) => [...prev, { input: '', output: '' }]);
+    const updated = [...testCases, { input: '', expectedOutput: '' }];
+    setTestCases(updated);
+    saveTestcases(updated);
   };
 
   const handleChange = (
     index: number,
-    key: 'input' | 'output',
+    key: 'input' | 'expectedOutput',
     value: string
   ) => {
     const updated = [...testCases];
     updated[index][key] = value;
     setTestCases(updated);
+    saveTestcases(updated);
   };
 
   const handleRemove = (index: number) => {
     const updated = [...testCases];
     updated.splice(index, 1);
     setTestCases(updated);
+    saveTestcases(updated);
   };
-
-  //테스트케이스 생성
-  const { mutate: createTestcase } = usePostCreateTestcase();
 
   const handleCreateTestcase = () => {
-    const formattedTestcases = testCases.map(({ input, output }) => ({
-      input: input.replace(/\r?\n/g, '\\n'),
-      expectedOutput: output.replace(/\r?\n/g, '\\n'),
-    }));
-
-    createTestcase(
-      {
-        problemId,
-        sourcecode,
-        language,
-        testcaseResultDto: formattedTestcases,
-      },
-      {
-        onSuccess: (response: string) => {
-          console.log(response);
-          onTestcaseCreated(response);
-          onClose();
-          onAlert('success', '테스트 케이스가 생성되었습니다.');
-          setTestCases([]);
-        },
-        onError: () => {
-          onAlert('error', '테스트 케이스 생성에 실패했습니다.');
-        },
-      }
-    );
+    saveTestcases(testCases);
+    onClose();
+    onAlert('success', '테스트 케이스가 저장되었습니다.');
   };
-
   if (!isOpen) return null;
 
   return (
@@ -106,25 +112,26 @@ const TestCaseModal = ({
                 Output
               </article>
             </article>
-            {initialTestcases && initialTestcases.length > 0 && (
+
+            {initialTestcases?.length > 0 && (
               <article className="flex bg-white">
                 <article className="w-[65%] pt-[24px] px-[29px] pb-[24px] border-r">
                   <article className="bg-gray-100 p-3 rounded whitespace-pre-wrap font-regular text-[0.9375rem] text-gray-600 border border-grey-200">
                     {initialTestcases.map((tc) => tc.input).join('\n')}
                   </article>
                 </article>
-
                 <article className="w-[35%] pt-[24px] px-[29px] pb-[24px]">
                   <article className="bg-gray-100 p-3 rounded h-full whitespace-pre-wrap font-regular text-[0.9375rem] text-gray-600 border border-grey-200">
                     {initialTestcases.map((tc, i) => (
                       <div key={`out-${i}`} className="mb-2 last:mb-0">
-                        {tc.output?.replace(/\\n/g, '\n') ?? ''}
+                        {tc.expectedOutput?.replace(/\\n/g, '\n') ?? ''}
                       </div>
                     ))}
                   </article>
                 </article>
               </article>
             )}
+
             {testCases.map((tc, idx) => (
               <article key={idx} className="flex bg-white">
                 <div className="w-[65%] px-[29px] pb-[44px] border-r">
@@ -143,9 +150,9 @@ const TestCaseModal = ({
                 <div className="w-[35%] h-fit px-[29px] pb-[44px] flex items-center gap-2">
                   <textarea
                     placeholder="output"
-                    value={tc.output}
+                    value={tc.expectedOutput}
                     onChange={(e) =>
-                      handleChange(idx, 'output', e.target.value)
+                      handleChange(idx, 'expectedOutput', e.target.value)
                     }
                     onInput={(e) => {
                       const target = e.target as HTMLTextAreaElement;

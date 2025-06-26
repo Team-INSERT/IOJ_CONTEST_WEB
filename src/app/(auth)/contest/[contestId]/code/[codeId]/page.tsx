@@ -6,7 +6,10 @@ import Loading from '@/components/Loading';
 import ProblemDetailPanel from '@/components/ProblemDetailPanel';
 import SubmitResultPanel from '@/components/SubmitResultPanelProps';
 import EditorCustomModal from '@/components/EditorCustomModal';
-import { usePostSubmitProblem } from '@/lib/service/contest/contest.mutation';
+import {
+  usePostCreateTestcase,
+  usePostSubmitProblem,
+} from '@/lib/service/contest/contest.mutation';
 import {
   useGetContestById,
   useGetContestProblemById,
@@ -260,20 +263,62 @@ const Code = () => {
     }
   }, [isSuccess, submitStatusData, submissionId]);
 
-  // 테스트 케이스 제출해서 확인하는 부분
-  const [testcaseSubmissionId, setTestcaseSubmissionId] = useState('');
-
-  // 테스트 케이스 조회 요청
-  const {
-    data: testcaseData,
-    refetch: fetchTestcaseResult,
-    isFetching: isTestcaseSubmitting,
-  } = useGetSubmitTestcase(testcaseSubmissionId);
+  const { mutate: createTestcase } = usePostCreateTestcase();
 
   const handleTestcaseSubmit = () => {
     setActiveTab('testcase');
-    fetchTestcaseResult();
+
+    const problemKey = `testcase-modal-${PathUtil(pathname, 3)}`;
+    const storedTestcases = (() => {
+      try {
+        const stored = localStorage.getItem(problemKey);
+        return stored ? JSON.parse(stored) : [];
+      } catch (e) {
+        console.error('테스트케이스 파싱 실패', e);
+        return [];
+      }
+    })();
+
+    if (storedTestcases.length === 0) {
+      setAlerthandler('error', '저장된 테스트케이스가 없습니다.');
+      return;
+    }
+
+    // 요청 전에 상태 초기화
+    setShouldFetchTestcase(false);
+    setTestcaseSubmissionId('');
+
+    createTestcase(
+      {
+        problemId: PathUtil(pathname, 3),
+        sourcecode: code,
+        language: language,
+        testcaseResultDto: storedTestcases,
+      },
+      {
+        onSuccess: (testcaseId) => {
+          setTestcaseSubmissionId(testcaseId);
+          setShouldFetchTestcase(true);
+        },
+        onError: () => {
+          setAlerthandler('error', '테스트케이스 생성 실패');
+        },
+      }
+    );
   };
+
+  // 테스트 케이스 제출해서 확인하는 부분
+  const [testcaseSubmissionId, setTestcaseSubmissionId] = useState<string>('');
+  const [shouldFetchTestcase, setShouldFetchTestcase] = useState(false);
+
+  // 테스트 케이스 조회 요청
+  const shouldEnableTestcaseQuery =
+    testcaseSubmissionId !== '' && shouldFetchTestcase;
+
+  const { data: testcaseData, isFetching: isTestcaseSubmitting } =
+    useGetSubmitTestcase(testcaseSubmissionId, {
+      enabled: shouldEnableTestcaseQuery,
+    });
 
   if (codeLoading || contestLoading)
     return <Loading text={'문제 불러오는 중...'} />;
@@ -453,13 +498,12 @@ const Code = () => {
       <TestCaseModal
         isOpen={isTestCaseModalOpen}
         onClose={() => setIsTestCaseModalOpen(false)}
-        problemId={PathUtil(pathname, 1)}
+        problemId={PathUtil(pathname, 3)}
+        problemKey={`testcase-modal-${PathUtil(pathname, 3)}`}
         sourcecode={code}
         language={language}
         onAlert={setAlerthandler}
-        onTestcaseCreated={(testcaseId) => {
-          setTestcaseSubmissionId(testcaseId);
-        }}
+        onTestcaseCreated={() => {}}
         initialTestcases={codeData?.testcases}
       />
       {alertStatus && (
