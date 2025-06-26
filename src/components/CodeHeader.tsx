@@ -63,10 +63,6 @@ const CodeHeader = ({ endTime, problems }: ContestDetail) => {
       </div>
 
       <div className="flex items-center gap-2">
-        <button className="px-3 py-1 text-sm rounded bg-zinc-600">
-          제출현황
-        </button>
-        <div className="w-px h-4 bg-white opacity-40" />
         <button
           onClick={() => router.push(`/contest/${contestId}`)}
           className="px-3 py-1 text-sm bg-red-500 rounded"
