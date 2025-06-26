@@ -26,9 +26,7 @@ const TestCaseModal = ({
   >([]);
 
   const handleAdd = () => {
-    if (testCases.length === 0) {
-      setTestCases([{ input: '', output: '' }]);
-    }
+    setTestCases((prev) => [...prev, { input: '', output: '' }]);
   };
 
   const handleChange = (
@@ -89,9 +87,9 @@ const TestCaseModal = ({
         onClick={(e) => e.stopPropagation()}
         className="flex flex-col justify-between w-[53.3125rem] h-[33.125rem] py-9 px-8 bg-white rounded"
       >
-        <section className="flex flex-col gap-12 w-full">
+        <section className="flex flex-col gap-6 w-full overflow-y-auto pr-2 max-h-[calc(100%-5rem)]">
           <p className="text-3xl font-semibold">테스트 케이스 추가</p>
-          <section className="border rounded-[4px] overflow-hidden w-full">
+          <section className="border rounded-[4px] overflow-x-auto w-full">
             <article className="flex items-center bg-gray-50 border-b">
               <article className="flex justify-between items-center w-[65%] py-[6px] px-[13px] border-r font-regular text-[0.9375rem] text-gray-800">
                 <p>Input</p>
