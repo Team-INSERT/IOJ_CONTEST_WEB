@@ -13,6 +13,7 @@ import {
 import {
   useGetContestById,
   useGetContestProblemById,
+  useGetSubmitProblemStatus,
 } from '@/lib/service/contest/contest.query';
 import { SubmitState } from '@/lib/types/contestSubmitType';
 import { defaultCode, PathUtil } from '@/lib/util';
@@ -44,7 +45,7 @@ const Code = () => {
   const [leftWidth, setLeftWidth] = useState(45);
   const [editorHeight, setEditorHeight] = useState(60);
 
-  const [activeTab, setActiveTab] = useState('run');
+  const [activeTab, setActiveTab] = useState('testcase');
   const [code, setCode] = useState('');
   const [language, setLanguage] = useState<'PYTHON' | 'JAVA' | 'C' | 'CPP'>(
     'PYTHON'
@@ -55,12 +56,14 @@ const Code = () => {
   );
   const [alertMessage, setAlertMessage] = useState('');
 
+  const [alertKey, setAlertKey] = useState(0);
   const setAlerthandler = (
     status: 'success' | 'error' | null,
     message: string
   ) => {
     setAlertStatus(status);
     setAlertMessage(message);
+    setAlertKey((prev) => prev + 1);
   };
 
   const [isSettingModalOpen, setIsSettingModalOpen] = useState(false);
@@ -173,6 +176,7 @@ const Code = () => {
 
   // 제출해서 정답확인하는 부분
   const { mutate: submitCode } = usePostSubmitProblem();
+  const [submissionId, setSubmissionId] = useState<string>('');
   const [submitResult, setSubmitResult] = useState<SubmitState[]>([]);
   const isSubmitting = submitResult.some((item) => item.status === 'loading');
 
@@ -192,17 +196,7 @@ const Code = () => {
       },
       {
         onSuccess: (data) => {
-          setSubmitResult((prev) =>
-            prev.map((item) =>
-              item.id === id ? { id, status: 'done', data } : item
-            )
-          );
-          setAlerthandler(
-            'success',
-            data === 'ACCEPTED'
-              ? '정답입니다!'
-              : '아래 콘솔을 확인해 문제를 해결하세요'
-          );
+          setSubmissionId(data);
         },
         onError: () => {
           setSubmitResult((prev) =>
@@ -221,6 +215,52 @@ const Code = () => {
       }
     );
   };
+
+  const { data: submitStatusData, isSuccess } = useGetSubmitProblemStatus(
+    submissionId,
+    {
+      enabled: !!submissionId,
+    }
+  );
+
+  useEffect(() => {
+    if (isSuccess && submitStatusData && submissionId) {
+      setSubmitResult((prev) =>
+        prev.map((item) =>
+          item.status === 'loading'
+            ? { ...item, status: 'done', data: submitStatusData }
+            : item
+        )
+      );
+
+      switch (submitStatusData) {
+        case 'ACCEPTED':
+          setAlerthandler('success', '정답입니다!');
+          break;
+        case 'WRONG_ANSWER':
+          setAlerthandler('error', '틀렸습니다. 다시 시도해보세요.');
+          break;
+        case 'OUT_OF_MEMORY':
+          setAlerthandler('error', '메모리 초과입니다. 코드를 최적화해보세요.');
+          break;
+        case 'TIME_LIMIT_EXCEEDED':
+          setAlerthandler(
+            'error',
+            '시간 초과입니다. 알고리즘을 최적화해보세요.'
+          );
+          break;
+        case 'COMPILATION_ERROR':
+          setAlerthandler('error', '컴파일 에러입니다. 코드를 확인해보세요.');
+          break;
+        case 'RUNTIME_ERROR':
+          setAlerthandler('error', '런타임 에러입니다. 코드를 확인해보세요.');
+          break;
+        default:
+          setAlerthandler('error', '알 수 없는 에러가 발생했습니다.');
+          break;
+      }
+    }
+  }, [isSuccess, submitStatusData, submissionId]);
 
   // 테스트 케이스 제출해서 확인하는 부분
   const { mutate: submitTestcase } = usePostSubmitTestcase();
@@ -395,23 +435,17 @@ const Code = () => {
               className="overflow-y-auto text-xs text-white bg-gray-900"
             >
               <div className="flex">
-                {['run', 'testcase', 'result'].map((tab) => (
+                {['testcase', 'result'].map((tab) => (
                   <button
                     key={tab}
                     className={`px-4 py-2 h-10 text-caption ${activeTab === tab ? 'border-b-2 border-white font-semibold' : ''}`}
                     onClick={() => setActiveTab(tab)}
                   >
-                    {tab === 'run'
-                      ? '실행화면'
-                      : tab === 'testcase'
-                        ? '테스트케이스'
-                        : '제출결과'}
+                    {tab === 'testcase' ? '테스트케이스' : '제출결과'}
                   </button>
                 ))}
               </div>
               <div className="p-4 whitespace-pre-wrap min-h-[calc(100%-40px)] h-fit bg-[#131313]">
-                {activeTab === 'run' &&
-                  '프로세스가 시작되었습니다. (입력값을 직접 입력해주세요.)\n>\n프로세스가 종료되었습니다.'}
                 {activeTab === 'testcase' && (
                   <TestcaseResultPanel
                     testcaseData={testcaseData}
@@ -439,7 +473,9 @@ const Code = () => {
         isOpen={isTestCaseModalOpen}
         onClose={() => setIsTestCaseModalOpen(false)}
       />
-      {alertStatus && <SlideAlert message={alertMessage} type={alertStatus} />}
+      {alertStatus && (
+        <SlideAlert key={alertKey} message={alertMessage} type={alertStatus} />
+      )}
     </>
   );
 };

@@ -60,7 +60,10 @@ const ProblemDetailPanel = ({
             </h4>
             <div className="flex flex-col gap-3">
               {codeData.testcases.map((tc, i) => (
-                <div key={i} className="p-3 border rounded-md bg-gray-50">
+                <div
+                  key={i}
+                  className="p-3 whitespace-pre-line border rounded-md bg-gray-50"
+                >
                   {tc.input}
                 </div>
               ))}
