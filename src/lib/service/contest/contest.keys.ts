@@ -4,4 +4,5 @@ export const contestKeys = {
   getContestProblem: 'contest.query.getContestProblem',
   getCreateTestcase: 'contest.query.getCreateTestcase',
   getSubmitProblemStatus: 'contest.query.getSubmitProblemStatus',
+  useGetSubmitTestcase: 'contest.query.useGetSubmitTestcase',
 };

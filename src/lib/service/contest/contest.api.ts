@@ -32,12 +32,10 @@ const getSubmitProblemStatus = async (submissionId: string) => {
   return data;
 };
 
-const postSubmitTestcase = async (form: {
-  id: number;
-  sourcecode: string;
-  language: 'C' | 'CPP' | 'JAVA' | 'PYTHON';
-}) => {
-  const { data } = await customAxios.post(`/problem/submit/testcases`, form);
+const getSubmitTestcase = async (testcaseId: string) => {
+  const { data } = await customAxios.get(
+    `/submissions/${testcaseId}/status/testcase`
+  );
   return data;
 };
 
@@ -60,7 +58,7 @@ const contestApi = {
   getContestProblem,
   postSubmitProblem,
   getSubmitProblemStatus,
-  postSubmitTestcase,
+  getSubmitTestcase,
   postCreateTestcase,
 };
 

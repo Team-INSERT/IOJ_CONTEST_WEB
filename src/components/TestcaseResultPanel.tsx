@@ -3,7 +3,7 @@ import { ContestTestcaseType } from '@/lib/types/contestSubmitType';
 import { Loader2 } from 'lucide-react';
 
 interface TestcaseResultPanelProps {
-  testcaseData: ContestTestcaseType[];
+  testcaseData?: ContestTestcaseType[]; // optional 처리
   isLoading: boolean;
 }
 
@@ -11,16 +11,18 @@ const TestcaseResultPanel = ({
   testcaseData,
   isLoading,
 }: TestcaseResultPanelProps) => {
-  const matchedCount = testcaseData.filter(
-    (t) => t.output === t.expectOutput && t.verdict === 'ACCEPTED'
-  ).length;
+  const matchedCount = Array.isArray(testcaseData)
+    ? testcaseData.filter(
+        (t) => t.output === t.expectedOutput && t.verdict === 'ACCEPTED'
+      ).length
+    : 0;
 
   return (
     <div className="flex flex-col gap-5 overflow-y-auto">
       <div className="text-stext">
         테스트 케이스 일치 비율 :{' '}
         <span className="text-ut-insertBlue">{matchedCount}</span> /{' '}
-        {testcaseData.length}
+        {testcaseData?.length ?? 0}
       </div>
 
       <div className="flex flex-col gap-4">
@@ -36,6 +38,8 @@ const TestcaseResultPanel = ({
             <Loader2 className="w-4 h-4 animate-spin" />
             테스트케이스 실행 중입니다...
           </div>
+        ) : !testcaseData || testcaseData.length === 0 ? (
+          <div className="text-center text-white">테스트 결과가 없습니다.</div>
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full text-sm text-left text-white">
@@ -51,7 +55,7 @@ const TestcaseResultPanel = ({
               <tbody>
                 {testcaseData.map((test, idx) => {
                   const isAccepted =
-                    test.output === test.expectOutput &&
+                    test.output === test.expectedOutput &&
                     test.verdict === 'ACCEPTED';
                   const isRuntimeError = test.verdict === 'RUNTIME_ERROR';
 
@@ -74,7 +78,7 @@ const TestcaseResultPanel = ({
                         )}
                       </td>
                       <td className="px-4 py-2 whitespace-pre-wrap">
-                        {test.expectOutput}
+                        {test.expectedOutput}
                       </td>
                       <td
                         className={`px-4 py-2 ${

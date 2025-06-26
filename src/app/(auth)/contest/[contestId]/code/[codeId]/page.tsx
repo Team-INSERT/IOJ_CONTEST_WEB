@@ -6,14 +6,12 @@ import Loading from '@/components/Loading';
 import ProblemDetailPanel from '@/components/ProblemDetailPanel';
 import SubmitResultPanel from '@/components/SubmitResultPanelProps';
 import EditorCustomModal from '@/components/EditorCustomModal';
-import {
-  usePostSubmitProblem,
-  usePostSubmitTestcase,
-} from '@/lib/service/contest/contest.mutation';
+import { usePostSubmitProblem } from '@/lib/service/contest/contest.mutation';
 import {
   useGetContestById,
   useGetContestProblemById,
   useGetSubmitProblemStatus,
+  useGetSubmitTestcase,
 } from '@/lib/service/contest/contest.query';
 import { SubmitState } from '@/lib/types/contestSubmitType';
 import { defaultCode, PathUtil } from '@/lib/util';
@@ -263,31 +261,18 @@ const Code = () => {
   }, [isSuccess, submitStatusData, submissionId]);
 
   // 테스트 케이스 제출해서 확인하는 부분
-  const { mutate: submitTestcase } = usePostSubmitTestcase();
-  const [testcaseData, setTestcaseData] = useState([]);
-  const [isTestcaseSubmitting, setIsTestcaseSubmitting] = useState(false);
+  const [testcaseSubmissionId, setTestcaseSubmissionId] = useState('');
+
+  // 테스트 케이스 조회 요청
+  const {
+    data: testcaseData,
+    refetch: fetchTestcaseResult,
+    isFetching: isTestcaseSubmitting,
+  } = useGetSubmitTestcase(testcaseSubmissionId);
 
   const handleTestcaseSubmit = () => {
     setActiveTab('testcase');
-    setIsTestcaseSubmitting(true);
-
-    submitTestcase(
-      {
-        id: codeId,
-        sourcecode: code,
-        language,
-      },
-      {
-        onSuccess: (data) => {
-          setTestcaseData(data);
-          setIsTestcaseSubmitting(false);
-        },
-        onError: () => {
-          console.error('테스트 케이스 제출 실패');
-          setIsTestcaseSubmitting(false);
-        },
-      }
-    );
+    fetchTestcaseResult();
   };
 
   if (codeLoading || contestLoading)
@@ -386,13 +371,9 @@ const Code = () => {
               </button>
 
               <button
-                className={`px-3 py-1 text-white rounded ${
-                  isTestcaseSubmitting
-                    ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-blue-500'
-                }`}
                 onClick={handleTestcaseSubmit}
                 disabled={isTestcaseSubmitting}
+                className="px-3 py-1 text-white bg-blue-500 rounded"
               >
                 {isTestcaseSubmitting ? '실행 중...' : '테스트케이스'}
               </button>
@@ -476,6 +457,9 @@ const Code = () => {
         sourcecode={code}
         language={language}
         onAlert={setAlerthandler}
+        onTestcaseCreated={(testcaseId) => {
+          setTestcaseSubmissionId(testcaseId);
+        }}
       />
       {alertStatus && (
         <SlideAlert key={alertKey} message={alertMessage} type={alertStatus} />

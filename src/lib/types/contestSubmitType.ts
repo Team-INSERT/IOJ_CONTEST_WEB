@@ -14,6 +14,6 @@ export type ContestTestcaseType = {
   index?: number;
   input?: string;
   output?: string;
-  expectOutput?: string;
+  expectedOutput?: string;
   verdict?: string;
 };

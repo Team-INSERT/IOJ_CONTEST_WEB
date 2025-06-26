@@ -9,6 +9,7 @@ interface TestCaseModalProps {
   sourcecode: string;
   language: 'C' | 'CPP' | 'JAVA' | 'PYTHON';
   onAlert: (status: 'success' | 'error', message: string) => void;
+  onTestcaseCreated: (id: string) => void;
 }
 
 const TestCaseModal = ({
@@ -18,6 +19,7 @@ const TestCaseModal = ({
   sourcecode,
   language,
   onAlert,
+  onTestcaseCreated,
 }: TestCaseModalProps) => {
   const [testCases, setTestCases] = useState<
     { input: string; output: string }[]
@@ -62,7 +64,9 @@ const TestCaseModal = ({
         testcaseResultDto: formattedTestcases,
       },
       {
-        onSuccess: () => {
+        onSuccess: (response: string) => {
+          console.log(response);
+          onTestcaseCreated(response);
           onClose();
           onAlert('success', '테스트 케이스가 생성되었습니다.');
           setTestCases([]);
