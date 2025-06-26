@@ -98,7 +98,7 @@ const TestCaseModal = ({
         <section className="flex flex-col gap-6 w-full overflow-y-auto pr-2 max-h-[calc(100%-5rem)]">
           <p className="text-3xl font-semibold">테스트 케이스 추가</p>
           <section className="border rounded-[4px] overflow-x-auto w-full">
-            <article className="flex items-center bg-gray-50 border-b">
+            <article className="flex items-center border-b bg-gray-50">
               <article className="flex justify-between items-center w-[65%] py-[6px] px-[13px] border-r font-regular text-[0.9375rem] text-gray-800">
                 <p>Input</p>
                 <button
@@ -133,8 +133,11 @@ const TestCaseModal = ({
             )}
 
             {testCases.map((tc, idx) => (
-              <article key={idx} className="flex bg-white">
-                <div className="w-[65%] px-[29px] pb-[44px] border-r">
+              <article
+                key={idx}
+                className="flex items-center justify-center bg-white"
+              >
+                <div className="w-[65%] py-[14px] px-[29px] border-r">
                   <textarea
                     placeholder="Input"
                     value={tc.input}
@@ -147,7 +150,7 @@ const TestCaseModal = ({
                     className="w-full bg-gray-50 border text-sm rounded p-3 resize-none text-gray-800 focus:outline-none placeholder:text-[15px] overflow-hidden"
                   />
                 </div>
-                <div className="w-[35%] h-fit px-[29px] pb-[44px] flex items-center gap-2">
+                <div className="w-[35%] py-[14px] px-[29px] flex items-center gap-2">
                   <textarea
                     placeholder="output"
                     value={tc.expectedOutput}
