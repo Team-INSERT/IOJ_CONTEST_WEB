@@ -4,7 +4,7 @@ import React from 'react';
 import { useRouter } from 'next/navigation';
 import GradingModal from '@/components/GradingModal';
 
-export const contestRanking = [
+const contestRanking = [
   {
     nickname: '최최성성훈훈',
     problemStatuses: [
