@@ -460,6 +460,7 @@ const Code = () => {
         onTestcaseCreated={(testcaseId) => {
           setTestcaseSubmissionId(testcaseId);
         }}
+        initialTestcases={codeData?.testcases}
       />
       {alertStatus && (
         <SlideAlert key={alertKey} message={alertMessage} type={alertStatus} />

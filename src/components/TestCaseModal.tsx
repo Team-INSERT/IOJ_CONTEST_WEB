@@ -10,6 +10,7 @@ interface TestCaseModalProps {
   language: 'C' | 'CPP' | 'JAVA' | 'PYTHON';
   onAlert: (status: 'success' | 'error', message: string) => void;
   onTestcaseCreated: (id: string) => void;
+  initialTestcases: { input: string; output: string }[];
 }
 
 const TestCaseModal = ({
@@ -20,6 +21,7 @@ const TestCaseModal = ({
   language,
   onAlert,
   onTestcaseCreated,
+  initialTestcases,
 }: TestCaseModalProps) => {
   const [testCases, setTestCases] = useState<
     { input: string; output: string }[]
@@ -104,18 +106,25 @@ const TestCaseModal = ({
                 Output
               </article>
             </article>
-            <article className="flex bg-white">
-              <article className="w-[65%] pt-[24px] px-[29px] pb-[24px] border-r">
-                <article className="bg-gray-100 p-3 rounded whitespace-pre-wrap font-regular text-[0.9375rem] text-gray-600 border border-grey-200">
-                  {`2\n11 424\n32 192`}
+            {initialTestcases && initialTestcases.length > 0 && (
+              <article className="flex bg-white">
+                <article className="w-[65%] pt-[24px] px-[29px] pb-[24px] border-r">
+                  <article className="bg-gray-100 p-3 rounded whitespace-pre-wrap font-regular text-[0.9375rem] text-gray-600 border border-grey-200">
+                    {initialTestcases.map((tc) => tc.input).join('\n')}
+                  </article>
+                </article>
+
+                <article className="w-[35%] pt-[24px] px-[29px] pb-[24px]">
+                  <article className="bg-gray-100 p-3 rounded h-full whitespace-pre-wrap font-regular text-[0.9375rem] text-gray-600 border border-grey-200">
+                    {initialTestcases.map((tc, i) => (
+                      <div key={`out-${i}`} className="mb-2 last:mb-0">
+                        {tc.output?.replace(/\\n/g, '\n') ?? ''}
+                      </div>
+                    ))}
+                  </article>
                 </article>
               </article>
-              <article className="w-[35%] pt-[24px] px-[29px] pb-[24px]">
-                <article className="bg-gray-100 p-3 rounded h-full whitespace-pre-wrap font-regular text-[0.9375rem] text-gray-600 border border-grey-200">
-                  {`435\n224`}
-                </article>
-              </article>
-            </article>
+            )}
             {testCases.map((tc, idx) => (
               <article key={idx} className="flex bg-white">
                 <div className="w-[65%] px-[29px] pb-[44px] border-r">
