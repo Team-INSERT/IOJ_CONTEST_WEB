@@ -12,3 +12,9 @@ export const usePostSubmitTestcase = () => {
     mutationFn: contestApi.postSubmitTestcase,
   });
 };
+
+export const usePostCreateTestcase = () => {
+  return useMutation({
+    mutationFn: contestApi.postCreateTestcase,
+  });
+};

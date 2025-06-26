@@ -41,6 +41,19 @@ const postSubmitTestcase = async (form: {
   return data;
 };
 
+const postCreateTestcase = async (form: {
+  problemId: number;
+  sourcecode: string;
+  language: 'C' | 'CPP' | 'JAVA' | 'PYTHON';
+  testcaseResultDto: {
+    input: string;
+    expectedOutput: string;
+  }[];
+}) => {
+  const { data } = await customAxios.post(`/submissions/testcases`, form);
+  return data;
+};
+
 const contestApi = {
   getContestList,
   getContestById,
@@ -48,6 +61,7 @@ const contestApi = {
   postSubmitProblem,
   getSubmitProblemStatus,
   postSubmitTestcase,
+  postCreateTestcase,
 };
 
 export default contestApi;

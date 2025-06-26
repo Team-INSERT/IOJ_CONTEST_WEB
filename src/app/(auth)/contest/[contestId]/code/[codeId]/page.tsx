@@ -472,6 +472,10 @@ const Code = () => {
       <TestCaseModal
         isOpen={isTestCaseModalOpen}
         onClose={() => setIsTestCaseModalOpen(false)}
+        problemId={PathUtil(pathname, 1)}
+        sourcecode={code}
+        language={language}
+        onAlert={setAlerthandler}
       />
       {alertStatus && (
         <SlideAlert key={alertKey} message={alertMessage} type={alertStatus} />

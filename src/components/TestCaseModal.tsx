@@ -1,12 +1,24 @@
 import RemoveIcon from '@/assets/RemoveIcon';
+import { usePostCreateTestcase } from '@/lib/service/contest/contest.mutation';
 import React, { useState } from 'react';
 
 interface TestCaseModalProps {
   isOpen: boolean;
   onClose: () => void;
+  problemId: number;
+  sourcecode: string;
+  language: 'C' | 'CPP' | 'JAVA' | 'PYTHON';
+  onAlert: (status: 'success' | 'error', message: string) => void;
 }
 
-const TestCaseModal = ({ isOpen, onClose }: TestCaseModalProps) => {
+const TestCaseModal = ({
+  isOpen,
+  onClose,
+  problemId,
+  sourcecode,
+  language,
+  onAlert,
+}: TestCaseModalProps) => {
   const [testCases, setTestCases] = useState<
     { input: string; output: string }[]
   >([]);
@@ -33,8 +45,33 @@ const TestCaseModal = ({ isOpen, onClose }: TestCaseModalProps) => {
     setTestCases(updated);
   };
 
-  const handleAddTestCase = () => {
-    onClose();
+  //테스트케이스 생성
+  const { mutate: createTestcase } = usePostCreateTestcase();
+
+  const handleCreateTestcase = () => {
+    const formattedTestcases = testCases.map(({ input, output }) => ({
+      input: input.replace(/\r?\n/g, '\\n'),
+      expectedOutput: output.replace(/\r?\n/g, '\\n'),
+    }));
+
+    createTestcase(
+      {
+        problemId,
+        sourcecode,
+        language,
+        testcaseResultDto: formattedTestcases,
+      },
+      {
+        onSuccess: () => {
+          onClose();
+          onAlert('success', '테스트 케이스가 생성되었습니다.');
+          setTestCases([]);
+        },
+        onError: () => {
+          onAlert('error', '테스트 케이스 생성에 실패했습니다.');
+        },
+      }
+    );
   };
 
   if (!isOpen) return null;
@@ -116,7 +153,11 @@ const TestCaseModal = ({ isOpen, onClose }: TestCaseModalProps) => {
           </section>
         </section>
         <button
-          onClick={handleAddTestCase}
+          onClick={() => {
+            if (testCases.length > 0) {
+              handleCreateTestcase();
+            }
+          }}
           className="w-fit ml-auto py-3 px-[63px] bg-ut-insertBlue rounded text-white text-[1.1875rem] font-bold"
         >
           확인
