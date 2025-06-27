@@ -3,9 +3,50 @@ import { ContestTestcaseType } from '@/lib/types/contestSubmitType';
 import { Loader2 } from 'lucide-react';
 
 interface TestcaseResultPanelProps {
-  testcaseData?: ContestTestcaseType[]; // optional 처리
+  testcaseData?: ContestTestcaseType[];
   isLoading: boolean;
 }
+
+const getVerdictMessage = (test: ContestTestcaseType): string => {
+  const { verdict, output, expectedOutput } = test;
+
+  if (verdict === 'ACCEPTED' && output === expectedOutput) {
+    return '일치';
+  }
+
+  if (verdict === 'RUNTIME_ERROR') {
+    return '런타임 에러';
+  }
+
+  if (verdict === 'OUT_OF_MEMORY') {
+    return '메모리 초과';
+  }
+
+  if (verdict === 'TIME_LIMIT_EXCEEDED') {
+    return '시간 초과';
+  }
+
+  return '불일치';
+};
+
+const getVerdictColor = (
+  verdict: string | undefined,
+  isAccepted: boolean
+): string => {
+  if (isAccepted) return 'text-blue-400';
+
+  const errorVerdicts = [
+    'RUNTIME_ERROR',
+    'OUT_OF_MEMORY',
+    'TIME_LIMIT_EXCEEDED',
+  ];
+
+  if (verdict && errorVerdicts.includes(verdict)) {
+    return 'text-red-400';
+  }
+
+  return 'text-white';
+};
 
 const TestcaseResultPanel = ({
   testcaseData,
@@ -54,10 +95,11 @@ const TestcaseResultPanel = ({
               </thead>
               <tbody>
                 {testcaseData.map((test, idx) => {
+                  const verdictText = getVerdictMessage(test);
                   const isAccepted =
-                    test.output === test.expectedOutput &&
-                    test.verdict === 'ACCEPTED';
-                  const isRuntimeError = test.verdict === 'RUNTIME_ERROR';
+                    test.verdict === 'ACCEPTED' &&
+                    test.output === test.expectedOutput;
+                  const colorClass = getVerdictColor(test.verdict, isAccepted);
 
                   return (
                     <tr
@@ -69,7 +111,7 @@ const TestcaseResultPanel = ({
                         {test.input}
                       </td>
                       <td className="px-4 py-2 whitespace-pre-wrap">
-                        {isRuntimeError ? (
+                        {colorClass === 'text-red-400' ? (
                           <code className="text-red-400 whitespace-pre-wrap block max-w-[500px] overflow-x-auto">
                             {test.output}
                           </code>
@@ -80,20 +122,8 @@ const TestcaseResultPanel = ({
                       <td className="px-4 py-2 whitespace-pre-wrap">
                         {test.expectedOutput}
                       </td>
-                      <td
-                        className={`px-4 py-2 ${
-                          isAccepted
-                            ? 'text-blue-400'
-                            : isRuntimeError
-                              ? 'text-red-400'
-                              : 'text-white'
-                        }`}
-                      >
-                        {isAccepted
-                          ? '일치'
-                          : isRuntimeError
-                            ? '런타임 에러'
-                            : '불일치'}
+                      <td className={`px-4 py-2 ${colorClass}`}>
+                        {verdictText}
                       </td>
                     </tr>
                   );
