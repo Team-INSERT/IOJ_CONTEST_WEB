@@ -5,7 +5,7 @@ import QuestionStatus from '@/components/QuestionStatus';
 import RemainingTime from '@/components/RemainingTime';
 import StarStatus from '@/components/StarStatus';
 import { useGetContestById } from '@/lib/service/contest/contest.query';
-import { PathUtil } from '@/lib/util';
+import { AlertUtil, PathUtil } from '@/lib/util';
 import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 
@@ -15,7 +15,28 @@ const Contest = () => {
   const contestId = PathUtil(pathname, 1);
 
   const { data: contestDetail, isLoading } = useGetContestById(contestId);
-  console.log(contestDetail);
+
+  const isSameAsCurrentTime = (target: string): boolean => {
+    const now = new Date();
+    const targetDate = new Date(target);
+
+    return (
+      now.getFullYear() === targetDate.getFullYear() &&
+      now.getMonth() === targetDate.getMonth() &&
+      now.getDate() === targetDate.getDate() &&
+      now.getHours() === targetDate.getHours() &&
+      now.getMinutes() === targetDate.getMinutes() &&
+      now.getSeconds() === targetDate.getSeconds()
+    );
+  };
+
+  const pushingEditer = () => {
+    if (contestDetail?.endTime && isSameAsCurrentTime(contestDetail.endTime)) {
+      navigate.push(`${pathname}/code/${contestDetail.problems[0].id}`);
+    } else {
+      AlertUtil.error('시간이 종료된 대회입니다.');
+    }
+  };
 
   if (isLoading) {
     return <Loading />;
@@ -69,9 +90,7 @@ const Contest = () => {
               <div
                 key={problem.id}
                 className="flex items-center justify-between px-2 py-1 bg-white rounded shadow-md cursor-pointer h-11"
-                onClick={() => {
-                  navigate.push(`${pathname}/code/${problem.id}`);
-                }}
+                onClick={pushingEditer}
               >
                 <div className="flex items-center gap-[2.19rem]">
                   <QuestionStatus status={problem.status} />
