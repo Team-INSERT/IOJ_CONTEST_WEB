@@ -50,178 +50,32 @@ module.exports = {
           skyblue: '#5CE2FF',
         },
       },
+      fontFamily: {
+        pBold: ["'Pretendard-Bold'", 'sans-serif'],
+        pSemibold: ["'Pretendard-SemiBold'", 'sans-serif'],
+        pRegular: ["'Pretendard-Regular'", 'sans-serif'],
+        nGothic: ["'NEXON-Football-Gothic'", 'sans-serif'],
+      },
       fontSize: {
-        bt3: [
-          '73px',
-          {
-            fontStyle: 'normal',
-            fontWeight: '700',
-            lineHeight: 'normal',
-            fontFamily: 'Pretendard-Bold',
-          },
-        ],
-        bt2: [
-          '59px',
-          {
-            fontStyle: 'normal',
-            fontWeight: '700',
-            lineHeight: 'normal',
-            fontFamily: 'Pretendard-Bold',
-          },
-        ],
-        bt1: [
-          '47px',
-          {
-            fontStyle: 'normal',
-            fontWeight: '700',
-            lineHeight: 'normal',
-            fontFamily: 'Pretendard-Bold',
-          },
-        ],
-        bt1: [
-          '38px',
-          {
-            fontStyle: 'normal',
-            fontWeight: '700',
-            lineHeight: 'normal',
-            fontFamily: 'Pretendard-Bold',
-          },
-        ],
-        st: [
-          '30px',
-          {
-            fontStyle: 'normal',
-            fontWeight: '700',
-            lineHeight: 'normal',
-            fontFamily: 'Pretendard-Bold',
-          },
-        ],
-        bt: [
-          '24px',
-          {
-            fontStyle: 'normal',
-            fontWeight: '600',
-            lineHeight: 'normal',
-            fontFamily: 'Pretendard-SemiBold',
-          },
-        ],
-        text: [
-          '19px',
-          {
-            fontStyle: 'normal',
-            fontWeight: '400',
-            lineHeight: 'normal',
-            fontFamily: 'Pretendard-Regular',
-          },
-        ],
-        stext: [
-          '15px',
-          {
-            fontStyle: 'normal',
-            fontWeight: '700',
-            lineHeight: 'normal',
-            fontFamily: 'Pretendard-Bold',
-          },
-        ],
-        caption: [
-          '12px',
-          {
-            fontStyle: 'normal',
-            fontWeight: '400',
-            lineHeight: 'normal',
-            fontFamily: 'Pretendard-Regular',
-          },
-        ],
-        Nbt3: [
-          '72px',
-          {
-            fontStyle: 'normal',
-            fontWeight: '700',
-            lineHeight: 'normal',
-            fontFamily: 'NEXON-Football-Gothic',
-          },
-        ],
-        Nbt2: [
-          '58px',
-          {
-            fontStyle: 'normal',
-            fontWeight: '700',
-            lineHeight: 'normal',
-            fontFamily: 'NEXON-Football-Gothic',
-          },
-        ],
-        Nbt1: [
-          '46px',
-          {
-            fontStyle: 'normal',
-            fontWeight: '700',
-            lineHeight: 'normal',
-            fontFamily: 'NEXON-Football-Gothic',
-          },
-        ],
-        Nbt: [
-          '24px',
-          {
-            fontStyle: 'normal',
-            fontWeight: '700',
-            lineHeight: 'normal',
-            fontFamily: 'NEXON-Football-Gothic',
-          },
-        ],
-        Nt: [
-          '37px',
-          {
-            fontStyle: 'normal',
-            fontWeight: '700',
-            lineHeight: 'normal',
-            fontFamily: 'NEXON-Football-Gothic',
-          },
-        ],
-        Nst: [
-          '37px',
-          {
-            fontStyle: 'normal',
-            fontWeight: '700',
-            lineHeight: 'normal',
-            fontFamily: 'NEXON-Football-Gothic',
-          },
-        ],
-        Nbtext: [
-          '37px',
-          {
-            fontStyle: 'normal',
-            fontWeight: '700',
-            lineHeight: 'normal',
-            fontFamily: 'NEXON-Football-Gothic',
-          },
-        ],
-        Ntext: [
-          '19px',
-          {
-            fontStyle: 'normal',
-            fontWeight: '700',
-            lineHeight: 'normal',
-            fontFamily: 'NEXON-Football-Gothic',
-          },
-        ],
-        Nstext: [
-          '15px',
-          {
-            fontStyle: 'normal',
-            fontWeight: '700',
-            lineHeight: 'normal',
-            fontFamily: 'NEXON-Football-Gothic',
-          },
-        ],
-        Ncaption: [
-          '12px',
-          {
-            fontStyle: 'normal',
-            fontWeight: '700',
-            lineHeight: 'normal',
-            fontFamily: 'NEXON-Football-Gothic',
-          },
-        ],
+        bt3: ['73px'],
+        bt2: ['59px'],
+        bt1: ['47px'],
+        title: ['38px'],
+        st: ['30px'],
+        bt: ['24px'],
+        text: ['19px'],
+        stext: ['15px'],
+        caption: ['12px'],
+        Nbt3: ['72px'],
+        Nbt2: ['58px'],
+        Nbt1: ['46px'],
+        Nbt: ['24px'],
+        Nt: ['37px'],
+        Nst: ['37px'],
+        Nbtext: ['37px'],
+        Ntext: ['19px'],
+        Nstext: ['15px'],
+        Ncaption: ['12px'],
       },
       boxShadow: {
         defaultShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',

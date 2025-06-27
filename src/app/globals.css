@@ -4,20 +4,20 @@
 
 @font-face {
   font-family: 'NEXON-Football-Gothic';
-  src: url('../../public/fonts/NEXON-Football-Gothic.otf') format('truetype');
+  src: url('/fonts/NEXON-Football-Gothic.otf') format('truetype');
 }
 
 @font-face {
   font-family: 'Pretendard-Bold';
-  src: url('../../public/fonts/Pretendard-Bold.otf') format('truetype');
+  src: url('/fonts/Pretendard-Bold.otf') format('truetype');
 }
 
 @font-face {
   font-family: 'Pretendard-Regular';
-  src: url('../../public/fonts/Pretendard-Regular.otf') format('truetype');
+  src: url('/fonts/Pretendard-Regular.otf') format('truetype');
 }
 
 @font-face {
   font-family: 'Pretendard-SemiBold';
-  src: url('../../public/fonts/Pretendard-SemiBold.otf') format('truetype');
+  src: url('/fonts/Pretendard-SemiBold.otf') format('truetype');
 }

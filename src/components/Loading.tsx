@@ -7,7 +7,9 @@ interface LoadingProps {
 const Loading = ({ text }: LoadingProps) => {
   return (
     <div className="flex items-center justify-center w-screen h-screen">
-      <div className="text-bt3">{text === null ? 'Loading...' : text}</div>
+      <div className="text-bt3 font-pBold">
+        {text === null ? 'Loading...' : text}
+      </div>
     </div>
   );
 };

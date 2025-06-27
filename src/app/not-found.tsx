@@ -12,13 +12,17 @@ const NotFound = () => {
       <div className="flex items-center justify-center gap-6">
         <InsertIcon />
 
-        <div className="text-bt3 text-ut-insertBlue">Team Insert</div>
+        <div className="text-bt3 font-pBold text-ut-insertBlue">
+          Team Insert
+        </div>
       </div>
 
       <div className="flex flex-col items-center justify-center gap-5">
-        <h1 className="text-bt1 text-ut-warningRed">404 - Page Not Found</h1>
+        <h1 className="text-bt1 font-pBold text-ut-warningRed">
+          404 - Page Not Found
+        </h1>
 
-        <div className="text-text">
+        <div className="text-text font-pRegular">
           쓸데없는 짓 하지 말고 문제 열심히 푸세용!!
         </div>
 
@@ -26,7 +30,7 @@ const NotFound = () => {
           onClick={() => {
             navigate.push('/');
           }}
-          className="px-4 py-3 text-white rounded-md text-stext bg-ut-insertBlue"
+          className="px-4 py-3 text-white rounded-md text-stext font-pBold bg-ut-insertBlue"
         >
           돌아가기
         </button>

@@ -52,7 +52,7 @@ const Contest = () => {
       </div>
 
       <div className="relative bg-white rounded-lg flex flex-col items-center py-[56px] mb-14 border border-transparent before:content-[''] before:absolute before:inset-[-3px] before:rounded-lg before:bg-gradient-to-br before:from-[#007CFF] before:to-[#FF48AB] before:-z-10">
-        <div className="pb-[28px] text-bt3 font-pBold">
+        <div className="pb-[28px]">
           <RemainingTime targetDate={contestDetail?.endTime} />
         </div>
         <div className="w-[60%] border-t border-gray-300" />
@@ -68,7 +68,7 @@ const Contest = () => {
         </div>
       </div>
 
-      <div className="text-[24px] font-semibold pb-5">문제</div>
+      <div className="text-title font-pBold pb-5">문제</div>
       <div className="flex flex-col gap-2">
         {contestDetail?.problems.map(
           (problem: {
@@ -88,7 +88,7 @@ const Contest = () => {
                 <div className="flex items-center gap-[2.19rem]">
                   <QuestionStatus status={problem.status} />
 
-                  <div className="text-left text-text font-pRegular">
+                  <div className="text-left text-text font-pSemibold">
                     {formattedLetter}
                   </div>
                   <div className="text-left text-text font-pRegular">

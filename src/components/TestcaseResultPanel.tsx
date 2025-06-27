@@ -60,14 +60,14 @@ const TestcaseResultPanel = ({
 
   return (
     <div className="flex flex-col gap-5 overflow-y-auto">
-      <div className="text-stext">
+      <div className="text-stext font-pBold">
         테스트 케이스 일치 비율 :{' '}
         <span className="text-ut-insertBlue">{matchedCount}</span> /{' '}
         {testcaseData?.length ?? 0}
       </div>
 
       <div className="flex flex-col gap-4">
-        <div className="text-gray-300 bg-gray-800 text-caption w-full px-[0.62rem] py-4 rounded">
+        <div className="text-gray-300 bg-gray-800 text-caption font-pRegular w-full px-[0.62rem] py-4 rounded">
           각 입력 케이스의 값이 실제 채점 방식과 동일한 방식으로 표준입력에
           전달됩니다. 일반 실행에서 에러가 없더라도 테스트케이스 실행 시 에러가
           발생할 수 있으며, 채점 시에도 동일하게 반영됩니다. 코드를 수정해 다시

@@ -37,17 +37,17 @@ const CodeHeader = ({ endTime, problems }: ContestDetail) => {
     <div className="absolute top-0 flex items-center justify-between w-full px-6 text-white h-16 bg-[#333333] select-none">
       <div className="flex items-center gap-2">
         <button
-          className="px-3 py-1 text-sm rounded bg-zinc-600 disabled:opacity-40"
+          className="px-3 py-1 text-Nstext font-nGothic rounded bg-zinc-600 disabled:opacity-40"
           onClick={() => goToProblem(currentIndex - 1)}
           disabled={currentIndex === 0}
         >
           이전
         </button>
-        <span className="text-Nstext">
+        <span className="text-Nstext font-nGothic">
           {currentIndex + 1} / {problems.length}
         </span>
         <button
-          className="px-3 py-1 text-sm rounded bg-zinc-600 disabled:opacity-40"
+          className="px-3 py-1 text-Nstext font-nGothic rounded bg-zinc-600 disabled:opacity-40"
           onClick={() => goToProblem(currentIndex + 1)}
           disabled={currentIndex === problems.length - 1}
         >
@@ -55,17 +55,15 @@ const CodeHeader = ({ endTime, problems }: ContestDetail) => {
         </button>
       </div>
 
-      <div className="flex items-center justify-center gap-2 px-4 py-2 text-sm border border-white rounded">
+      <div className="flex items-center justify-center gap-2 px-4 py-2 border border-white rounded">
         <Clock />
-        <span className="text-text">
-          <RemainingTime targetDate={endTime} />
-        </span>
+        <RemainingTime targetDate={endTime} />
       </div>
 
       <div className="flex items-center gap-2">
         <button
           onClick={() => router.push(`/contest/${contestId}`)}
-          className="px-3 py-1 text-sm bg-red-500 rounded"
+          className="px-3 py-1 text-Nstext font-nGothic bg-red-500 rounded"
         >
           나가기
         </button>

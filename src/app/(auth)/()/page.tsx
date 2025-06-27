@@ -46,7 +46,7 @@ const Home = () => {
   return (
     <div className="w-full flex flex-col items-center min-h-screen py-[88px]">
       <div className="w-[1089px] flex justify-between items-start px-4">
-        <h1 className="text-Nbt font-nGothic text-gray-900 pb-7 pl-[15px]">
+        <h1 className="text-Nt font-nGothic text-gray-900 pb-7 pl-[15px]">
           대회목록
         </h1>
       </div>

@@ -55,13 +55,13 @@ const Ranking = () => {
           </h1>
           <div className="flex gap-2">
             <button
-              className="h-8 px-4 text-white bg-gray-700 rounded text-stext"
+              className="h-8 px-4 text-white bg-gray-700 rounded text-stext font-pBold"
               onClick={() => setGradingModal(true)}
             >
               채점기준
             </button>
             <button
-              className="h-8 px-4 text-white rounded text-stext bg-ut-warningRed"
+              className="h-8 px-4 text-white rounded text-stext font-pBold bg-ut-warningRed"
               onClick={() => navigate.back()}
             >
               나가기
@@ -73,8 +73,8 @@ const Ranking = () => {
           <table className="w-full text-center border-separate table-fixed border-spacing-y-5">
             <thead>
               <tr className="border-b-[2px] border-blue-500 text-gray-800">
-                <th className="w-[3rem] text-Nbt">순위</th>
-                <th className="w-[12rem] text-Nbt">이름</th>
+                <th className="w-[3rem] text-Nbt font-nGothic">순위</th>
+                <th className="w-[12rem] text-Nbt font-nGothic">이름</th>
                 {columns.map((col) => (
                   <th key={col} className="font-semibold">
                     {col}
@@ -85,20 +85,22 @@ const Ranking = () => {
             <tbody>
               {contestRanking.map((user, idx) => (
                 <tr key={idx} className="h-10 text-sm">
-                  <td className="font-bold text-blue-normal text-Ntext">
+                  <td className="font-bold text-blue-normal text-Ntext font-nGothic">
                     {idx + 1}
                   </td>
-                  <td className="text-lg text-Nbt">{user.nickname}</td>
+                  <td className="text-lg text-Nbt font-nGothic">
+                    {user.nickname}
+                  </td>
                   {user.problemStatuses.map((p, i) => (
                     <td key={i}>
                       {p.status === 'solved' ? (
-                        <div className="flex items-center justify-center w-[3.75rem] h-8 mx-auto text-white text-Ntext bg-green-500 rounded">
+                        <div className="flex items-center justify-center w-[3.75rem] h-8 mx-auto text-white text-Ntext font-nGothic bg-green-500 rounded">
                           {Math.floor(p.penalty! / 60)}
                         </div>
                       ) : p.status === 'failed' ? (
-                        <div className="w-[3.75rem] h-8 mx-auto text-Ntext bg-red-400 rounded" />
+                        <div className="w-[3.75rem] h-8 mx-auto text-Ntext font-nGothic bg-red-400 rounded" />
                       ) : (
-                        <div className="w-[3.75rem] h-8 mx-auto text-Ntext" />
+                        <div className="w-[3.75rem] h-8 mx-auto text-Ntext font-nGothic" />
                       )}
                     </td>
                   ))}

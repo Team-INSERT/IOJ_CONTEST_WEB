@@ -16,7 +16,7 @@ const QuestionStatus = ({ status }: OwnProps) => {
               : 'bg-[#E54747]'
         }`}
     >
-      <div className="text-white text-Ntext">
+      <div className="text-white text-Ntext font-nGothic">
         {status === 'unsolved' ? '' : status === 'solved' ? 'S' : 'W'}
       </div>
     </div>

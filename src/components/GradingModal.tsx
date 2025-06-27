@@ -19,7 +19,7 @@ const GradingModal = ({ onClose }: Props) => {
         </button>
 
         <div className="flex flex-col items-center justify-center px-10 py-10 gap-10 bg-gradient-to-tr from-[#e8f1ff] via-white to-[#ffeaea]">
-          <div className="text-Nbt">순위기준</div>
+          <div className="text-Nbt font-nGothic">순위기준</div>
           <div className="flex justify-between w-full">
             <div className="flex-1 space-y-6">
               <div>

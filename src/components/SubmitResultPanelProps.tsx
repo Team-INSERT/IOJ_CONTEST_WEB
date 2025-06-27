@@ -13,10 +13,12 @@ const SubmitResultPanel = ({ submitResult }: SubmitResultPanelProps) => {
           className="mb-2 w-full py-[0.81rem] pl-4 bg-gray-900"
         >
           {item.status === 'loading' && (
-            <div className="text-white text-caption">처리중...</div>
+            <div className="text-white text-caption font-pRegular">
+              처리중...
+            </div>
           )}
           {item.status === 'done' && (
-            <div className="text-white text-caption">
+            <div className="text-white text-caption font-pRegular">
               {typeof item.data === 'string'
                 ? item.data === 'ACCEPTED'
                   ? '정답입니다!'
