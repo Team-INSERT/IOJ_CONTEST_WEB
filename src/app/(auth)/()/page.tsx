@@ -34,6 +34,9 @@ const Home = () => {
         axiosError.response?.status === 403
       ) {
         AlertUtil.error('접근권한이 없는 대회입니다.');
+      }
+      if (axiosError.response?.status === 400) {
+        AlertUtil.error('아직 대회가 시작되지 않았습니다.');
       } else {
         AlertUtil.error('대회 정보를 불러오는 데 실패했습니다.');
       }
@@ -43,7 +46,9 @@ const Home = () => {
   return (
     <div className="w-full flex flex-col items-center min-h-screen py-[88px]">
       <div className="w-[1089px] flex justify-between items-start px-4">
-        <h1 className="text-Nbt1 text-gray-900 pb-7 pl-[15px]">대회목록</h1>
+        <h1 className="text-Nbt font-nGothic text-gray-900 pb-7 pl-[15px]">
+          대회목록
+        </h1>
       </div>
       <div className="w-[1089px] flex flex-col gap-[13px] px-4">
         {contestDetail?.map((detail: ContestDetail) => (
@@ -53,8 +58,10 @@ const Home = () => {
             key={detail.id}
           >
             <div className="pl-[7.5rem] flex flex-col justify-center h-full gap-1">
-              <div className="text-gray-900 text-Nbt1">{detail.title}</div>
-              <div className="text-gray-600 text-Nstext">
+              <div className="text-gray-900 text-Nbt1 font-nGothic">
+                {detail.title}
+              </div>
+              <div className="text-gray-600 text-Nstext font-nGothic">
                 {FormatUtil.formatDateRange(detail.startTime, detail.endTime)}
               </div>
             </div>
