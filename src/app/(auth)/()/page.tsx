@@ -34,8 +34,7 @@ const Home = () => {
         axiosError.response?.status === 403
       ) {
         AlertUtil.error('접근권한이 없는 대회입니다.');
-      }
-      if (axiosError.response?.status === 400) {
+      } else if (axiosError.response?.status === 400) {
         AlertUtil.error('아직 대회가 시작되지 않았습니다.');
       } else {
         AlertUtil.error('대회 정보를 불러오는 데 실패했습니다.');
