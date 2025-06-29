@@ -41,7 +41,12 @@ const AlertUtil = {
       },
     }),
 
-  confirm: (text: string, title = '확인') =>
+  confirm: (
+    text: string,
+    title = '확인',
+    onConfirm?: () => void,
+    onCancel?: () => void
+  ) =>
     Swal.fire({
       icon: 'question',
       title,
@@ -54,6 +59,18 @@ const AlertUtil = {
         confirmButton: `${baseButtonClass} bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 mr-2`,
         cancelButton: `${baseButtonClass} bg-gray-300 text-gray-800 hover:bg-gray-400 focus:ring-gray-300`,
       },
+    }).then((result) => {
+      if (result.value) {
+        if (onConfirm) {
+          onConfirm();
+        }
+        return;
+      } else {
+        if (onCancel) {
+          onCancel();
+        }
+        return;
+      }
     }),
 
   sideConfirm: (text: string, title = '확인') =>

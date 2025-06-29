@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Loading from '@/components/Loading';
 import { useGetUserInfo } from '@/lib/service/auth/auth.query';
+import GoogleAnalytics from '@/lib/util/GoogleAnalytics';
 
 export default function AuthLayout({
   children,
@@ -26,5 +27,10 @@ export default function AuthLayout({
       </div>
     );
 
-  return <>{children}</>;
+  return (
+    <>
+      <GoogleAnalytics />
+      {children}
+    </>
+  );
 }

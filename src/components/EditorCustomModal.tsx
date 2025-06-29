@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { X, Settings, Palette, Type, Grid } from 'lucide-react';
+import { AlertUtil } from '@/lib/util';
 
 interface EditorSettings {
   fontSize: number;
@@ -36,6 +37,20 @@ const EditorCustomModal: React.FC<EditorCustomModalProps> = ({
     onClose();
   };
 
+  const handleClose = () => {
+    AlertUtil.confirm(
+      '변경 사항이 있습니다. 저장하고 닫으시겠습니까?',
+      '예',
+      () => {
+        handleSave();
+      },
+      () => {
+        onClose();
+      }
+    );
+    console.log('asdfasdf');
+  };
+
   const handleReset = () => {
     const defaultSettings: EditorSettings = {
       fontSize: 14,
@@ -55,14 +70,17 @@ const EditorCustomModal: React.FC<EditorCustomModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-xl w-96 max-h-[80vh] overflow-y-auto">
+      <div className="bg-white rounded-lg shadow-xl w-96 max-h-[69.5vh] overflow-y-auto">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
           <h2 className="flex items-center gap-2 text-lg font-semibold">
             <Settings className="w-5 h-5" />
             에디터 설정
           </h2>
-          <button onClick={onClose} className="p-1 rounded hover:bg-gray-100">
+          <button
+            onClick={handleClose}
+            className="p-1 rounded hover:bg-gray-100"
+          >
             <X className="w-5 h-5" />
           </button>
         </div>
