@@ -68,7 +68,7 @@ const Contest = () => {
         </div>
       </div>
 
-      <div className="text-title font-pBold pb-5">문제</div>
+      <div className="pb-5 text-title font-pBold">문제</div>
       <div className="flex flex-col gap-2">
         {contestDetail?.problems.map(
           (problem: {
