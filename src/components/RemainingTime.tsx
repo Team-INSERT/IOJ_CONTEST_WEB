@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 
 interface OwnProps {
   targetDate: string;
+  type?: 'contest' | 'problem';
 }
 
 const formatTime = (ms: number) => {
@@ -17,7 +18,7 @@ const formatTime = (ms: number) => {
   ).padStart(2, '0')}초`;
 };
 
-const RemainingTime = ({ targetDate }: OwnProps) => {
+const RemainingTime = ({ targetDate, type }: OwnProps) => {
   const target = React.useMemo(() => new Date(targetDate), [targetDate]);
 
   const [remaining, setRemaining] = useState(() =>
@@ -38,7 +39,13 @@ const RemainingTime = ({ targetDate }: OwnProps) => {
     return () => clearInterval(interval);
   }, [target]);
 
-  return <div className="text-bt3 font-pBold">{remaining}</div>;
+  return (
+    <div
+      className={` ${type === 'contest' ? 'text-bt3 font-pBold' : 'text-text font-pRegular'}`}
+    >
+      {remaining}
+    </div>
+  );
 };
 
 export default RemainingTime;
