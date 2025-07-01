@@ -265,6 +265,8 @@ const Code = () => {
 
   const { mutate: createTestcase } = usePostCreateTestcase();
 
+  const [isTestcaseProcessing, setIsTestcaseProcessing] = useState(false);
+
   const handleTestcaseSubmit = () => {
     setActiveTab('testcase');
 
@@ -272,41 +274,31 @@ const Code = () => {
     const storedTestcases = (() => {
       try {
         const stored = localStorage.getItem(problemKey);
-        console.log(stored);
         let result: { input: string; expectedOutput: string }[] = [];
         if (Array.isArray(codeData?.testcases)) {
           result = codeData.testcases.map(
-            ({ input, output }: { input: string; output: string }) => ({
-              input,
-              expectedOutput: output,
+            (tc: { input: string; output: string }) => ({
+              input: tc.input,
+              expectedOutput: tc.output,
             })
           );
         }
         if (stored) {
-          try {
-            const parsed = JSON.parse(stored);
-            if (Array.isArray(parsed)) {
-              result = result.concat(parsed);
-            }
-          } catch (e) {
-            console.error('저장된 테스트케이스 파싱 실패', e);
-          }
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) result = result.concat(parsed);
         }
         return result;
-      } catch (e) {
-        console.error('테스트케이스 파싱 실패', e);
+      } catch {
         return [];
       }
     })();
-
-    console.log(storedTestcases);
 
     if (storedTestcases.length === 0) {
       setAlerthandler('error', '저장된 테스트케이스가 없습니다.');
       return;
     }
 
-    // 요청 전에 상태 초기화
+    setIsTestcaseProcessing(true); // 로딩 시작
     setShouldFetchTestcase(false);
     setTestcaseSubmissionId('');
 
@@ -314,7 +306,7 @@ const Code = () => {
       {
         problemId: PathUtil(pathname, 3),
         sourcecode: code,
-        language: language,
+        language,
         testcaseResultDto: storedTestcases,
       },
       {
@@ -324,6 +316,7 @@ const Code = () => {
         },
         onError: () => {
           setAlerthandler('error', '테스트케이스 생성 실패');
+          setIsTestcaseProcessing(false); // 실패했으니 로딩 종료
         },
       }
     );
@@ -341,6 +334,12 @@ const Code = () => {
     useGetSubmitTestcase(testcaseSubmissionId, {
       enabled: shouldEnableTestcaseQuery,
     });
+
+  useEffect(() => {
+    if (shouldEnableTestcaseQuery && !isTestcaseSubmitting) {
+      setIsTestcaseProcessing(false); // 두 요청 모두 완료됨
+    }
+  }, [shouldEnableTestcaseQuery, isTestcaseSubmitting]);
 
   if (codeLoading || contestLoading) return <Loading />;
 
@@ -496,7 +495,7 @@ const Code = () => {
                 {activeTab === 'testcase' && (
                   <TestcaseResultPanel
                     testcaseData={testcaseData}
-                    isLoading={isTestcaseSubmitting}
+                    isLoading={isTestcaseProcessing}
                   />
                 )}
                 {activeTab === 'result' && (
