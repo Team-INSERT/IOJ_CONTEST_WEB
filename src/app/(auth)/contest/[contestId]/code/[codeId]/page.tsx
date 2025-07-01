@@ -342,8 +342,7 @@ const Code = () => {
       enabled: shouldEnableTestcaseQuery,
     });
 
-  if (codeLoading || contestLoading)
-    return <Loading text={'문제 불러오는 중...'} />;
+  if (codeLoading || contestLoading) return <Loading />;
 
   return (
     <>
@@ -383,7 +382,7 @@ const Code = () => {
             <div className="flex gap-2">
               <button
                 onClick={() => setIsSettingModalOpen(true)}
-                className="flex items-center gap-1 px-3 py-1 text-white text-Nstext font-nGothic bg-gray-600 rounded hover:bg-gray-700"
+                className="flex items-center gap-1 px-3 py-1 text-white bg-gray-600 rounded text-Nstext font-nGothic hover:bg-gray-700"
                 title="에디터 설정"
               >
                 <Settings className="w-4 h-4" />
@@ -391,7 +390,7 @@ const Code = () => {
               </button>
 
               <button
-                className="px-3 py-1 text-white text-Nstext font-nGothic bg-blue-500 rounded"
+                className="px-3 py-1 text-white bg-blue-500 rounded text-Nstext font-nGothic"
                 onClick={() => {
                   if (confirm('코드가 초기화됩니다 진행하시겠습니까?')) {
                     setCode(defaultCode[language]);
@@ -403,7 +402,7 @@ const Code = () => {
               </button>
 
               <button
-                className="px-3 py-1 text-white text-Nstext font-nGothic bg-blue-500 rounded"
+                className="px-3 py-1 text-white bg-blue-500 rounded text-Nstext font-nGothic"
                 onClick={() => {
                   handleCodeChange(code);
                   setAlerthandler('success', '코드가 저장되었습니다.');
@@ -413,7 +412,7 @@ const Code = () => {
               </button>
 
               <select
-                className="px-2 py-1 text-Nstext font-nGothic text-white bg-blue-500 rounded border-r-8-transparent"
+                className="px-2 py-1 text-white bg-blue-500 rounded text-Nstext font-nGothic border-r-8-transparent"
                 onChange={(e) => {
                   const val = e.target.value as 'PYTHON' | 'JAVA' | 'C' | 'CPP';
                   setLanguage(val);
@@ -429,7 +428,7 @@ const Code = () => {
               </select>
 
               <button
-                className="px-3 py-1 text-white text-Nstext font-nGothic bg-blue-500 rounded"
+                className="px-3 py-1 text-white bg-blue-500 rounded text-Nstext font-nGothic"
                 onClick={() => {
                   setIsTestCaseModalOpen(true);
                 }}
@@ -440,7 +439,7 @@ const Code = () => {
               <button
                 onClick={handleTestcaseSubmit}
                 disabled={isTestcaseSubmitting}
-                className="px-3 py-1 text-white text-Nstext font-nGothic bg-blue-500 rounded"
+                className="px-3 py-1 text-white bg-blue-500 rounded text-Nstext font-nGothic"
               >
                 {isTestcaseSubmitting ? '실행 중...' : '테스트케이스'}
               </button>
