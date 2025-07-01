@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import { X, Settings, Palette, Type, Grid } from 'lucide-react';
-import { AlertUtil } from '@/lib/util';
 
 interface EditorSettings {
   fontSize: number;
@@ -37,18 +36,20 @@ const EditorCustomModal: React.FC<EditorCustomModalProps> = ({
     onClose();
   };
 
+  const hasChanges =
+    JSON.stringify(localSettings) !== JSON.stringify(editorSettings);
+
   const handleClose = () => {
-    AlertUtil.confirm(
-      '변경 사항이 있습니다. 저장하고 닫으시겠습니까?',
-      '예',
-      () => {
+    if (hasChanges) {
+      if (confirm('변경 사항이 있습니다. 저장하고 닫으시겠습니까?')) {
         handleSave();
-      },
-      () => {
+      } else {
         onClose();
+        setLocalSettings(editorSettings);
       }
-    );
-    console.log('asdfasdf');
+    } else {
+      onClose();
+    }
   };
 
   const handleReset = () => {
@@ -63,7 +64,10 @@ const EditorCustomModal: React.FC<EditorCustomModalProps> = ({
       enableSnippets: true,
       wordWrap: false,
     };
-    setLocalSettings(defaultSettings);
+
+    if (confirm('설정값이 기본값을 초기화됩니다. 계속하시겠습니까?')) {
+      setLocalSettings(defaultSettings);
+    }
   };
 
   if (!isOpen) return null;
@@ -275,7 +279,7 @@ const EditorCustomModal: React.FC<EditorCustomModalProps> = ({
           </button>
           <div className="flex gap-2">
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="px-4 py-2 text-gray-600 border border-gray-300 rounded hover:bg-gray-100"
             >
               취소
