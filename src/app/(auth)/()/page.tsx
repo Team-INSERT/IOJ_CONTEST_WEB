@@ -16,16 +16,20 @@ interface ContestDetail {
 }
 
 const Home = () => {
+  const [getRoleLoading, setGetRoleLoading] = React.useState(false);
   const { data: contestDetail, isLoading } = useGetContestList({});
   const router = useRouter();
 
-  if (isLoading) {
-    return <Loading text={'대회목록 불러오는 중...'} />;
+  if (isLoading || getRoleLoading) {
+    return <Loading />;
   }
 
   const handleClick = async (id: number) => {
     try {
-      await customAxios.get(`/contest/${id}`);
+      setGetRoleLoading(true);
+      await customAxios.get(`/contest/${id}`).then(() => {
+        setGetRoleLoading(false);
+      });
       router.push(`/contest/${id}`);
     } catch (error: unknown) {
       const axiosError = error as AxiosError;

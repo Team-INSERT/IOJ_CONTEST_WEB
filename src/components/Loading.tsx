@@ -1,15 +1,10 @@
 import React from 'react';
+import { DotLoader } from 'react-spinners';
 
-interface LoadingProps {
-  text?: string | null;
-}
-
-const Loading = ({ text }: LoadingProps) => {
+const Loading = () => {
   return (
     <div className="flex items-center justify-center w-screen h-screen">
-      <div className="text-bt3 font-pBold">
-        {text === null ? 'Loading...' : text}
-      </div>
+      <DotLoader color="#007CFF" />
     </div>
   );
 };
