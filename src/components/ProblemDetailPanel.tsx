@@ -32,7 +32,7 @@ const ProblemDetailPanel = ({
         <span className="text-ut-insertBlue">시간 제한</span>:{' '}
         {codeData.timeLimit} Sec &nbsp;| &nbsp;
         <span className="text-ut-insertBlue">메모리 제한</span>:{' '}
-        {codeData.memoryLimit} MB
+        {codeData.memoryLimit} KB
       </div>
       <div className="mt-6 space-y-6">
         <div className="flex flex-col gap-3">
