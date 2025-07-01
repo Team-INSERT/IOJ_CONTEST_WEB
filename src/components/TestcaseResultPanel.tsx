@@ -1,6 +1,6 @@
 import React from 'react';
 import { ContestTestcaseType } from '@/lib/types/contestSubmitType';
-import { Loader2 } from 'lucide-react';
+import { BeatLoader } from 'react-spinners';
 
 interface TestcaseResultPanelProps {
   testcaseData?: ContestTestcaseType[];
@@ -76,7 +76,7 @@ const TestcaseResultPanel = ({
 
         {isLoading ? (
           <div className="flex items-center justify-center h-full gap-2 text-sm text-white animate-pulse">
-            <Loader2 className="w-4 h-4 animate-spin" />
+            <BeatLoader color="#808080" size={8} margin={3} />
             테스트케이스 실행 중입니다...
           </div>
         ) : !testcaseData || testcaseData.length === 0 ? (
