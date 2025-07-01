@@ -23,9 +23,9 @@ const Contest = () => {
     return targetDate.getTime() > now.getTime();
   };
 
-  const pushingEditer = () => {
+  const pushingEditer = (problemId: number) => {
     if (contestDetail?.endTime && isFutureTime(contestDetail.endTime)) {
-      navigate.push(`${pathname}/code/${contestDetail.problems[0].id}`);
+      navigate.push(`${pathname}/code/${contestDetail.problems[problemId].id}`);
     } else {
       AlertUtil.error('시간이 종료된 대회입니다.');
     }
@@ -83,7 +83,7 @@ const Contest = () => {
               <div
                 key={problem.id}
                 className="flex items-center justify-between px-2 py-1 bg-white rounded shadow-md cursor-pointer h-11"
-                onClick={pushingEditer}
+                onClick={() => pushingEditer(problem.id - 1)}
               >
                 <div className="flex items-center gap-[2.19rem]">
                   <QuestionStatus status={problem.status} />
