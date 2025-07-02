@@ -6,16 +6,13 @@ import Clock from '@/assets/Clock';
 import RemainingTime from './RemainingTime';
 import { PathUtil } from '@/lib/util';
 
-interface Problem {
+interface ProblemIds {
   id: number;
-  level: number;
-  title: string;
-  status: string;
 }
 
 interface ContestDetail {
   endTime: string;
-  problems: Problem[];
+  problems: ProblemIds[];
 }
 
 const CodeHeader = ({ endTime, problems }: ContestDetail) => {

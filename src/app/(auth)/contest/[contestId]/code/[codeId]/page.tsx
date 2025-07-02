@@ -11,7 +11,7 @@ import {
   usePostSubmitProblem,
 } from '@/lib/service/contest/contest.mutation';
 import {
-  useGetContestById,
+  useGetContestDetail,
   useGetContestProblemById,
   useGetSubmitProblemStatus,
   useGetSubmitTestcase,
@@ -171,9 +171,8 @@ const Code = () => {
   // 문제데이터, 대회 데이터 불러오기
   const { data: codeData, isLoading: codeLoading } =
     useGetContestProblemById(codeId);
-  const { data: contestDetail, isLoading: contestLoading } = useGetContestById(
-    PathUtil(pathname, 1)
-  );
+  const { data: contestDetail, isLoading: contestLoading } =
+    useGetContestDetail(PathUtil(pathname, 1));
 
   // 제출해서 정답확인하는 부분
   const { mutate: submitCode } = usePostSubmitProblem();
@@ -346,8 +345,8 @@ const Code = () => {
   return (
     <>
       <CodeHeader
-        endTime={contestDetail?.endTime}
-        problems={contestDetail.problems}
+        endTime={contestDetail?.endtime}
+        problems={contestDetail?.problemIds}
       />
       <div ref={containerRef} className="flex w-full h-full pt-[64px]">
         {/* 좌측 문제 패널 */}
