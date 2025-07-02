@@ -12,6 +12,11 @@ const getContestById = async (id: number) => {
   return data;
 };
 
+const getContestDetailById = async (id: number) => {
+  const { data } = await customAxios.get(`/contest/${id}/detail`);
+  return data;
+};
+
 const getContestProblem = async (id: number) => {
   const { data } = await customAxios.get(`/problem/${id}`);
   return data;
@@ -56,6 +61,7 @@ const contestApi = {
   getContestList,
   getContestById,
   getContestProblem,
+  getContestDetailById,
   postSubmitProblem,
   getSubmitProblemStatus,
   getSubmitTestcase,

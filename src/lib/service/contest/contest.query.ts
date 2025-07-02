@@ -17,6 +17,13 @@ export const useGetContestById = (id: number) => {
   });
 };
 
+export const useGetContestDetail = (id: number) => {
+  return useQuery({
+    queryKey: [contestKeys.getContestById, id],
+    queryFn: () => API.getContestDetailById(id),
+  });
+};
+
 export const useGetContestProblemById = (id: number) => {
   return useQuery({
     queryKey: [contestKeys.getContestProblem, id],
