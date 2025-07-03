@@ -21,7 +21,7 @@ const CodeHeader = ({ endTime, problems }: ContestDetail) => {
 
   const currentProblemId = Number(PathUtil(pathname, 3));
   const contestId = PathUtil(pathname, 1);
-  const currentIndex = problems.findIndex((p) => p.id === currentProblemId);
+  const currentIndex = problems?.findIndex((p) => p.id === currentProblemId);
 
   const goToProblem = (index: number) => {
     if (index >= 0 && index < problems.length) {
@@ -34,19 +34,19 @@ const CodeHeader = ({ endTime, problems }: ContestDetail) => {
     <div className="absolute top-0 flex items-center justify-between w-full px-6 text-white h-16 bg-[#333333] select-none">
       <div className="flex items-center gap-2">
         <button
-          className="px-3 py-1 text-Nstext font-nGothic rounded bg-zinc-600 disabled:opacity-40"
+          className="px-3 py-1 rounded text-Nstext font-nGothic bg-zinc-600 disabled:opacity-40"
           onClick={() => goToProblem(currentIndex - 1)}
           disabled={currentIndex === 0}
         >
           이전
         </button>
         <span className="text-Nstext font-nGothic">
-          {currentIndex + 1} / {problems.length}
+          {currentIndex + 1} / {problems?.length}
         </span>
         <button
-          className="px-3 py-1 text-Nstext font-nGothic rounded bg-zinc-600 disabled:opacity-40"
+          className="px-3 py-1 rounded text-Nstext font-nGothic bg-zinc-600 disabled:opacity-40"
           onClick={() => goToProblem(currentIndex + 1)}
-          disabled={currentIndex === problems.length - 1}
+          disabled={currentIndex === problems?.length - 1}
         >
           다음
         </button>
@@ -60,7 +60,7 @@ const CodeHeader = ({ endTime, problems }: ContestDetail) => {
       <div className="flex items-center gap-2">
         <button
           onClick={() => router.push(`/contest/${contestId}`)}
-          className="px-3 py-1 text-Nstext font-nGothic bg-red-500 rounded"
+          className="px-3 py-1 bg-red-500 rounded text-Nstext font-nGothic"
         >
           나가기
         </button>

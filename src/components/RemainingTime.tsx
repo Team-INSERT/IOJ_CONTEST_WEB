@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
 interface OwnProps {
   targetDate: string;
@@ -8,6 +8,7 @@ interface OwnProps {
 }
 
 const formatTime = (ms: number) => {
+  if (isNaN(ms)) return '시간 불러오는 중...';
   const totalSeconds = Math.max(0, Math.floor(ms / 1000));
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -19,21 +20,35 @@ const formatTime = (ms: number) => {
 };
 
 const RemainingTime = ({ targetDate, type }: OwnProps) => {
-  const target = React.useMemo(() => new Date(targetDate), [targetDate]);
+  const target = useMemo(() => {
+    if (!targetDate) return null;
+    const d = new Date(targetDate);
+    return isNaN(d.getTime()) ? null : d;
+  }, [targetDate]);
 
-  const [remaining, setRemaining] = useState(() =>
-    formatTime(target.getTime() - Date.now())
-  );
+  const [remaining, setRemaining] = useState<string>('시간 불러오는 중...');
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    if (!target) {
+      setRemaining('시간 불러오는 중...');
+      return;
+    }
+
+    const update = () => {
       const diff = target.getTime() - Date.now();
       if (diff <= 0) {
         setRemaining('00시간 00분 00초');
-        clearInterval(interval);
+        return true;
       } else {
         setRemaining(formatTime(diff));
+        return false;
       }
+    };
+
+    update();
+
+    const interval = setInterval(() => {
+      if (update()) clearInterval(interval);
     }, 1000);
 
     return () => clearInterval(interval);
@@ -41,7 +56,9 @@ const RemainingTime = ({ targetDate, type }: OwnProps) => {
 
   return (
     <div
-      className={` ${type === 'contest' ? 'text-bt3 font-pBold' : 'text-text font-pRegular'}`}
+      className={
+        type === 'contest' ? 'text-bt3 font-pBold' : 'text-text font-pRegular'
+      }
     >
       {remaining}
     </div>

@@ -61,8 +61,6 @@ const TestcaseResultPanel = ({
       ).length
     : 0;
 
-  console.log(PathUtil(url, 3));
-
   const storedTestcases = localStorage.getItem(
     `testcase-modal-${PathUtil(url, 3)}`
   );

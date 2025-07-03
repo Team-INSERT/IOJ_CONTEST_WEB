@@ -31,7 +31,7 @@ const Contest = () => {
     }
   };
 
-  if (isLoading) {
+  if (isLoading || !contestDetail) {
     return <Loading />;
   }
 
@@ -70,7 +70,7 @@ const Contest = () => {
 
       <div className="pb-5 text-title font-pBold">문제</div>
       <div className="flex flex-col gap-2">
-        {contestDetail?.problems.map(
+        {contestDetail?.problems?.map(
           (problem: {
             id: number;
             title: string;
