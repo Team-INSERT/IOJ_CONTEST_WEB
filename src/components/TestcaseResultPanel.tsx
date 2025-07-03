@@ -1,6 +1,8 @@
 import React from 'react';
 import { ContestTestcaseType } from '@/lib/types/contestSubmitType';
 import { BeatLoader } from 'react-spinners';
+import { usePathname } from 'next/navigation';
+import { PathUtil } from '@/lib/util';
 
 interface TestcaseResultPanelProps {
   testcaseData?: ContestTestcaseType[];
@@ -52,18 +54,38 @@ const TestcaseResultPanel = ({
   testcaseData,
   isLoading,
 }: TestcaseResultPanelProps) => {
+  const url = usePathname();
   const matchedCount = Array.isArray(testcaseData)
     ? testcaseData.filter(
         (t) => t.output === t.expectedOutput && t.verdict === 'ACCEPTED'
       ).length
     : 0;
 
+  console.log(PathUtil(url, 3));
+
+  const storedTestcases = localStorage.getItem(
+    `testcase-modal-${PathUtil(url, 3)}`
+  );
+
+  let storedTestcaseCount = 0;
+  if (storedTestcases) {
+    try {
+      const parsedTestcases = JSON.parse(storedTestcases);
+      if (Array.isArray(parsedTestcases)) {
+        storedTestcaseCount = parsedTestcases.length;
+        console.log('localStorage 테스트케이스 갯수:', storedTestcaseCount);
+      }
+    } catch (error) {
+      console.error('localStorage 데이터 파싱 에러:', error);
+    }
+  }
+
   return (
     <div className="flex flex-col gap-5 overflow-y-auto">
       <div className="text-stext font-pBold">
         테스트 케이스 일치 비율 :{' '}
         <span className="text-ut-insertBlue">{matchedCount}</span> /{' '}
-        {testcaseData?.length ?? 0}
+        {storedTestcaseCount}
       </div>
 
       <div className="flex flex-col gap-4">
