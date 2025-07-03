@@ -3,6 +3,7 @@ import { ContestTestcaseType } from '@/lib/types/contestSubmitType';
 import { BeatLoader } from 'react-spinners';
 import { usePathname } from 'next/navigation';
 import { PathUtil } from '@/lib/util';
+import { useGetContestProblemById } from '@/lib/service/contest/contest.query';
 
 interface TestcaseResultPanelProps {
   testcaseData?: ContestTestcaseType[];
@@ -55,22 +56,25 @@ const TestcaseResultPanel = ({
   isLoading,
 }: TestcaseResultPanelProps) => {
   const url = usePathname();
+  const codeId = PathUtil(url, 3);
   const matchedCount = Array.isArray(testcaseData)
     ? testcaseData.filter(
         (t) => t.output === t.expectedOutput && t.verdict === 'ACCEPTED'
       ).length
     : 0;
 
+  const { data: contestPorblemData } = useGetContestProblemById(codeId);
+
   const storedTestcases = localStorage.getItem(
     `testcase-modal-${PathUtil(url, 3)}`
   );
 
-  let storedTestcaseCount = 0;
+  let storedTestcaseCount = contestPorblemData?.testcases.length;
   if (storedTestcases) {
     try {
       const parsedTestcases = JSON.parse(storedTestcases);
       if (Array.isArray(parsedTestcases)) {
-        storedTestcaseCount = parsedTestcases.length;
+        storedTestcaseCount += parsedTestcases.length;
         console.log('localStorage 테스트케이스 갯수:', storedTestcaseCount);
       }
     } catch (error) {
