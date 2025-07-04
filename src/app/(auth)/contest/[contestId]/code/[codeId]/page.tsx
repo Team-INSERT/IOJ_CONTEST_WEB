@@ -24,6 +24,7 @@ import { Settings } from 'lucide-react';
 import TestcaseResultPanel from '@/components/TestcaseResultPanel';
 import SlideAlert from '@/components/SlideAlert';
 import TestCaseModal from '@/components/TestCaseModal';
+import { PulseLoader } from 'react-spinners';
 
 interface EditorSettings {
   fontSize: number;
@@ -436,14 +437,22 @@ const Code = () => {
 
               <button
                 onClick={handleTestcaseSubmit}
-                disabled={isTestcaseSubmitting}
-                className="px-3 py-1 text-white bg-blue-500 rounded text-Nstext font-nGothic"
+                disabled={isTestcaseProcessing}
+                className={`px-3 py-1 text-white rounded text-Nstext font-nGothic w-[100px] ${
+                  isTestcaseProcessing
+                    ? 'bg-gray-400 cursor-not-allowed'
+                    : 'bg-blue-500'
+                }`}
               >
-                {isTestcaseSubmitting ? '실행 중...' : '테스트케이스'}
+                {isTestcaseProcessing ? (
+                  <PulseLoader size={4.5} />
+                ) : (
+                  '테스트케이스'
+                )}
               </button>
 
               <button
-                className={`px-3 py-1 text-white text-Nstext font-nGothic rounded ${
+                className={`px-3 py-1 text-white text-Nstext font-nGothic rounded w-[49.2px] ${
                   isSubmitting
                     ? 'bg-gray-400 cursor-not-allowed'
                     : 'bg-green-500'
@@ -451,7 +460,7 @@ const Code = () => {
                 onClick={handleProblemSubmit}
                 disabled={isSubmitting}
               >
-                {isSubmitting ? '실행 중...' : '제출'}
+                {isSubmitting ? <PulseLoader size={4} /> : '제출'}
               </button>
             </div>
           </div>
