@@ -1,4 +1,5 @@
 import { SubmitState } from '@/lib/types/contestSubmitType';
+import { BeatLoader } from 'react-spinners';
 
 interface SubmitResultPanelProps {
   submitResult: SubmitState[];
@@ -13,7 +14,8 @@ const SubmitResultPanel = ({ submitResult }: SubmitResultPanelProps) => {
           className="mb-2 w-full py-[0.81rem] pl-4 bg-gray-900"
         >
           {item.status === 'loading' && (
-            <div className="text-white text-caption font-pRegular">
+            <div className="flex items-center gap-1 text-white text-caption font-pRegular">
+              <BeatLoader color="#808080" size={5} />
               처리중...
             </div>
           )}
