@@ -75,7 +75,6 @@ const TestcaseResultPanel = ({
       const parsedTestcases = JSON.parse(storedTestcases);
       if (Array.isArray(parsedTestcases)) {
         storedTestcaseCount += parsedTestcases.length;
-        console.log('localStorage 테스트케이스 갯수:', storedTestcaseCount);
       }
     } catch (error) {
       console.error('localStorage 데이터 파싱 에러:', error);
