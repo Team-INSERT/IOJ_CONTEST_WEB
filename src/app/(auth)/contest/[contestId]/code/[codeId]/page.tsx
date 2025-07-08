@@ -206,7 +206,7 @@ const Code = () => {
                 ? {
                     id,
                     status: 'done',
-                    data: { error: '제출 실패 이미 해결된 문제입니다.' },
+                    data: { error: '이미 해결된 문제입니다.' },
                   }
                 : item
             )
