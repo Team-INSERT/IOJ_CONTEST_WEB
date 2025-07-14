@@ -27,9 +27,7 @@ const Home = () => {
   const handleClick = async (id: number) => {
     try {
       setGetRoleLoading(true);
-      await customAxios.get(`/contest/${id}`).then(() => {
-        setGetRoleLoading(false);
-      });
+      await customAxios.get(`/contest/${id}`);
       router.push(`/contest/${id}`);
     } catch (error: unknown) {
       const axiosError = error as AxiosError;
@@ -43,6 +41,8 @@ const Home = () => {
       } else {
         AlertUtil.error('대회 정보를 불러오는 데 실패했습니다.');
       }
+    } finally {
+      setGetRoleLoading(false);
     }
   };
 
