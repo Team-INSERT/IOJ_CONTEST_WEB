@@ -1,58 +1,73 @@
 'use client';
 
-import React from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import GradingModal from '@/components/GradingModal';
+import { useGetRankingById } from '@/lib/service/contest/contest.query';
+import {
+  UserSubmission,
+  SubmissionProblem,
+  ProblemOrder,
+  RankingUser,
+} from '@/lib/types/contestSubmitType';
+import Loading from '@/components/Loading';
 
-const contestRanking = [
-  {
-    nickname: '최최성성훈훈',
-    problemStatuses: [
-      { status: 'unsolved', penalty: null },
-      { status: 'solved', penalty: 660 },
-      { status: 'solved', penalty: 670 },
-    ],
-  },
-  {
-    nickname: '안안예예성성',
-    problemStatuses: [
-      { status: 'solved', penalty: 600 },
-      { status: 'failed', penalty: 610 },
-      { status: 'unsolved', penalty: null },
-    ],
-  },
-  {
-    nickname: '김김시시연연',
-    problemStatuses: [
-      { status: 'failed', penalty: 720 },
-      { status: 'solved', penalty: 750 },
-      { status: 'failed', penalty: 735 },
-    ],
-  },
-];
-
-const getColumnHeaders = (count: number) =>
-  Array.from({ length: count }, (_, i) =>
+const getColumnHeaders = (count: number): string[] =>
+  Array.from({ length: count }, (_: undefined, i: number) =>
     String.fromCharCode('A'.charCodeAt(0) + i)
   );
 
 const Ranking = () => {
   const navigate = useRouter();
-  const maxProblems = Math.max(
-    ...contestRanking.map((u) => u.problemStatuses.length)
-  );
-  const columns = getColumnHeaders(maxProblems);
+  const params = useParams();
+  const contestId = Number(params.contestId);
+  const [gradingModal, setGradingModal] = useState(false);
 
-  const [gradingModal, setGradingModal] = React.useState(false);
+  const { data: rankingData, isLoading } = useGetRankingById(contestId);
+
+  if (isLoading) return <Loading />;
+
+  if (!rankingData) return <div>데이터를 불러올 수 없습니다.</div>;
+
+  const columns = getColumnHeaders(rankingData.problemOrders.length);
+
+  const getUserSubmissions = (userId: number): SubmissionProblem[] => {
+    const userSubmission = rankingData.submissions.find(
+      (sub: UserSubmission) => sub.userId === userId
+    );
+    return userSubmission?.problems || [];
+  };
+
+  const getProblemStatus = (
+    userId: number,
+    problemId: number
+  ): 'accepted' | 'partial' | 'failed' | 'unsolved' => {
+    const submissions = getUserSubmissions(userId);
+    const problemSubmission = submissions.find(
+      (sub: SubmissionProblem) => sub.problemId === problemId
+    );
+
+    if (!problemSubmission) return 'unsolved';
+    if (problemSubmission.verdict === 'ACCEPTED') return 'accepted';
+    if (problemSubmission.verdict === 'PARTIAL' && problemSubmission.score > 0)
+      return 'partial';
+    return 'failed';
+  };
+
+  const getProblemScore = (userId: number, problemId: number): number => {
+    const submissions = getUserSubmissions(userId);
+    const problemSubmission = submissions.find(
+      (sub: SubmissionProblem) => sub.problemId === problemId
+    );
+    return problemSubmission?.score || 0;
+  };
 
   return (
     <>
       {gradingModal && <GradingModal onClose={() => setGradingModal(false)} />}
       <div className="px-40 py-20 space-y-6 font-pretendard">
         <div className="flex items-center justify-between px-6 py-4 bg-gray-100 rounded-xl">
-          <h1 className="text-xl font-bold">
-            2024학년도 1학년 알고리즘 경진대회
-          </h1>
+          <h1 className="text-xl font-bold">랭킹</h1>
           <div className="flex gap-2">
             <button
               className="h-8 px-4 text-white bg-gray-700 rounded text-stext font-pBold"
@@ -75,42 +90,56 @@ const Ranking = () => {
               <tr className="border-b-[2px] border-blue-500 text-gray-800">
                 <th className="w-[3rem] text-Nbt font-nGothic">순위</th>
                 <th className="w-[12rem] text-Nbt font-nGothic">이름</th>
-                {columns.map((col) => (
-                  <th key={col} className="font-semibold">
+                <th className="w-[6rem] text-Nbt font-nGothic">점수</th>
+                <th className="w-[6rem] text-Nbt font-nGothic">패널티</th>
+                {columns.map((col: string) => (
+                  <th key={col} className="w-[4rem] font-semibold">
                     {col}
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody>
-              {contestRanking.map((user, idx) => (
-                <tr key={idx} className="h-10 text-sm">
+              {rankingData.rankings.map((user: RankingUser, idx: number) => (
+                <tr key={user.userId} className="h-10 text-sm">
                   <td className="font-bold text-blue-normal text-Ntext font-nGothic">
                     {idx + 1}
                   </td>
                   <td className="text-lg text-Nbt font-nGothic">
-                    {user.nickname}
+                    {user.userName}
                   </td>
-                  {user.problemStatuses.map((p, i) => (
-                    <td key={i}>
-                      {p.status === 'solved' ? (
-                        <div className="flex items-center justify-center w-[3.75rem] h-8 mx-auto text-white text-Ntext font-nGothic bg-green-500 rounded">
-                          {Math.floor(p.penalty! / 60)}
+                  <td className="text-Ntext font-nGothic">{user.totalScore}</td>
+                  <td className="text-Ntext font-nGothic">{user.penalty}</td>
+                  {rankingData.problemOrders.map((problem: ProblemOrder) => {
+                    const status = getProblemStatus(
+                      user.userId,
+                      problem.problemId
+                    );
+                    const score = getProblemScore(
+                      user.userId,
+                      problem.problemId
+                    );
+
+                    return (
+                      <td key={problem.problemId} className="w-[4rem] px-1">
+                        <div className="flex justify-center">
+                          {status === 'accepted' ? (
+                            <div className="flex items-center justify-center w-full h-8 text-white text-Ntext font-nGothic bg-green-500 rounded">
+                              100
+                            </div>
+                          ) : status === 'partial' ? (
+                            <div className="flex items-center justify-center w-full h-8 text-white text-Ntext font-nGothic bg-orange-500 rounded">
+                              {score}
+                            </div>
+                          ) : status === 'failed' ? (
+                            <div className="w-full h-8 text-Ntext font-nGothic bg-red-400 rounded" />
+                          ) : (
+                            <div className="w-full h-8 text-Ntext font-nGothic" />
+                          )}
                         </div>
-                      ) : p.status === 'failed' ? (
-                        <div className="w-[3.75rem] h-8 mx-auto text-Ntext font-nGothic bg-red-400 rounded" />
-                      ) : (
-                        <div className="w-[3.75rem] h-8 mx-auto text-Ntext font-nGothic" />
-                      )}
-                    </td>
-                  ))}
-                  {Array.from({
-                    length: maxProblems - user.problemStatuses.length,
-                  }).map((_, i) => (
-                    <td key={`empty-${i}`}>
-                      <div className="w-[3.75rem] h-8 mx-auto" />
-                    </td>
-                  ))}
+                      </td>
+                    );
+                  })}
                 </tr>
               ))}
             </tbody>

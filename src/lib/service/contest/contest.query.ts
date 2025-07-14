@@ -42,13 +42,17 @@ export const useGetSubmitTestcase = (
   });
 };
 
-export const useGetSubmitProblemStatus = (
-  submissionId: string,
-  p0: { enabled: boolean }
-) => {
+export const useGetSubmitProblemStatus = (submissionId: string) => {
   return useQuery({
     queryKey: [contestKeys.getSubmitProblemStatus, submissionId],
     queryFn: () => API.getSubmitProblemStatus(submissionId),
     enabled: !!submissionId,
+  });
+};
+
+export const useGetRankingById = (contestId: number) => {
+  return useQuery({
+    queryKey: [contestKeys.getRankingById, contestId],
+    queryFn: () => API.getRankingById(contestId),
   });
 };

@@ -16,7 +16,7 @@ import {
   useGetSubmitProblemStatus,
   useGetSubmitTestcase,
 } from '@/lib/service/contest/contest.query';
-import { SubmitState } from '@/lib/types/contestSubmitType';
+import { SubmitState, SubtaskInfo } from '@/lib/types/contestSubmitType';
 import { defaultCode, PathUtil } from '@/lib/util';
 import { usePathname } from 'next/navigation';
 import React, { useEffect, useRef, useState } from 'react';
@@ -217,12 +217,8 @@ const Code = () => {
     );
   };
 
-  const { data: submitStatusData, isSuccess } = useGetSubmitProblemStatus(
-    submissionId,
-    {
-      enabled: !!submissionId,
-    }
-  );
+  const { data: submitStatusData, isSuccess } =
+    useGetSubmitProblemStatus(submissionId);
 
   useEffect(() => {
     if (isSuccess && submitStatusData && submissionId) {
@@ -234,9 +230,23 @@ const Code = () => {
         )
       );
 
-      switch (submitStatusData) {
+      switch (submitStatusData.verdict) {
         case 'ACCEPTED':
           setAlerthandler('success', '정답입니다!');
+          break;
+        case 'PARTIAL':
+          const totalScore = submitStatusData.subtaskInfos.reduce(
+            (sum: number, subtask: SubtaskInfo) => sum + subtask.score,
+            0
+          );
+          const perfectScore = submitStatusData.subtaskInfos.reduce(
+            (sum: number, subtask: SubtaskInfo) => sum + subtask.perfectScore,
+            0
+          );
+          setAlerthandler(
+            'success',
+            `부분 점수: ${totalScore}/${perfectScore}점`
+          );
           break;
         case 'WRONG_ANSWER':
           setAlerthandler('error', '틀렸습니다. 다시 시도해보세요.');

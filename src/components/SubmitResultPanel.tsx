@@ -1,9 +1,44 @@
-import { SubmitState } from '@/lib/types/contestSubmitType';
+import { SubmitState, SubmissionResult } from '@/lib/types/contestSubmitType';
 import { BeatLoader } from 'react-spinners';
 
 interface SubmitResultPanelProps {
   submitResult: SubmitState[];
 }
+
+const getSubmissionMessage = (
+  data: SubmissionResult | { error: string }
+): string => {
+  if ('error' in data) {
+    return data.error;
+  }
+
+  switch (data.verdict) {
+    case 'ACCEPTED':
+      return '정답입니다!';
+    case 'PARTIAL':
+      const totalScore = data.subtaskInfos.reduce(
+        (sum, subtask) => sum + subtask.score,
+        0
+      );
+      const perfectScore = data.subtaskInfos.reduce(
+        (sum, subtask) => sum + subtask.perfectScore,
+        0
+      );
+      return `부분 점수 (${totalScore}/${perfectScore}점)`;
+    case 'WRONG_ANSWER':
+      return '오답입니다.';
+    case 'COMPILATION_ERROR':
+      return '컴파일 에러가 발생했습니다.';
+    case 'OUT_OF_MEMORY':
+      return '메모리 초과입니다.';
+    case 'TIME_LIMIT_EXCEEDED':
+      return '시간 초과입니다.';
+    case 'RUNTIME_ERROR':
+      return '런타임 에러가 발생했습니다.';
+    default:
+      return '알 수 없는 결과입니다.';
+  }
+};
 
 const SubmitResultPanel = ({ submitResult }: SubmitResultPanelProps) => {
   return (
@@ -21,21 +56,7 @@ const SubmitResultPanel = ({ submitResult }: SubmitResultPanelProps) => {
           )}
           {item.status === 'done' && (
             <div className="text-white text-caption font-pRegular cursor-pointer">
-              {typeof item.data === 'string'
-                ? item.data === 'ACCEPTED'
-                  ? '정답입니다!'
-                  : item.data === 'WRONG_ANSWER'
-                    ? '오답입니다.'
-                    : item.data === 'COMPILATION_ERROR'
-                      ? '컴파일 에러가 발생했습니다.'
-                      : item.data === 'OUT_OF_MEMORY'
-                        ? '메모리 초과입니다.'
-                        : item.data === 'TIME_LIMIT_EXCEEDED'
-                          ? '시간 초과입니다.'
-                          : item.data === 'RUNTIME_ERROR'
-                            ? '런타임 에러가 발생했습니다.'
-                            : '알 수 없는 결과입니다.'
-                : (item.data?.error ?? '알 수 없는 에러입니다.')}
+              {getSubmissionMessage(item.data)}
             </div>
           )}
         </div>
