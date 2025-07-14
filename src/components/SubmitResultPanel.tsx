@@ -20,7 +20,7 @@ const SubmitResultPanel = ({ submitResult }: SubmitResultPanelProps) => {
             </div>
           )}
           {item.status === 'done' && (
-            <div className="text-white text-caption font-pRegular">
+            <div className="text-white text-caption font-pRegular cursor-pointer">
               {typeof item.data === 'string'
                 ? item.data === 'ACCEPTED'
                   ? '정답입니다!'

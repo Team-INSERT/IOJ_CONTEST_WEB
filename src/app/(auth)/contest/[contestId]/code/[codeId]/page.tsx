@@ -4,7 +4,7 @@ import CodeEditor from '@/components/CodeEditor';
 import CodeHeader from '@/components/CodeHeader';
 import Loading from '@/components/Loading';
 import ProblemDetailPanel from '@/components/ProblemDetailPanel';
-import SubmitResultPanel from '@/components/SubmitResultPanelProps';
+import SubmitResultPanel from '@/components/SubmitResultPanel';
 import EditorCustomModal from '@/components/EditorCustomModal';
 import {
   usePostCreateTestcase,
