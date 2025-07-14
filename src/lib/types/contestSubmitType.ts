@@ -1,4 +1,4 @@
-type JudgeStatus =
+export type JudgeStatus =
   | 'ACCEPTED'
   | 'PARTIAL'
   | 'WRONG_ANSWER'

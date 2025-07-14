@@ -5,6 +5,7 @@ import QuestionStatus from '@/components/QuestionStatus';
 import RemainingTime from '@/components/RemainingTime';
 import StarStatus from '@/components/StarStatus';
 import { useGetContestById } from '@/lib/service/contest/contest.query';
+import { ContestProblem } from '@/lib/types/contest.types';
 import { AlertUtil, PathUtil } from '@/lib/util';
 import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
@@ -70,42 +71,35 @@ const Contest = () => {
 
       <div className="pb-5 text-title font-pBold">문제</div>
       <div className="flex flex-col gap-2">
-        {contestDetail?.problems?.map(
-          (problem: {
-            id: number;
-            title: string;
-            status: 'unsolved' | 'solved' | 'failed';
-            level: number;
-          }) => {
-            const formattedLetter = String.fromCharCode(65 + (problem.id - 1));
+        {contestDetail?.problems?.map((problem: ContestProblem) => {
+          const formattedLetter = String.fromCharCode(65 + (problem.id - 1));
 
-            return (
-              <div
-                key={problem.id}
-                className="flex items-center justify-between px-2 py-1 bg-white rounded shadow-md cursor-pointer h-11"
-                onClick={() => pushingEditer(problem.id - 1)}
-              >
-                <div className="flex items-center gap-[2.19rem]">
-                  <QuestionStatus status={problem.status} />
+          return (
+            <div
+              key={problem.id}
+              className="flex items-center justify-between px-2 py-1 bg-white rounded shadow-md cursor-pointer h-11"
+              onClick={() => pushingEditer(problem.id - 1)}
+            >
+              <div className="flex items-center gap-[2.19rem]">
+                <QuestionStatus status={problem.verdict} />
 
-                  <div className="text-left text-text font-pSemibold">
-                    {formattedLetter}
-                  </div>
-                  <div className="text-left text-text font-pRegular">
-                    {problem.id.toString().padStart(4, '0')}
-                  </div>
-                  <div className="text-left text-text font-pRegular text-blue-normal">
-                    {problem.title}
-                  </div>
+                <div className="text-left text-text font-pSemibold">
+                  {formattedLetter}
                 </div>
-
-                <div className="">
-                  <StarStatus level={problem.level} />
+                <div className="text-left text-text font-pRegular">
+                  {problem.id.toString().padStart(4, '0')}
+                </div>
+                <div className="text-left text-text font-pRegular text-blue-normal">
+                  {problem.title}
                 </div>
               </div>
-            );
-          }
-        )}
+
+              <div className="">
+                <StarStatus level={problem.level} />
+              </div>
+            </div>
+          );
+        })}
       </div>
     </div>
   );

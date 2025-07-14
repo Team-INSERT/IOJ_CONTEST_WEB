@@ -1,7 +1,9 @@
 import React from 'react';
 
+import { QuestionStatus as QuestionStatusType } from '@/lib/types/contest.types';
+
 interface OwnProps {
-  status: 'unsolved' | 'solved' | 'failed';
+  status: QuestionStatusType;
 }
 
 const QuestionStatus = ({ status }: OwnProps) => {
@@ -9,15 +11,23 @@ const QuestionStatus = ({ status }: OwnProps) => {
     <div
       className={`flex items-center justify-center w-8 rounded h-9 
         ${
-          status === 'unsolved'
+          status === null
             ? ''
-            : status === 'solved'
+            : status === 'ACCEPTED'
               ? 'bg-[#24B984]'
-              : 'bg-[#E54747]'
+              : status === 'PARTIAL'
+                ? 'bg-orange-500'
+                : 'bg-[#E54747]'
         }`}
     >
       <div className="text-white text-Ntext font-nGothic">
-        {status === 'unsolved' ? '' : status === 'solved' ? 'S' : 'W'}
+        {status === null
+          ? ''
+          : status === 'ACCEPTED'
+            ? 'S'
+            : status === 'PARTIAL'
+              ? 'P'
+              : 'W'}
       </div>
     </div>
   );

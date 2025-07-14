@@ -1,5 +1,7 @@
 import { SubmitState, SubmissionResult } from '@/lib/types/contestSubmitType';
 import { BeatLoader } from 'react-spinners';
+import { useState } from 'react';
+import SubmissionModal from './SubmissionModal';
 
 interface SubmitResultPanelProps {
   submitResult: SubmitState[];
@@ -41,27 +43,55 @@ const getSubmissionMessage = (
 };
 
 const SubmitResultPanel = ({ submitResult }: SubmitResultPanelProps) => {
+  const [selectedSubmission, setSelectedSubmission] =
+    useState<SubmissionResult | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleSubmissionClick = (
+    data: SubmissionResult | { error: string }
+  ) => {
+    if ('error' in data) return;
+    setSelectedSubmission(data);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedSubmission(null);
+  };
+
   return (
-    <div className="overflow-y-auto">
-      {submitResult.map((item) => (
-        <div
-          key={item.id}
-          className="mb-2 w-full py-[0.81rem] pl-4 bg-gray-900"
-        >
-          {item.status === 'loading' && (
-            <div className="flex items-center gap-1 text-white text-caption font-pRegular">
-              <BeatLoader color="#808080" size={5} />
-              처리중...
-            </div>
-          )}
-          {item.status === 'done' && (
-            <div className="text-white text-caption font-pRegular cursor-pointer">
-              {getSubmissionMessage(item.data)}
-            </div>
-          )}
-        </div>
-      ))}
-    </div>
+    <>
+      <div className="overflow-y-auto">
+        {submitResult.map((item) => (
+          <div
+            key={item.id}
+            className="mb-2 w-full py-[0.81rem] pl-4 bg-gray-900"
+          >
+            {item.status === 'loading' && (
+              <div className="flex items-center gap-1 text-white text-caption font-pRegular">
+                <BeatLoader color="#808080" size={5} />
+                처리중...
+              </div>
+            )}
+            {item.status === 'done' && (
+              <div
+                className="text-white text-caption font-pRegular cursor-pointer hover:bg-gray-800 transition-colors px-2 py-1 rounded"
+                onClick={() => handleSubmissionClick(item.data)}
+              >
+                {getSubmissionMessage(item.data)}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      <SubmissionModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        submission={selectedSubmission}
+      />
+    </>
   );
 };
 
