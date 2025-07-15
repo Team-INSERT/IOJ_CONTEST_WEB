@@ -62,6 +62,11 @@ const getRankingById = async (contestId: number) => {
   return data;
 };
 
+const getSubmissionError = async (submissionId: string) => {
+  const { data } = await customAxios.get(`/errors/${submissionId}`);
+  return data;
+};
+
 const contestApi = {
   getContestList,
   getContestById,
@@ -72,6 +77,7 @@ const contestApi = {
   getSubmitTestcase,
   postCreateTestcase,
   getRankingById,
+  getSubmissionError,
 };
 
 export default contestApi;

@@ -25,6 +25,7 @@ import TestcaseResultPanel from '@/components/TestcaseResultPanel';
 import SlideAlert from '@/components/SlideAlert';
 import TestCaseModal from '@/components/TestCaseModal';
 import { PulseLoader } from 'react-spinners';
+import API from '@/lib/service/contest/contest.api';
 
 interface EditorSettings {
   fontSize: number;
@@ -221,6 +222,10 @@ const Code = () => {
     useGetSubmitProblemStatus(submissionId);
 
   useEffect(() => {
+    if ((!isSuccess || submitStatusData?.length === 0) && submissionId !== '') {
+      API.getSubmissionError(submissionId);
+    }
+
     if (isSuccess && submitStatusData && submissionId) {
       setSubmitResult((prev) =>
         prev.map((item) =>
@@ -340,16 +345,20 @@ const Code = () => {
   const shouldEnableTestcaseQuery =
     testcaseSubmissionId !== '' && shouldFetchTestcase;
 
-  const { data: testcaseData, isFetching: isTestcaseSubmitting } =
-    useGetSubmitTestcase(testcaseSubmissionId, {
-      enabled: shouldEnableTestcaseQuery,
-    });
+  const { data: testcaseData, isFetching: isTestcaseSubmitting, isError } =
+    useGetSubmitTestcase(testcaseSubmissionId);
 
   useEffect(() => {
     if (shouldEnableTestcaseQuery && !isTestcaseSubmitting) {
       setIsTestcaseProcessing(false); // 두 요청 모두 완료됨
     }
   }, [shouldEnableTestcaseQuery, isTestcaseSubmitting]);
+
+  useEffect(() => {
+    if ((isError || testcaseData?.length === 0) && testcaseSubmissionId !== '') {
+      API.getSubmissionError(testcaseSubmissionId);
+    }
+  }, [isError, testcaseData]);
 
   if (codeLoading || contestLoading) return <Loading />;
 

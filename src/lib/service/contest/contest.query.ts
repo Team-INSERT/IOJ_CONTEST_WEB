@@ -31,10 +31,7 @@ export const useGetContestProblemById = (id: number) => {
   });
 };
 
-export const useGetSubmitTestcase = (
-  testcaseId: string,
-  p0: { enabled: boolean }
-) => {
+export const useGetSubmitTestcase = (testcaseId: string) => {
   return useQuery({
     queryKey: [contestKeys.getCreateTestcase, testcaseId],
     queryFn: () => API.getSubmitTestcase(testcaseId),

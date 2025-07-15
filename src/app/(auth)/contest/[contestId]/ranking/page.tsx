@@ -128,17 +128,15 @@ const Ranking = () => {
                       <td key={problem.problemId} className="w-[4rem] px-1">
                         <div className="flex justify-center text-[16px]">
                           {status === 'accepted' ? (
-                            <div className="flex items-center justify-center w-full h-8 text-white bg-green-500 rounded">
-                              100
-                            </div>
+                            <div className="flex items-center justify-center w-full h-8 bg-green-500 rounded"/>
                           ) : status === 'partial' ? (
                             <div className="flex items-center justify-center w-full h-8 text-white bg-orange-500 rounded">
                               {score}
                             </div>
                           ) : status === 'failed' ? (
-                            <div className="w-full h-8 bg-red-400 rounded" />
+                            <div className="flex items-center justify-center w-full h-8 bg-red-400 rounded" />
                           ) : (
-                            <div className="w-full h-8" />
+                            <div className="flex items-center justify-center w-full h-8" />
                           )}
                         </div>
                       </td>
