@@ -130,10 +130,10 @@ const TestcaseResultPanel = ({
                       className="align-top border-t border-gray-700"
                     >
                       <td className="px-4 py-2">{idx + 1}</td>
-                      <td className="px-4 py-2 whitespace-pre-wrap">
+                      <td className="px-4 py-2 whitespace-pre-wrap font-mono">
                         {test.input}
                       </td>
-                      <td className="px-4 py-2 whitespace-pre-wrap">
+                      <td className="px-4 py-2 whitespace-pre-wrap font-mono">
                         {colorClass === 'text-red-400' ? (
                           <code className="text-red-400 whitespace-pre-wrap block max-w-[500px] overflow-x-auto">
                             {test.output}
@@ -142,7 +142,7 @@ const TestcaseResultPanel = ({
                           test.output
                         )}
                       </td>
-                      <td className="px-4 py-2 whitespace-pre-wrap">
+                      <td className="px-4 py-2 whitespace-pre-wrap font-mono">
                         {test.expectedOutput}
                       </td>
                       <td className={`px-4 py-2 ${colorClass}`}>

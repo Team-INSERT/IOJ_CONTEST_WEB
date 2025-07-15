@@ -25,10 +25,7 @@ const ProblemDetailPanel = ({
   style,
 }: ProblemDetailPanelProps) => {
   return (
-    <div
-      style={style}
-      className="px-10 py-6 overflow-auto select-none font-pRegular"
-    >
+    <div style={style} className="px-10 py-6 overflow-auto font-pRegular">
       <h2 className="text-gray-700 text-text font-pRegular">{codeId}</h2>
       <div className="flex justify-between pb-3 text-bt1 font-pSemibold">
         <div>{codeData.title}</div>
@@ -71,10 +68,10 @@ const ProblemDetailPanel = ({
         <div className="grid grid-cols-2 gap-5 mb-4">
           {codeData.testcases.map((tc, i) => (
             <React.Fragment key={i}>
-              <div className="p-3 whitespace-pre-line border rounded-md bg-gray-50">
+              <div className="p-3 whitespace-pre-wrap border rounded-md font-mono bg-gray-50">
                 {tc.input}
               </div>
-              <div className="p-3 border rounded-md bg-gray-50">
+              <div className="p-3 whitespace-pre-wrap border rounded-md font-mono bg-gray-50">
                 {tc.output}
               </div>
             </React.Fragment>

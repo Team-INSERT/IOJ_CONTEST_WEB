@@ -119,10 +119,10 @@ const TestCaseModal = ({
               key={`init-${i}`}
               className="grid grid-cols-[65%_35%] items-start my-4 mx-4 gap-4"
             >
-              <div className="p-3 bg-gray-50 border rounded-md whitespace-pre-wrap h-full text-gray-700">
+              <div className="p-3 bg-gray-50 border rounded-md whitespace-pre-wrap h-full font-mono text-gray-700">
                 {tc.input.replace(/\\n/g, '\n')}
               </div>
-              <div className="p-3 bg-gray-50 border rounded-md whitespace-pre-wrap h-full text-gray-700">
+              <div className="p-3 bg-gray-50 border rounded-md whitespace-pre-wrap h-full font-mono text-gray-700">
                 {tc.output.replace(/\\n/g, '\n')}
               </div>
             </div>
@@ -143,7 +143,7 @@ const TestCaseModal = ({
                   t.style.height = 'auto';
                   t.style.height = `${t.scrollHeight}px`;
                 }}
-                className="p-3 bg-gray-50 border rounded-md whitespace-pre-wrap h-full text-gray-700"
+                className="p-3 bg-gray-50 border rounded-md whitespace-pre-wrap h-full font-mono text-gray-700"
               />
 
               <div className="flex items-center gap-4 mr-4">
@@ -158,7 +158,7 @@ const TestCaseModal = ({
                     t.style.height = 'auto';
                     t.style.height = `${t.scrollHeight}px`;
                   }}
-                  className="p-3 bg-gray-50 border rounded-md whitespace-pre-wrap h-full w-full text-gray-700"
+                  className="p-3 bg-gray-50 border rounded-md whitespace-pre-wrap h-full w-full font-mono text-gray-700"
                 />
                 <RemoveIcon
                   onClick={() => handleRemove(idx)}
