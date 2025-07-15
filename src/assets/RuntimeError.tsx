@@ -1,10 +1,16 @@
 import React from 'react';
 
-const RuntimeError = () => {
+const RuntimeError = ({
+  width,
+  height,
+}: {
+  width?: string;
+  height?: string;
+}) => {
   return (
     <svg
-      width="20"
-      height="21"
+      width={width ? width : '30'}
+      height={height ? height : '32.5'}
       viewBox="0 0 20 21"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

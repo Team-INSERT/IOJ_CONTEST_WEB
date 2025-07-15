@@ -54,7 +54,7 @@ const EditorCustomModal: React.FC<EditorCustomModalProps> = ({
 
   const handleReset = () => {
     const defaultSettings: EditorSettings = {
-      fontSize: 14,
+      fontSize: 16,
       fontFamily: 'Monaco, Menlo, "Ubuntu Mono", monospace',
       theme: 'monokai',
       tabSize: 2,
@@ -65,8 +65,9 @@ const EditorCustomModal: React.FC<EditorCustomModalProps> = ({
       wordWrap: false,
     };
 
-    if (confirm('설정값이 기본값을 초기화됩니다. 계속하시겠습니까?')) {
+    if (confirm('설정값이 초기화됩니다. 계속하시겠습니까?')) {
       setLocalSettings(defaultSettings);
+      handleSave();
     }
   };
 
@@ -74,7 +75,7 @@ const EditorCustomModal: React.FC<EditorCustomModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-white rounded-lg shadow-xl w-96 max-h-[69.5vh] overflow-y-auto">
+      <div className="bg-white rounded-lg shadow-xl w-96 max-h-[69.5vh] overflow-y-auto font-pRegular">
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
           <h2 className="flex items-center gap-2 text-lg font-semibold">

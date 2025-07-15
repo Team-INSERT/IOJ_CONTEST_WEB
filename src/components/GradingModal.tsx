@@ -9,7 +9,7 @@ interface Props {
 
 const GradingModal = ({ onClose }: Props) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 font-pRegular">
       <div className="relative w-[50rem] max-w-[90vw] rounded-2xl bg-white shadow-xl overflow-hidden">
         <button
           onClick={onClose}
@@ -19,7 +19,7 @@ const GradingModal = ({ onClose }: Props) => {
         </button>
 
         <div className="flex flex-col items-center justify-center px-10 py-10 gap-10 bg-gradient-to-tr from-[#e8f1ff] via-white to-[#ffeaea]">
-          <div className="text-Nbt font-nGothic">순위기준</div>
+          <div className="font-extrabold text-3xl">순위기준</div>
           <div className="flex justify-between w-full">
             <div className="flex-1 space-y-6">
               <div>

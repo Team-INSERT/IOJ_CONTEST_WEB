@@ -89,89 +89,84 @@ const TestCaseModal = ({
   return (
     <div
       onClick={onClose}
-      className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50"
+      className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50 font-pRegular"
     >
       <main
         onClick={(e) => e.stopPropagation()}
         className="flex flex-col justify-between w-[53.3125rem] h-[33.125rem] py-9 px-8 bg-white rounded"
       >
-        <section className="flex flex-col gap-6 w-full overflow-y-auto pr-2 max-h-[calc(100%-5rem)]">
-          <p className="text-3xl font-semibold">테스트 케이스 추가</p>
-          <section className="border rounded-[4px] overflow-x-auto w-full">
-            <article className="flex items-center border-b bg-gray-50">
-              <article className="flex justify-between items-center w-[65%] py-[6px] px-[13px] border-r font-regular text-[0.9375rem] text-gray-800">
-                <p>Input</p>
-                <button
-                  onClick={handleAdd}
-                  className="py-[7px] px-[16px] bg-ut-insertBlue text-white font-bold text-[0.9375rem] rounded-md"
-                >
-                  추가
-                </button>
-              </article>
-              <article className="w-[35%] py-[6px] px-[13px] bg-gray-50 font-regular text-[0.9375rem] text-gray-800">
-                Output
-              </article>
-            </article>
-
-            {initialTestcases?.length > 0 && (
-              <article className="flex bg-white">
-                <article className="w-[65%] pt-[24px] px-[29px] pb-[24px] border-r">
-                  <article className="bg-gray-100 p-3 rounded whitespace-pre-wrap font-regular text-[0.9375rem] text-gray-600 border border-grey-200">
-                    {initialTestcases.map((tc) => tc.input).join('\n')}
-                  </article>
-                </article>
-                <article className="w-[35%] pt-[24px] px-[29px] pb-[24px]">
-                  <article className="bg-gray-100 p-3 rounded h-full whitespace-pre-wrap font-regular text-[0.9375rem] text-gray-600 border border-grey-200">
-                    {initialTestcases.map((tc, i) => (
-                      <div key={`out-${i}`} className="mb-2 last:mb-0">
-                        {tc.output?.replace(/\\n/g, '\n') ?? ''}
-                      </div>
-                    ))}
-                  </article>
-                </article>
-              </article>
-            )}
-
-            {testCases.map((tc, idx) => (
-              <article
-                key={idx}
-                className="flex items-center justify-center bg-white"
+        <section className="border rounded overflow-x-auto w-full">
+          <div
+            style={{ gridTemplateColumns: '65% 35%' }}
+            className="grid items-center border-b bg-gray-50"
+          >
+            <div className="flex justify-between items-center py-2 px-4">
+              <span className="font-semibold text-gray-800">Input</span>
+              <button
+                onClick={handleAdd}
+                className="py-1 px-4 bg-ut-insertBlue text-white rounded"
               >
-                <div className="w-[65%] py-[14px] px-[29px] border-r">
-                  <textarea
-                    placeholder="Input"
-                    value={tc.input}
-                    onChange={(e) => handleChange(idx, 'input', e.target.value)}
-                    onInput={(e) => {
-                      const target = e.target as HTMLTextAreaElement;
-                      target.style.height = 'auto';
-                      target.style.height = `${target.scrollHeight}px`;
-                    }}
-                    className="w-full bg-gray-50 border text-sm rounded p-3 resize-none text-gray-800 focus:outline-none placeholder:text-[15px] overflow-hidden"
-                  />
-                </div>
-                <div className="w-[35%] py-[14px] px-[29px] flex items-center gap-2">
-                  <textarea
-                    placeholder="output"
-                    value={tc.expectedOutput}
-                    onChange={(e) =>
-                      handleChange(idx, 'expectedOutput', e.target.value)
-                    }
-                    onInput={(e) => {
-                      const target = e.target as HTMLTextAreaElement;
-                      target.style.height = 'auto';
-                      target.style.height = `${target.scrollHeight}px`;
-                    }}
-                    className="w-full bg-gray-50 border text-sm rounded p-3 resize-none text-gray-800 focus:outline-none placeholder:text-[15px] overflow-hidden"
-                  />
-                  <RemoveIcon
-                    onClick={() => handleRemove(idx)}
-                    className="cursor-pointer"
-                  />
-                </div>
-              </article>
-            ))}
-          </section>
+                추가
+              </button>
+            </div>
+            <div className="py-2 px-4">
+              <span className="font-semibold text-gray-800">Output</span>
+            </div>
+          </div>
+
+          {initialTestcases?.map((tc, i) => (
+            <div
+              key={`init-${i}`}
+              className="grid grid-cols-[65%_35%] items-start my-4 mx-4 gap-4"
+            >
+              <div className="p-3 bg-gray-50 border rounded-md whitespace-pre-wrap h-full text-gray-700">
+                {tc.input.replace(/\\n/g, '\n')}
+              </div>
+              <div className="p-3 bg-gray-50 border rounded-md whitespace-pre-wrap h-full text-gray-700">
+                {tc.output.replace(/\\n/g, '\n')}
+              </div>
+            </div>
+          ))}
+
+          {testCases.map((tc, idx) => (
+            <div
+              key={`user-${idx}`}
+              className="grid grid-cols-[65%_35%] items-stretch my-4 mx-4 gap-4"
+            >
+              {/* 입력란 */}
+              <textarea
+                placeholder="Input"
+                value={tc.input}
+                onChange={(e) => handleChange(idx, 'input', e.target.value)}
+                onInput={(e) => {
+                  const t = e.currentTarget;
+                  t.style.height = 'auto';
+                  t.style.height = `${t.scrollHeight}px`;
+                }}
+                className="p-3 bg-gray-50 border rounded-md whitespace-pre-wrap h-full text-gray-700"
+              />
+
+              <div className="relative">
+                <textarea
+                  placeholder="Output"
+                  value={tc.expectedOutput}
+                  onChange={(e) =>
+                    handleChange(idx, 'expectedOutput', e.target.value)
+                  }
+                  onInput={(e) => {
+                    const t = e.currentTarget;
+                    t.style.height = 'auto';
+                    t.style.height = `${t.scrollHeight}px`;
+                  }}
+                  className="p-3 bg-gray-50 border rounded-md whitespace-pre-wrap h-full text-gray-700"
+                />
+                <RemoveIcon
+                  onClick={() => handleRemove(idx)}
+                  className="absolute top-2 right-2 w-4 h-4 text-gray-400 hover:text-red-500 cursor-pointer"
+                />
+              </div>
+            </div>
+          ))}
         </section>
         <button
           onClick={() => {

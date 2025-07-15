@@ -376,9 +376,9 @@ const Code = () => {
         {/* 우측 코드 에디터 및 결과 패널 */}
         <div
           style={{ width: `${100 - leftWidth}%` }}
-          className="flex flex-col h-full bg-[#1E1E1E] select-none"
+          className="flex flex-col h-full bg-[#1E1E1E] select-none font-pRegular"
         >
-          <div className="flex items-center justify-between px-5 py-2 border-b border-zinc-700">
+          <div className="flex items-center justify-between px-5 py-2 border-b border-zinc-700 flex-nowrap whitespace-nowrap overflow-x-auto">
             <div className="font-semibold text-white">
               {language === 'PYTHON'
                 ? 'main.py'
@@ -388,10 +388,10 @@ const Code = () => {
                     ? 'main.cpp'
                     : 'main.c'}
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 text-[14px]">
               <button
                 onClick={() => setIsSettingModalOpen(true)}
-                className="flex items-center gap-1 px-3 py-1 text-white bg-gray-600 rounded text-Nstext font-nGothic hover:bg-gray-700"
+                className="flex items-center gap-1 px-3 py-1 text-white bg-gray-600 rounded hover:bg-gray-700"
                 title="에디터 설정"
               >
                 <Settings className="w-4 h-4" />
@@ -399,7 +399,7 @@ const Code = () => {
               </button>
 
               <button
-                className="px-3 py-1 text-white bg-blue-500 rounded text-Nstext font-nGothic"
+                className="px-3 py-1 text-white bg-blue-500 rounded"
                 onClick={() => {
                   if (confirm('코드가 초기화됩니다 진행하시겠습니까?')) {
                     setCode(defaultCode[language]);
@@ -411,7 +411,7 @@ const Code = () => {
               </button>
 
               <button
-                className="px-3 py-1 text-white bg-blue-500 rounded text-Nstext font-nGothic"
+                className="px-3 py-1 text-white bg-blue-500 rounded"
                 onClick={() => {
                   handleCodeChange(code);
                   setAlerthandler('success', '코드가 저장되었습니다.');
@@ -421,7 +421,7 @@ const Code = () => {
               </button>
 
               <select
-                className="px-2 py-1 text-white bg-blue-500 rounded text-Nstext font-nGothic border-r-8-transparent"
+                className="px-2 py-1 text-white bg-blue-500 rounded border-r-8-transparent"
                 onChange={(e) => {
                   const val = e.target.value as 'PYTHON' | 'JAVA' | 'C' | 'CPP';
                   setLanguage(val);
@@ -437,7 +437,7 @@ const Code = () => {
               </select>
 
               <button
-                className="px-3 py-1 text-white bg-blue-500 rounded text-Nstext font-nGothic"
+                className="px-3 py-1 text-white bg-blue-500 rounded"
                 onClick={() => {
                   setIsTestCaseModalOpen(true);
                 }}
@@ -448,7 +448,7 @@ const Code = () => {
               <button
                 onClick={handleTestcaseSubmit}
                 disabled={isTestcaseProcessing}
-                className={`px-3 py-1 text-white rounded text-Nstext font-nGothic w-[100px] ${
+                className={`px-3 py-1 text-white rounded w-[100px] ${
                   isTestcaseProcessing
                     ? 'bg-gray-400 cursor-not-allowed'
                     : 'bg-blue-500'
@@ -462,7 +462,7 @@ const Code = () => {
               </button>
 
               <button
-                className={`px-3 py-1 text-white text-Nstext font-nGothic rounded w-[49.2px] ${
+                className={`px-3 py-1 text-white rounded w-[49.2px] ${
                   isSubmitting
                     ? 'bg-gray-400 cursor-not-allowed'
                     : 'bg-green-500'
@@ -502,7 +502,7 @@ const Code = () => {
                 {['testcase', 'result'].map((tab) => (
                   <button
                     key={tab}
-                    className={`px-4 py-2 h-10 text-caption font-pRegular ${activeTab === tab ? 'border-b-2 border-white font-semibold' : ''}`}
+                    className={`px-4 py-2 h-10 text-sm font-pRegular ${activeTab === tab ? 'border-b-2 border-white font-semibold' : ''}`}
                     onClick={() => setActiveTab(tab)}
                   >
                     {tab === 'testcase' ? '테스트케이스' : '제출결과'}

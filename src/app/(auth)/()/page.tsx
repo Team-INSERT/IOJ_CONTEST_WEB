@@ -47,11 +47,9 @@ const Home = () => {
   };
 
   return (
-    <div className="w-full flex flex-col items-center min-h-screen py-[88px]">
+    <div className="w-full flex flex-col items-center min-h-screen py-[88px] font-nGothic">
       <div className="w-[1089px] flex justify-between items-start px-4">
-        <h1 className="text-Nt font-nGothic text-gray-900 pb-7 pl-[15px]">
-          대회목록
-        </h1>
+        <h1 className="text-Nt  text-gray-900 pb-7 pl-[15px]">대회목록</h1>
       </div>
       <div className="w-[1089px] flex flex-col gap-[13px] px-4">
         {contestDetail?.map((detail: ContestDetail) => (
@@ -61,10 +59,8 @@ const Home = () => {
             key={detail.id}
           >
             <div className="pl-[7.5rem] flex flex-col justify-center h-full gap-1">
-              <div className="text-gray-900 text-Nbt1 font-nGothic">
-                {detail.title}
-              </div>
-              <div className="text-gray-600 text-Nstext font-nGothic">
+              <div className="text-gray-900 text-Nbt1 ">{detail.title}</div>
+              <div className="text-gray-600 text-Nstext ">
                 {FormatUtil.formatDateRange(detail.startTime, detail.endTime)}
               </div>
             </div>

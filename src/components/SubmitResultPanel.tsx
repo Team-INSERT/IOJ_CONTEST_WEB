@@ -62,24 +62,27 @@ const SubmitResultPanel = ({ submitResult }: SubmitResultPanelProps) => {
 
   return (
     <>
-      <div className="overflow-y-auto">
+      <div className="overflow-y-auto font-pRegular">
         {submitResult.map((item) => (
           <div
             key={item.id}
             className="mb-2 w-full py-[0.81rem] pl-4 bg-gray-900"
           >
             {item.status === 'loading' && (
-              <div className="flex items-center gap-1 text-white text-caption font-pRegular">
+              <div className="flex items-center gap-1 text-white text-sm">
                 <BeatLoader color="#808080" size={5} />
                 처리중...
               </div>
             )}
             {item.status === 'done' && (
-              <div
-                className="text-white text-caption font-pRegular cursor-pointer hover:bg-gray-800 transition-colors px-2 py-1 rounded"
-                onClick={() => handleSubmissionClick(item.data)}
-              >
-                {getSubmissionMessage(item.data)}
+              <div className="flex gap-5 items-center text-white transition-colors px-2 py-1 rounded text-sm">
+                <p>{getSubmissionMessage(item.data)}</p>
+                <button
+                  className="bg-blue-normal py-1 px-2 rounded cursor-pointer"
+                  onClick={() => handleSubmissionClick(item.data)}
+                >
+                  상세보기
+                </button>
               </div>
             )}
           </div>

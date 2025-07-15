@@ -67,6 +67,7 @@ const SubmitResultModal = ({
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       onClose();
+      setIsDetailOpen([]);
     }
   };
 
@@ -88,7 +89,14 @@ const SubmitResultModal = ({
       <div className="flex flex-col items-start gap-3 py-[40px] px-[52px] max-h-[500px] bg-white w-[70%] font-pRegular rounded overflow-auto">
         {/* Modal Header */}
         <div className="flex justify-between items-end self-stretch">
-          <h2 className="font-semibold text-2xl">제출 실행 결과</h2>
+          {submission.verdict === 'COMPILATION_ERROR' ? (
+            <div className="flex items-center gap-1">
+              <RuntimeError width="40" height="42" />
+              <h2 className="font-semibold text-2xl">컴파일 에러 내용</h2>
+            </div>
+          ) : (
+            <h2 className="font-semibold text-2xl">제출 실행 결과</h2>
+          )}
           <div className="flex gap-10">
             <p>
               <span className="text-blue-normal font-semibold">
@@ -108,6 +116,11 @@ const SubmitResultModal = ({
         {/* line */}
         <div className="w-full border-t border-[#D9D9D9]" />
         {/* 부분문제들 */}
+        {submission.verdict === 'COMPILATION_ERROR' && (
+          <div className="flex w-full text-[#4D4D4D] bg-[#F2F2F2] px-[12px] py-[8px] rounded text-sm">
+            {submission.compilationDetail}
+          </div>
+        )}
         {submission.subtaskInfos.map((subtask: SubtaskInfo, i) => (
           <>
             <div
@@ -152,7 +165,7 @@ const SubmitResultModal = ({
                   </div>
                 )}
               </div>
-              <div className="flex gap-3 flex-shrink-0 min-w-[168px] text-[0.9rem]">
+              <div className="flex gap-3 flex-shrink-0 min-w-[168px] text-[15px]">
                 <div className="flex flex-col gap-1 text-[#666]">
                   <p>실행시간</p>
                   <p>사용 메모리</p>

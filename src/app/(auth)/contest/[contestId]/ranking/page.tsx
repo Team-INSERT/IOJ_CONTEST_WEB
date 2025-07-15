@@ -65,7 +65,7 @@ const Ranking = () => {
   return (
     <>
       {gradingModal && <GradingModal onClose={() => setGradingModal(false)} />}
-      <div className="px-40 py-20 space-y-6 font-pretendard">
+      <div className="px-40 py-20 space-y-6 font-pRegular">
         <div className="flex items-center justify-between px-6 py-4 bg-gray-100 rounded-xl">
           <h1 className="text-xl font-bold">랭킹</h1>
           <div className="flex gap-2">
@@ -88,28 +88,32 @@ const Ranking = () => {
           <table className="w-full text-center border-separate table-fixed border-spacing-y-5">
             <thead>
               <tr className="border-b-[2px] border-blue-500 text-gray-800">
-                <th className="w-[3rem] text-Nbt font-nGothic">순위</th>
-                <th className="w-[12rem] text-Nbt font-nGothic">이름</th>
-                <th className="w-[6rem] text-Nbt font-nGothic">점수</th>
-                <th className="w-[6rem] text-Nbt font-nGothic">패널티</th>
+                <th className="w-[3rem] text-xl">순위</th>
+                <th className="w-[12rem] text-xl">이름</th>
+                <th className="w-[6rem] text-xl">점수</th>
+                <th className="w-[6rem] text-xl">패널티</th>
                 {columns.map((col: string) => (
-                  <th key={col} className="w-[4rem] font-semibold">
+                  <th key={col} className="w-[4rem] text-xl font-semibold">
                     {col}
                   </th>
                 ))}
+              </tr>
+              <tr>
+                <td
+                  colSpan={4 + columns.length}
+                  className="h-[2px] bg-gradient-to-r from-[#F2F2F2] to-[#007CFF]"
+                />
               </tr>
             </thead>
             <tbody>
               {rankingData.rankings.map((user: RankingUser, idx: number) => (
                 <tr key={user.userId} className="h-10 text-sm">
-                  <td className="font-bold text-blue-normal text-Ntext font-nGothic">
+                  <td className="font-bold text-blue-normal text-Ntext ">
                     {idx + 1}
                   </td>
-                  <td className="text-lg text-Nbt font-nGothic">
-                    {user.userName}
-                  </td>
-                  <td className="text-Ntext font-nGothic">{user.totalScore}</td>
-                  <td className="text-Ntext font-nGothic">{user.penalty}</td>
+                  <td className="text-xl font-semibold">{user.userName}</td>
+                  <td className="text-xl">{user.totalScore}</td>
+                  <td className="text-xl">{user.penalty}</td>
                   {rankingData.problemOrders.map((problem: ProblemOrder) => {
                     const status = getProblemStatus(
                       user.userId,
@@ -122,19 +126,19 @@ const Ranking = () => {
 
                     return (
                       <td key={problem.problemId} className="w-[4rem] px-1">
-                        <div className="flex justify-center">
+                        <div className="flex justify-center text-[16px]">
                           {status === 'accepted' ? (
-                            <div className="flex items-center justify-center w-full h-8 text-white text-Ntext font-nGothic bg-green-500 rounded">
+                            <div className="flex items-center justify-center w-full h-8 text-white bg-green-500 rounded">
                               100
                             </div>
                           ) : status === 'partial' ? (
-                            <div className="flex items-center justify-center w-full h-8 text-white text-Ntext font-nGothic bg-orange-500 rounded">
+                            <div className="flex items-center justify-center w-full h-8 text-white bg-orange-500 rounded">
                               {score}
                             </div>
                           ) : status === 'failed' ? (
-                            <div className="w-full h-8 text-Ntext font-nGothic bg-red-400 rounded" />
+                            <div className="w-full h-8 bg-red-400 rounded" />
                           ) : (
-                            <div className="w-full h-8 text-Ntext font-nGothic" />
+                            <div className="w-full h-8" />
                           )}
                         </div>
                       </td>

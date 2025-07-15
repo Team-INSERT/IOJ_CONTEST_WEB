@@ -3,8 +3,8 @@ import React from 'react';
 const Wrong = () => {
   return (
     <svg
-      width="20"
-      height="21"
+      width="30"
+      height="32.5"
       viewBox="0 0 20 21"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

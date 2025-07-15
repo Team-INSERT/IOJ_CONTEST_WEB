@@ -31,20 +31,20 @@ const CodeHeader = ({ endTime, problems }: ContestDetail) => {
   };
 
   return (
-    <div className="absolute top-0 flex items-center justify-between w-full px-6 text-white h-16 bg-[#333333] select-none">
+    <div className="absolute top-0 flex items-center justify-between w-full px-6 text-white h-16 bg-[#333333] select-none font-pRegular">
       <div className="flex items-center gap-2">
         <button
-          className="px-3 py-1 rounded text-Nstext font-nGothic bg-zinc-600 disabled:opacity-40"
+          className="px-3 py-1 rounded bg-zinc-600 disabled:opacity-40"
           onClick={() => goToProblem(currentIndex - 1)}
           disabled={currentIndex === 0}
         >
           이전
         </button>
-        <span className="text-Nstext font-nGothic">
+        <span>
           {currentIndex + 1} / {problems?.length}
         </span>
         <button
-          className="px-3 py-1 rounded text-Nstext font-nGothic bg-zinc-600 disabled:opacity-40"
+          className="px-3 py-1 rounded bg-zinc-600 disabled:opacity-40"
           onClick={() => goToProblem(currentIndex + 1)}
           disabled={currentIndex === problems?.length - 1}
         >
@@ -60,7 +60,7 @@ const CodeHeader = ({ endTime, problems }: ContestDetail) => {
       <div className="flex items-center gap-2">
         <button
           onClick={() => router.push(`/contest/${contestId}`)}
-          className="px-3 py-1 bg-red-500 rounded text-Nstext font-nGothic"
+          className="px-3 py-1 bg-red-500 rounded text-Nstext "
         >
           나가기
         </button>

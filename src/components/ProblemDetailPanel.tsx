@@ -25,7 +25,10 @@ const ProblemDetailPanel = ({
   style,
 }: ProblemDetailPanelProps) => {
   return (
-    <div style={style} className="px-10 py-6 overflow-auto select-none">
+    <div
+      style={style}
+      className="px-10 py-6 overflow-auto select-none font-pRegular"
+    >
       <h2 className="text-gray-700 text-text font-pRegular">{codeId}</h2>
       <div className="flex justify-between pb-3 text-bt1 font-pSemibold">
         <div>{codeData.title}</div>
@@ -38,7 +41,7 @@ const ProblemDetailPanel = ({
         {codeData.memoryLimit / 1024} MB
       </div>
       <div className="mt-6 space-y-6">
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 text-[17px]">
           <h3 className="pb-1 border-b-2 border-ut-insertBlue w-fit text-bt font-pSemibold">
             문제
           </h3>
@@ -56,34 +59,28 @@ const ProblemDetailPanel = ({
           </h3>
           <Latex>{codeData.outputContent}</Latex>
         </div>
-        <div className="grid grid-cols-2 gap-5 mt-14">
-          <div>
-            <h4 className="pb-1 mb-5 border-b-2 border-ut-insertBlue w-fit text-bt font-pSemibold">
-              예제 입력
-            </h4>
-            <div className="flex flex-col gap-3">
-              {codeData.testcases.map((tc, i) => (
-                <div
-                  key={i}
-                  className="p-3 whitespace-pre-line border rounded-md bg-gray-50"
-                >
-                  {tc.input}
-                </div>
-              ))}
-            </div>
-          </div>
-          <div>
-            <h4 className="pb-1 mb-5 border-b-2 border-ut-insertBlue w-fit text-bt font-pSemibold">
-              예제 출력
-            </h4>
-            <div className="flex flex-col gap-3">
-              {codeData.testcases.map((tc, i) => (
-                <div key={i} className="p-3 border rounded-md bg-gray-50">
-                  {tc.output}
-                </div>
-              ))}
-            </div>
-          </div>
+        <div className="grid grid-cols-2 gap-5 mb-4">
+          <h4 className="pb-1 border-b-2 border-ut-insertBlue w-fit text-bt font-pSemibold">
+            예제 입력
+          </h4>
+          <h4 className="pb-1 border-b-2 border-ut-insertBlue w-fit text-bt font-pSemibold">
+            예제 출력
+          </h4>
+        </div>
+
+        <div className="grid grid-cols-2 gap-5 mb-4">
+          {codeData.testcases.map((tc, i) => (
+            <React.Fragment key={i}>
+              <div className="p-3 whitespace-pre-line border rounded-md bg-gray-50">
+                {tc.input}
+              </div>
+              <div className="p-3 border rounded-md bg-gray-50">
+                {tc.output}
+              </div>
+            </React.Fragment>
+          ))}
+        </div>
+        {codeData.subtasks.length > 1 && (
           <div>
             <h4 className="pb-1 mb-5 border-b-2 border-ut-insertBlue w-fit text-bt font-pSemibold">
               부분문제
@@ -97,7 +94,7 @@ const ProblemDetailPanel = ({
               </div>
             ))}
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

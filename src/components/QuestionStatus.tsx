@@ -9,7 +9,7 @@ interface OwnProps {
 const QuestionStatus = ({ status }: OwnProps) => {
   return (
     <div
-      className={`flex items-center justify-center w-8 rounded h-9 
+      className={`flex items-center justify-center w-8 rounded h-9 font-pRegular
         ${
           status === null
             ? ''
@@ -20,7 +20,7 @@ const QuestionStatus = ({ status }: OwnProps) => {
                 : 'bg-[#E54747]'
         }`}
     >
-      <div className="text-white text-Ntext font-nGothic">
+      <div className="text-white text-Ntext ">
         {status === null
           ? ''
           : status === 'ACCEPTED'

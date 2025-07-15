@@ -21,6 +21,7 @@ export type SubtaskInfo = {
 export type SubmissionResult = {
   verdict: JudgeStatus;
   submittedAt: string;
+  compilationDetail?: string;
   subtaskInfos: SubtaskInfo[];
 };
 
