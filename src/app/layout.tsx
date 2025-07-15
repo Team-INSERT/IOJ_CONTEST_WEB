@@ -2,6 +2,7 @@ import ReactQueryProvider from './providers/react-query-provider';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import type { Metadata } from 'next';
 import './globals.css';
+import BodyWrapper from './BodyWrapper';
 
 export const metadata: Metadata = {
   title: 'Insert Online Judge',
@@ -17,11 +18,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="w-screen h-screen antialiased overscroll-none">
+      <BodyWrapper>
         <ReactQueryProvider>
           {children} <ReactQueryDevtools initialIsOpen={false} />
         </ReactQueryProvider>
-      </body>
+      </BodyWrapper>
     </html>
   );
 }
