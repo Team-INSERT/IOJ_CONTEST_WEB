@@ -7,6 +7,7 @@ import ProblemDetailPanel from '@/components/ProblemDetailPanel';
 import SubmitResultPanel from '@/components/SubmitResultPanel';
 import EditorCustomModal from '@/components/EditorCustomModal';
 import {
+  ApiErrorResponse,
   usePostCreateTestcase,
   usePostSubmitProblem,
 } from '@/lib/service/contest/contest.mutation';
@@ -26,6 +27,7 @@ import SlideAlert from '@/components/SlideAlert';
 import TestCaseModal from '@/components/TestCaseModal';
 import { PulseLoader } from 'react-spinners';
 import API from '@/lib/service/contest/contest.api';
+import { AxiosError } from 'axios';
 
 interface EditorSettings {
   fontSize: number;
@@ -200,19 +202,10 @@ const Code = () => {
         onSuccess: (data) => {
           setSubmissionId(data);
         },
-        onError: () => {
-          setSubmitResult((prev) =>
-            prev.map((item) =>
-              item.id === id
-                ? {
-                    id,
-                    status: 'done',
-                    data: { error: '이미 해결된 문제입니다.' },
-                  }
-                : item
-            )
-          );
-          setAlerthandler('error', '이미 해결된 문제입니다.');
+        onError: (err: AxiosError<ApiErrorResponse>) => {
+          setSubmitResult((prev) => prev.filter((item) => item.id !== id));
+          const message = err.response?.data?.message || '문제가 발생했습니다.';
+          setAlerthandler('error', message);
         },
       }
     );
@@ -345,8 +338,11 @@ const Code = () => {
   const shouldEnableTestcaseQuery =
     testcaseSubmissionId !== '' && shouldFetchTestcase;
 
-  const { data: testcaseData, isFetching: isTestcaseSubmitting, isError } =
-    useGetSubmitTestcase(testcaseSubmissionId);
+  const {
+    data: testcaseData,
+    isFetching: isTestcaseSubmitting,
+    isError,
+  } = useGetSubmitTestcase(testcaseSubmissionId);
 
   useEffect(() => {
     if (shouldEnableTestcaseQuery && !isTestcaseSubmitting) {
@@ -355,7 +351,10 @@ const Code = () => {
   }, [shouldEnableTestcaseQuery, isTestcaseSubmitting]);
 
   useEffect(() => {
-    if ((isError || testcaseData?.length === 0) && testcaseSubmissionId !== '') {
+    if (
+      (isError || testcaseData?.length === 0) &&
+      testcaseSubmissionId !== ''
+    ) {
       API.getSubmissionError(testcaseSubmissionId);
     }
   }, [isError, testcaseData]);
