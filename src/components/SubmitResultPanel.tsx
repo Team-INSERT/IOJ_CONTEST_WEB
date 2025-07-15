@@ -1,7 +1,7 @@
 import { SubmitState, SubmissionResult } from '@/lib/types/contestSubmitType';
 import { BeatLoader } from 'react-spinners';
 import { useState } from 'react';
-import SubmissionModal from './SubmissionModal';
+import SubmitResultModal from './SubmitResultModal';
 
 interface SubmitResultPanelProps {
   submitResult: SubmitState[];
@@ -86,7 +86,7 @@ const SubmitResultPanel = ({ submitResult }: SubmitResultPanelProps) => {
         ))}
       </div>
 
-      <SubmissionModal
+      <SubmitResultModal
         isOpen={isModalOpen}
         onClose={handleCloseModal}
         submission={selectedSubmission}

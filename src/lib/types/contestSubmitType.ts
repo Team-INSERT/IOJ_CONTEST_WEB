@@ -15,10 +15,12 @@ export type SubtaskInfo = {
   maxExecutionTime: number;
   maxMemoryUsed: number;
   verdict: JudgeStatus;
+  detail: string;
 };
 
 export type SubmissionResult = {
   verdict: JudgeStatus;
+  submittedAt: string;
   subtaskInfos: SubtaskInfo[];
 };
 

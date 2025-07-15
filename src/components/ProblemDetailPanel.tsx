@@ -1,4 +1,6 @@
 import React from 'react';
+import 'katex/dist/katex.min.css';
+import Latex from 'react-latex-next';
 import StarStatus from '@/components/StarStatus';
 
 interface ProblemDetailPanelProps {
@@ -12,6 +14,7 @@ interface ProblemDetailPanelProps {
     inputContent: string;
     outputContent: string;
     testcases: { input: string; output: string }[];
+    subtasks: { description: string; score: string }[];
   };
   style?: React.CSSProperties;
 }
@@ -39,19 +42,19 @@ const ProblemDetailPanel = ({
           <h3 className="pb-1 border-b-2 border-ut-insertBlue w-fit text-bt font-pSemibold">
             문제
           </h3>
-          <p>{codeData.content}</p>
+          <Latex>{codeData.content}</Latex>
         </div>
         <div className="flex flex-col gap-3">
           <h3 className="pb-1 border-b-2 border-ut-insertBlue w-fit text-bt font-pSemibold">
             입력
           </h3>
-          <p>{codeData.inputContent}</p>
+          <Latex>{codeData.inputContent}</Latex>
         </div>
         <div className="flex flex-col gap-3">
           <h3 className="pb-1 border-b-2 border-ut-insertBlue w-fit text-bt font-pSemibold">
             출력
           </h3>
-          <p>{codeData.outputContent}</p>
+          <Latex>{codeData.outputContent}</Latex>
         </div>
         <div className="grid grid-cols-2 gap-5 mt-14">
           <div>
@@ -80,6 +83,19 @@ const ProblemDetailPanel = ({
                 </div>
               ))}
             </div>
+          </div>
+          <div>
+            <h4 className="pb-1 mb-5 border-b-2 border-ut-insertBlue w-fit text-bt font-pSemibold">
+              부분문제
+            </h4>
+            {codeData.subtasks.map((subtask, i) => (
+              <div key={i} className="py-1">
+                <Latex>
+                  {(i + 1).toString()}. ({subtask.score}점){' '}
+                  {subtask.description}
+                </Latex>
+              </div>
+            ))}
           </div>
         </div>
       </div>
