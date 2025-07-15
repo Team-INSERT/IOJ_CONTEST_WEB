@@ -93,7 +93,7 @@ const TestCaseModal = ({
     >
       <main
         onClick={(e) => e.stopPropagation()}
-        className="flex flex-col justify-between w-[53.3125rem] h-[33.125rem] py-9 px-8 bg-white rounded"
+        className="flex flex-col justify-between w-[60%] h-[70%] py-9 px-8 bg-white rounded gap-4"
       >
         <section className="border rounded overflow-x-auto w-full">
           <div
@@ -146,7 +146,7 @@ const TestCaseModal = ({
                 className="p-3 bg-gray-50 border rounded-md whitespace-pre-wrap h-full text-gray-700"
               />
 
-              <div className="relative">
+              <div className="flex items-center gap-4 mr-4">
                 <textarea
                   placeholder="Output"
                   value={tc.expectedOutput}
@@ -158,11 +158,11 @@ const TestCaseModal = ({
                     t.style.height = 'auto';
                     t.style.height = `${t.scrollHeight}px`;
                   }}
-                  className="p-3 bg-gray-50 border rounded-md whitespace-pre-wrap h-full text-gray-700"
+                  className="p-3 bg-gray-50 border rounded-md whitespace-pre-wrap h-full w-full text-gray-700"
                 />
                 <RemoveIcon
                   onClick={() => handleRemove(idx)}
-                  className="absolute top-2 right-2 w-4 h-4 text-gray-400 hover:text-red-500 cursor-pointer"
+                  className="hover:text-red-500 cursor-pointer"
                 />
               </div>
             </div>
@@ -172,7 +172,7 @@ const TestCaseModal = ({
           onClick={() => {
             handleCreateTestcase();
           }}
-          className="w-fit ml-auto py-3 px-[63px] bg-ut-insertBlue rounded text-white text-[1.1875rem] font-bold"
+          className="w-fit ml-auto py-1 px-4 bg-ut-insertBlue rounded text-white"
         >
           확인
         </button>
