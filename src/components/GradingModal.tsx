@@ -1,7 +1,6 @@
 'use client';
 
 import React from 'react';
-import XIcon from '@/assets/XIcon';
 
 interface Props {
   onClose: () => void;
@@ -9,17 +8,16 @@ interface Props {
 
 const GradingModal = ({ onClose }: Props) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 font-pRegular">
-      <div className="relative w-[50rem] max-w-[90vw] rounded-2xl bg-white shadow-xl overflow-hidden">
-        <button
-          onClick={onClose}
-          className="absolute text-gray-400 transition top-4 right-4 hover:text-red-400"
-        >
-          <XIcon />
-        </button>
-
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 font-pRegular"
+      onClick={onClose}
+    >
+      <div
+        className="relative w-[50rem] max-w-[90vw] rounded-2xl bg-white shadow-xl overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="flex flex-col items-center justify-center px-10 py-10 gap-10 bg-gradient-to-tr from-[#e8f1ff] via-white to-[#ffeaea]">
-          <div className="font-extrabold text-3xl">순위기준</div>
+          <div className="font-black text-3xl">순위기준</div>
           <div className="flex justify-between w-full">
             <div className="flex-1 space-y-6">
               <div>
@@ -31,6 +29,9 @@ const GradingModal = ({ onClose }: Props) => {
                     가장 중요한 순위 결정 요소
                   </span>
                   입니다.
+                  <br />각 문제는 정답 시{' '}
+                  <span className="font-semibold text-blue-600">100점</span>으로
+                  처리됩니다.
                 </p>
               </div>
 
@@ -43,6 +44,12 @@ const GradingModal = ({ onClose }: Props) => {
                     페널티가 적은 참가자
                   </span>
                   가 상위 순위를 차지합니다.
+                  <br />
+                  패널티 ={' '}
+                  <span className="font-semibold text-blue-600">
+                    (대회 시작 시간 - 문제 해결 시간)분
+                  </span>
+                  <br />
                 </p>
               </div>
 
