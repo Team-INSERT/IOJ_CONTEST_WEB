@@ -386,7 +386,7 @@ const Code = () => {
           style={{ width: `${100 - leftWidth}%` }}
           className="flex flex-col h-full bg-[#1E1E1E] select-none font-pRegular"
         >
-          <div className="flex items-center justify-between px-5 py-2 border-b border-zinc-700 flex-nowrap whitespace-nowrap overflow-x-auto">
+          <div className="flex items-center justify-between px-5 py-2 border-b border-zinc-700 flex-nowrap whitespace-nowrap overflow-x-auto text-[15px]">
             <div className="font-semibold text-white">
               {language === 'PYTHON'
                 ? 'main.py'
@@ -396,10 +396,10 @@ const Code = () => {
                     ? 'main.cpp'
                     : 'main.c'}
             </div>
-            <div className="flex gap-2 text-[14px]">
+            <div className="flex gap-2">
               <button
                 onClick={() => setIsSettingModalOpen(true)}
-                className="flex items-center gap-1 px-3 py-1 text-white bg-gray-600 rounded hover:bg-gray-700"
+                className="flex items-center gap-1 px-4 py-1 text-white bg-gray-600 rounded-sm hover:bg-gray-700 font-semibold"
                 title="에디터 설정"
               >
                 <Settings className="w-4 h-4" />
@@ -407,7 +407,7 @@ const Code = () => {
               </button>
 
               <button
-                className="px-3 py-1 text-white bg-blue-500 rounded"
+                className="px-4 py-1 text-blue-normal bg-[#EAF4FF] rounded-sm font-semibold"
                 onClick={() => {
                   if (confirm('코드가 초기화됩니다 진행하시겠습니까?')) {
                     setCode(defaultCode[language]);
@@ -419,7 +419,7 @@ const Code = () => {
               </button>
 
               <button
-                className="px-3 py-1 text-white bg-blue-500 rounded"
+                className="px-4 py-1 text-blue-normal bg-[#EAF4FF] rounded-sm font-semibold"
                 onClick={() => {
                   handleCodeChange(code);
                   setAlerthandler('success', '코드가 저장되었습니다.');
@@ -429,7 +429,7 @@ const Code = () => {
               </button>
 
               <select
-                className="px-2 py-1 text-white bg-blue-500 rounded border-r-8-transparent"
+                className="pl-4 py-1 pr-8 text-blue-normal bg-[#EAF4FF] rounded-sm font-semibold appearance-none bg-downArrow bg-no-repeat [background-position:calc(100%_-_5px)_center]"
                 onChange={(e) => {
                   const val = e.target.value as 'PYTHON' | 'JAVA' | 'C' | 'CPP';
                   setLanguage(val);
@@ -438,14 +438,22 @@ const Code = () => {
                 }}
                 value={language}
               >
-                <option value="PYTHON">Python</option>
-                <option value="JAVA">Java</option>
-                <option value="C">C</option>
-                <option value="CPP">C++</option>
+                <option value="PYTHON" className="font-semibold">
+                  Python
+                </option>
+                <option value="JAVA" className="font-semibold">
+                  Java
+                </option>
+                <option value="C" className="font-semibold">
+                  C
+                </option>
+                <option value="CPP" className="font-semibold">
+                  C++
+                </option>
               </select>
 
               <button
-                className="px-3 py-1 text-white bg-blue-500 rounded"
+                className="px-3 py-1 text-blue-normal bg-[#EAF4FF] rounded-sm font-semibold"
                 onClick={() => {
                   setIsTestCaseModalOpen(true);
                 }}
@@ -456,10 +464,10 @@ const Code = () => {
               <button
                 onClick={handleTestcaseSubmit}
                 disabled={isTestcaseProcessing}
-                className={`px-3 py-1 text-white rounded w-[100px] ${
+                className={`px-4 py-1 text-blue-normal rounded-sm font-semibold min-w-[7rem] ${
                   isTestcaseProcessing
                     ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-blue-500'
+                    : 'bg-[#EAF4FF]'
                 }`}
               >
                 {isTestcaseProcessing ? (
@@ -470,10 +478,10 @@ const Code = () => {
               </button>
 
               <button
-                className={`px-3 py-1 text-white rounded w-[49.2px] ${
+                className={`px-4 py-1 text-white rounded-sm min-w-[4rem] ${
                   isSubmitting
                     ? 'bg-gray-400 cursor-not-allowed'
-                    : 'bg-green-500'
+                    : 'bg-blue-normal'
                 }`}
                 onClick={handleProblemSubmit}
                 disabled={isSubmitting}

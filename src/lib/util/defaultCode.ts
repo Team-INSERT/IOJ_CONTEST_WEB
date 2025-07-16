@@ -1,8 +1,8 @@
 const defaultCode = {
-  C: `#include <stdio.h>\n\nint main() {\n  int a, b;\n  scanf("%d %d", &a, &b);\n  printf("%d\\n", a * b);\n  return 0;\n}`,
-  CPP: `#include <iostream>\n\nusing namespace std;\n\nint main() {\n  int a, b;\n  cin >> a >> b;\n  cout << a * b << endl;\n  return 0;\n}`,
-  JAVA: `import java.util.*;\n\npublic class main {\n  public static void main(String[] args) {\n    Scanner sc = new Scanner(System.in);\n    int a = sc.nextInt();\n    int b = sc.nextInt();\n    System.out.println(a * b);\n  }\n}`,
-  PYTHON: `a, b = map(int, input().split())\nprint(a * b)`,
+  C: `#include <stdio.h>\n\nint main() {\n\tprintf("Hello World!");\n\treturn 0;\n}`,
+  CPP: `#include <iostream>\n\nusing namespace std;\n\nint main() {\n\tcout << "Hello World!" << endl;\n}`,
+  JAVA: `import java.util.*;\n\npublic class main {\n\tpublic static void main(String[] args) {\n\t\tSystem.out.println("Hello World!");\n\t}\n}`,
+  PYTHON: `print("Hello World!")`,
 };
 
 export default defaultCode;

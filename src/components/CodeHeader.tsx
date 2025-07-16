@@ -32,10 +32,10 @@ const CodeHeader = ({ endTime, problems }: ContestDetail) => {
   };
 
   return (
-    <div className="absolute top-0 flex items-center justify-between w-full px-6 text-white h-16 bg-[#333333] select-none font-pRegular">
-      <div className="flex items-center gap-2">
+    <div className="absolute top-0 flex items-center justify-between w-full px-6 text-white h-16 bg-[#333333] select-none font-nGothic">
+      <div className="flex items-center gap-4">
         <button
-          className="px-3 py-1 rounded bg-zinc-600 disabled:opacity-40"
+          className="px-4 py-1 rounded bg-zinc-600 disabled:opacity-40 tracking-wide"
           onClick={() => goToProblem(currentIndex - 1)}
           disabled={currentIndex === 0}
         >
@@ -45,7 +45,7 @@ const CodeHeader = ({ endTime, problems }: ContestDetail) => {
           {currentIndex + 1} / {problems?.length}
         </span>
         <button
-          className="px-3 py-1 rounded bg-zinc-600 disabled:opacity-40"
+          className="px-4 py-1 rounded bg-zinc-600 disabled:opacity-40 tracking-wide"
           onClick={() => goToProblem(currentIndex + 1)}
           disabled={currentIndex === problems?.length - 1}
         >
@@ -53,7 +53,7 @@ const CodeHeader = ({ endTime, problems }: ContestDetail) => {
         </button>
       </div>
 
-      <div className="flex items-center justify-center gap-2 px-4 py-2 border border-white rounded">
+      <div className="flex items-center justify-center gap-2 px-4 py-2 border border-white rounded font-pRegular">
         <Clock />
         {remaining}
       </div>
@@ -61,7 +61,7 @@ const CodeHeader = ({ endTime, problems }: ContestDetail) => {
       <div className="flex items-center gap-2">
         <button
           onClick={() => router.push(`/contest/${contestId}`)}
-          className="px-3 py-1 bg-red-500 rounded text-Nstext "
+          className="px-4 py-1 bg-red-500 rounded text-Nstext "
         >
           나가기
         </button>
