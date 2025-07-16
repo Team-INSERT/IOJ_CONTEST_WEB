@@ -22,7 +22,7 @@ const Contest = () => {
 
   return (
     <div className="flex flex-col justify-start items-center px-[120px] py-[100px] gap-6 w-full h-full">
-      <div className="flex flex-col bg-banner bg-no-repeat bg-center bg-cover w-full h-[50vh] px-6 py-5 rounded-lg">
+      <div className="flex flex-col bg-banner bg-no-repeat bg-center bg-cover w-full h-[40vh] px-6 py-5 rounded-lg">
         <div className="flex flex-shrink-0 gap-2 justify-end">
           <button
             className="px-4 py-2 bg-blue-normal text-white rounded-[4px] font-semibold tracking-wide"
