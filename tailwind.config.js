@@ -9,6 +9,7 @@ module.exports = {
     extend: {
       backgroundImage: {
         banner: "url('/assets/banner.svg')",
+        downArrow: "url('/assets/downArrow.svg')",
       },
       colors: {
         ut: {
