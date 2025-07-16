@@ -27,7 +27,7 @@ const ProblemDetailPanel = ({
   return (
     <div style={style} className="px-10 py-6 overflow-auto font-pRegular">
       <h2 className="text-gray-700 text-text font-pRegular">{codeId}</h2>
-      <div className="flex justify-between pb-3 text-bt1 font-pSemibold">
+      <div className="flex justify-between pb-3 text-4xl font-pBold">
         <div>{codeData.title}</div>
         <StarStatus level={codeData.level} />
       </div>
