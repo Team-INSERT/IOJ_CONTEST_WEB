@@ -113,7 +113,7 @@ const Ranking = () => {
                   <p className="w-3/4">{user.userName}</p>
                 </div>
                 <div className="flex justify-between basis-3/5 gap-2 h-full">
-                  {rankingData.problemOrders.map((problem: ProblemOrder) => {
+                  {sortedProblemOrders.map((problem: ProblemOrder) => {
                     const status = getProblemStatus(
                       user.userId,
                       problem.problemId

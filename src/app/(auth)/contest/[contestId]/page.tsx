@@ -45,7 +45,7 @@ const Contest = () => {
       </div>
       <div className="flex flex-col gap-5 items-start w-full">
         <h2 className="text-3xl font-pSemibold">문제</h2>
-        <div className="flex flex-col gap-2 w-full">
+        <div className="flex flex-col gap-2 w-full mb-16">
           {contestDetail.problems?.map((problem, i) => (
             <div
               key={problem.id}
