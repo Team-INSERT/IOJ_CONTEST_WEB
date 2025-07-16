@@ -22,7 +22,7 @@ const Contest = () => {
 
   return (
     <div className="flex flex-col justify-start items-center px-[120px] py-[100px] gap-6 w-full h-full">
-      <div className="flex flex-col bg-banner bg-no-repeat bg-center bg-cover w-full h-[40vh] px-6 py-5 rounded-lg">
+      <div className="flex flex-shrink-0 flex-col bg-banner bg-no-repeat bg-center bg-cover w-full h-[40vh] px-6 py-5 rounded-lg">
         <div className="flex flex-shrink-0 gap-2 justify-end">
           <button
             className="px-4 py-2 bg-blue-normal text-white rounded-[4px] font-semibold tracking-wide"
@@ -46,7 +46,7 @@ const Contest = () => {
       <div className="flex flex-col gap-5 items-start w-full">
         <h2 className="text-3xl font-pSemibold">문제</h2>
         <div className="flex flex-col gap-2 w-full">
-          {contestDetail.problems?.map((problem) => (
+          {contestDetail.problems?.map((problem, i) => (
             <div
               key={problem.id}
               className="flex px-2 py-1 w-full shadow-[0px_4px_6px_0px_rgba(111,111,111,0.25)] text-Ntext cursor-pointer justify-between"
@@ -73,7 +73,7 @@ const Contest = () => {
                   )}
                 </div>
                 <p className="w-[17px] font-pBold mr-9">
-                  {String.fromCharCode(65 + (problem.id - 1))}
+                  {String.fromCharCode(65 + i)}
                 </p>
                 <p className="w-12 mr-9">
                   {problem.id.toString().padStart(4, '0')}
