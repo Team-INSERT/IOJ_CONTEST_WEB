@@ -100,13 +100,13 @@ const SubmitResultModal = ({
           <div className="flex gap-10">
             <p>
               <span className="text-blue-normal font-semibold">
-                제출 시각:{' '}
+                제출 시각 :{' '}
               </span>
               {new Date(submission.submittedAt).toLocaleString('ko-KR')}
             </p>
             <p>
               <span className="text-blue-normal font-semibold">
-                획득 점수:{' '}
+                획득 점수 :{' '}
               </span>
               {submission.subtaskInfos.reduce((sum, obj) => sum + obj.score, 0)}{' '}
               <span className="text-[#666]">/ 100점</span>
@@ -122,11 +122,8 @@ const SubmitResultModal = ({
           </div>
         )}
         {submission.subtaskInfos.map((subtask: SubtaskInfo, i) => (
-          <>
-            <div
-              key={i}
-              className="flex items-center self-stretch gap-5 py-[20px]"
-            >
+          <div key={i} className="w-full">
+            <div className="flex items-center self-stretch gap-5 py-[20px]">
               <div className="flex gap-2 flex-shrink-0 min-w-[160px] text-[#666] font-bold items-center self-stretch">
                 <Subtask />
                 부분문제 {i + 1}
@@ -140,7 +137,7 @@ const SubmitResultModal = ({
                 </span>
               </div>
               <div
-                className="flex justify-between items-center flex-1 min-w-0"
+                className={`flex justify-between items-center flex-1 min-w-0 ${subtask.verdict === 'RUNTIME_ERROR' && 'cursor-pointer'}`}
                 onClick={() =>
                   subtask.verdict === 'RUNTIME_ERROR' && handleDetailToggle(i)
                 }
@@ -181,7 +178,7 @@ const SubmitResultModal = ({
                 {subtask.detail}
               </div>
             )}
-          </>
+          </div>
         ))}
       </div>
     </div>

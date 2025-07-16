@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useQuery } from '@tanstack/react-query';
 import API from './contest.api';
 import { contestKeys } from './contest.keys';
+import { ContestResponse } from '@/lib/types/contest.types';
 
 export const useGetContestList = (params: { page?: number; size?: number }) => {
   return useQuery({
@@ -11,7 +11,7 @@ export const useGetContestList = (params: { page?: number; size?: number }) => {
 };
 
 export const useGetContestById = (id: number) => {
-  return useQuery({
+  return useQuery<ContestResponse>({
     queryKey: [contestKeys.getContestById, id],
     queryFn: () => API.getContestById(id),
   });

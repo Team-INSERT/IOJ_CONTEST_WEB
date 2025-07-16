@@ -12,7 +12,7 @@ export default function BodyWrapper({ children }: BodyWrapperProps) {
 
   return (
     <body
-      className={`w-screen h-screen antialiased overscroll-none ${
+      className={`font-pRegular w-screen h-screen antialiased overflow-x-hidden overscroll-none ${
         isCodePage ? 'overflow-hidden' : ''
       }`}
     >

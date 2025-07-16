@@ -7,6 +7,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        banner: "url('/assets/banner.svg')",
+      },
       colors: {
         ut: {
           white: '#FFF',

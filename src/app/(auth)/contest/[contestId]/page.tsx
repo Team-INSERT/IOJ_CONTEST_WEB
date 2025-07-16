@@ -1,12 +1,10 @@
 'use client';
 
 import Loading from '@/components/Loading';
-import QuestionStatus from '@/components/QuestionStatus';
-import RemainingTime from '@/components/RemainingTime';
 import StarStatus from '@/components/StarStatus';
+import { useRemainingTime } from '@/hooks/useRemainingTime';
 import { useGetContestById } from '@/lib/service/contest/contest.query';
-import { ContestProblem } from '@/lib/types/contest.types';
-import { AlertUtil, PathUtil } from '@/lib/util';
+import { PathUtil } from '@/lib/util';
 import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
 
@@ -16,92 +14,76 @@ const Contest = () => {
   const contestId = PathUtil(pathname, 1);
 
   const { data: contestDetail, isLoading } = useGetContestById(contestId);
-
-  const isFutureTime = (target: string): boolean => {
-    const now = new Date();
-    const targetDate = new Date(target);
-
-    return targetDate.getTime() > now.getTime();
-  };
-
-  const pushingEditer = (problemId: number) => {
-    if (contestDetail?.endTime && isFutureTime(contestDetail.endTime)) {
-      navigate.push(`${pathname}/code/${contestDetail.problems[problemId].id}`);
-    } else {
-      AlertUtil.error('시간이 종료된 대회입니다.');
-    }
-  };
+  const remaining = useRemainingTime(contestDetail?.endTime);
 
   if (isLoading || !contestDetail) {
     return <Loading />;
   }
 
   return (
-    <div className="px-[120px] pt-[40px] pb-[194px] w-full">
-      <div className="relative flex items-center justify-center w-full pb-5">
-        <h1 className="text-bt1 font-pBold">{contestDetail?.title}</h1>
-        <div className="absolute right-0 pt-5">
+    <div className="flex flex-col justify-start items-center px-[120px] py-[100px] gap-6 w-full h-full">
+      <div className="flex flex-col bg-banner bg-no-repeat bg-center bg-cover w-full h-[50vh] px-6 py-5 rounded-lg">
+        <div className="flex flex-shrink-0 gap-2 justify-end">
           <button
-            className="px-4 py-2 text-white rounded bg-ut-warningRed text-stext font-pBold"
-            onClick={() => {
-              navigate.push('/');
-            }}
+            className="px-4 py-2 bg-blue-normal text-white rounded-[4px] font-semibold tracking-wide"
+            onClick={() => navigate.push(`${pathname}/ranking`)}
+          >
+            순위 보러가기
+          </button>
+          <button
+            className="px-4 py-2 bg-[#E33434] text-white rounded-[4px] font-semibold tracking-wide"
+            onClick={() => navigate.push('/')}
           >
             뒤로가기
           </button>
         </div>
-      </div>
-
-      <div className="relative bg-white rounded-lg flex flex-col items-center py-[56px] mb-14 border border-transparent before:content-[''] before:absolute before:inset-[-3px] before:rounded-lg before:bg-gradient-to-br before:from-[#007CFF] before:to-[#FF48AB] before:-z-10">
-        <div className="pb-[28px]">
-          <RemainingTime targetDate={contestDetail?.endTime} type="contest" />
-        </div>
-        <div className="w-[60%] border-t border-gray-300" />
-        <div className="pt-[31px]">
-          <button
-            className="px-4 py-2 bg-[#007CFF] rounded text-stext font-pBold text-white"
-            onClick={() => {
-              navigate.push(`${pathname}/ranking`);
-            }}
-          >
-            순위보러가기
-          </button>
+        <div className="flex-1" />
+        <div className="flex flex-col flex-shrink-0 gap-2">
+          <h2 className="text-4xl text-white font-pSemibold">{remaining}</h2>
+          <h3 className="text-2xl text-white">{contestDetail.title}</h3>
         </div>
       </div>
-
-      <div className="pb-5 text-title font-pBold">문제</div>
-      <div className="flex flex-col gap-2">
-        {contestDetail?.problems?.map(
-          (problem: ContestProblem, index: number) => {
-            const formattedLetter = String.fromCharCode(65 + (problem.id - 1));
-
-            return (
-              <div
-                key={problem.id}
-                className="flex items-center justify-between px-2 py-1 bg-white rounded shadow-md cursor-pointer h-11"
-                onClick={() => pushingEditer(index)}
-              >
-                <div className="flex items-center gap-[2.19rem]">
-                  <QuestionStatus status={problem.verdict} />
-
-                  <div className="text-left text-text font-pSemibold">
-                    {formattedLetter}
-                  </div>
-                  <div className="text-left text-text font-pRegular">
-                    {problem.id.toString().padStart(4, '0')}
-                  </div>
-                  <div className="text-left text-text font-pRegular text-blue-normal">
-                    {problem.title}
-                  </div>
+      <div className="flex flex-col gap-5 items-start w-full">
+        <h2 className="text-3xl font-pSemibold">문제</h2>
+        <div className="flex flex-col gap-2 w-full">
+          {contestDetail.problems?.map((problem) => (
+            <div
+              key={problem.id}
+              className="flex px-2 py-1 w-full shadow-[0px_4px_6px_0px_rgba(111,111,111,0.25)] text-Ntext cursor-pointer justify-between"
+              onClick={() => navigate.push(`${pathname}/code/${problem.id}`)}
+            >
+              <div className="flex flex-shrink-0 items-center">
+                <div className="flex w-[10rem] font-nGothic text-white text-[17px]">
+                  {problem.verdict === 'ACCEPTED' ? (
+                    <div className="px-2 py-1 bg-[#24B984] rounded-[4px] w-fit">
+                      성공
+                    </div>
+                  ) : problem.verdict === 'PARTIAL' ? (
+                    <div className="px-2 py-1 bg-[#FF984D] rounded-[4px] w-fit">
+                      {problem.score} / 100 점
+                    </div>
+                  ) : problem.verdict === 'WRONG_ANSWER' ? (
+                    <div className="px-2 py-1 bg-[#E33434] rounded-[4px] w-fit">
+                      실패
+                    </div>
+                  ) : (
+                    <div className="px-2 py-1 bg-gray-500 rounded-[4px] w-fit">
+                      미해결
+                    </div>
+                  )}
                 </div>
-
-                <div className="">
-                  <StarStatus level={problem.level} />
-                </div>
+                <p className="w-[17px] font-pBold mr-9">
+                  {String.fromCharCode(65 + (problem.id - 1))}
+                </p>
+                <p className="w-12 mr-9">
+                  {problem.id.toString().padStart(4, '0')}
+                </p>
+                <p className="text-blue-normal ">{problem.title}</p>
               </div>
-            );
-          }
-        )}
+              <StarStatus level={problem.level} />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
