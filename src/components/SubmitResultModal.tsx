@@ -86,7 +86,7 @@ const SubmitResultModal = ({
       className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 text-[16px] text-black"
       onClick={handleBackdropClick}
     >
-      <div className="flex flex-col items-start gap-3 py-[40px] px-[52px] max-h-[500px] bg-white w-[70%] font-pRegular rounded overflow-auto">
+      <div className="flex flex-col items-start gap-3 py-10 px-[3.25rem] max-h-[60vh] bg-white w-[70%] font-pRegular rounded overflow-auto">
         {/* Modal Header */}
         <div className="flex justify-between items-end self-stretch">
           {submission.verdict === 'COMPILATION_ERROR' ? (
@@ -126,7 +126,7 @@ const SubmitResultModal = ({
             <div className="flex items-center self-stretch gap-5 py-[20px]">
               <div className="flex gap-2 flex-shrink-0 min-w-[160px] text-[#666] font-bold items-center self-stretch">
                 <Subtask />
-                부분문제 {i + 1}
+                서브테스크 {i + 1}
               </div>
               <div className="flex-shrink-0 min-w-[140px]">
                 <span className="font-bold text-[#1C1C1C]">

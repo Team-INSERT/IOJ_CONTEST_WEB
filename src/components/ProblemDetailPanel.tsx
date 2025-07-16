@@ -44,6 +44,21 @@ const ProblemDetailPanel = ({
           </h3>
           <Latex>{codeData.content}</Latex>
         </div>
+        {codeData.subtasks.length > 1 && (
+          <div>
+            <h4 className="pb-1 mb-5 border-b-2 border-ut-insertBlue w-fit text-bt font-pSemibold">
+              서브태스크
+            </h4>
+            {codeData.subtasks.map((subtask, i) => (
+              <div key={i} className="py-1">
+                <Latex>
+                  {(i + 1).toString()}. ({subtask.score}점){' '}
+                  {subtask.description}
+                </Latex>
+              </div>
+            ))}
+          </div>
+        )}
         <div className="flex flex-col gap-3">
           <h3 className="pb-1 border-b-2 border-ut-insertBlue w-fit text-bt font-pSemibold">
             입력
@@ -77,21 +92,6 @@ const ProblemDetailPanel = ({
             </React.Fragment>
           ))}
         </div>
-        {codeData.subtasks.length > 1 && (
-          <div>
-            <h4 className="pb-1 mb-5 border-b-2 border-ut-insertBlue w-fit text-bt font-pSemibold">
-              부분문제
-            </h4>
-            {codeData.subtasks.map((subtask, i) => (
-              <div key={i} className="py-1">
-                <Latex>
-                  {(i + 1).toString()}. ({subtask.score}점){' '}
-                  {subtask.description}
-                </Latex>
-              </div>
-            ))}
-          </div>
-        )}
       </div>
     </div>
   );
