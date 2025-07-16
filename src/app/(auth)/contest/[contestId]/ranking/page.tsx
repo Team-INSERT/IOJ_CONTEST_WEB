@@ -14,11 +14,6 @@ import Loading from '@/components/Loading';
 import CorrectIcon from '@/assets/CorrectIcon';
 import WrongIcon from '@/assets/WrongIcon';
 
-const getColumnHeaders = (count: number): string[] =>
-  Array.from({ length: count }, (_: undefined, i: number) =>
-    String.fromCharCode('A'.charCodeAt(0) + i)
-  );
-
 const Ranking = () => {
   const navigate = useRouter();
   const params = useParams();
@@ -31,7 +26,13 @@ const Ranking = () => {
 
   if (!rankingData) return <div>데이터를 불러올 수 없습니다.</div>;
 
-  const columns = getColumnHeaders(rankingData.problemOrders.length);
+  const sortedProblemOrders = [...rankingData.problemOrders].sort(
+    (a, b) => a.orderId - b.orderId
+  );
+
+  const columns = sortedProblemOrders.map((_, i) =>
+    String.fromCharCode('A'.charCodeAt(0) + i)
+  );
 
   const getUserSubmissions = (userId: number): SubmissionProblem[] => {
     const userSubmission = rankingData.submissions.find(
@@ -98,8 +99,10 @@ const Ranking = () => {
                 </p>
               ))}
             </div>
-            <p>총점</p>
-            <p>패널티</p>
+            <div className="flex gap-5 basis-1/5">
+              <p className="flex-1 text-center">총점</p>
+              <p className="flex-1 text-center">패널티</p>
+            </div>
           </div>
           <div className="h-[2px] bg-gradient-to-r from-[#F2F2F2] to-[#007CFF] rounded-sm" />
           <div>
@@ -157,15 +160,17 @@ const Ranking = () => {
                     }
                   })}
                 </div>
-                <p>{user.totalScore}</p>
-                <p>
-                  -
-                  {(
-                    (new Date(user.achievedAt).getTime() -
-                      new Date(rankingData.startTime).getTime()) /
-                    (60 * 1000)
-                  ).toFixed(0)}
-                </p>
+                <div className="flex gap-5 basis-1/5">
+                  <p className="flex-1 text-center">{user.totalScore}</p>
+                  <p className="flex-1 text-center">
+                    -
+                    {(
+                      (new Date(user.achievedAt).getTime() -
+                        new Date(rankingData.startTime).getTime()) /
+                      (60 * 1000)
+                    ).toFixed(0)}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
