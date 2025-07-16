@@ -11,21 +11,19 @@ interface TestcaseResultPanelProps {
 }
 
 const getVerdictMessage = (test: ContestTestcaseType): string => {
-  const { verdict, output, expectedOutput } = test;
-
-  if (verdict === 'ACCEPTED' && output === expectedOutput) {
+  if (test.verdict === 'ACCEPTED') {
     return '일치';
   }
 
-  if (verdict === 'RUNTIME_ERROR') {
+  if (test.verdict === 'RUNTIME_ERROR') {
     return '런타임 에러';
   }
 
-  if (verdict === 'OUT_OF_MEMORY') {
+  if (test.verdict === 'OUT_OF_MEMORY') {
     return '메모리 초과';
   }
 
-  if (verdict === 'TIME_LIMIT_EXCEEDED') {
+  if (test.verdict === 'TIME_LIMIT_EXCEEDED') {
     return '시간 초과';
   }
 
@@ -58,9 +56,7 @@ const TestcaseResultPanel = ({
   const url = usePathname();
   const codeId = PathUtil(url, 3);
   const matchedCount = Array.isArray(testcaseData)
-    ? testcaseData.filter(
-        (t) => t.output === t.expectedOutput && t.verdict === 'ACCEPTED'
-      ).length
+    ? testcaseData.filter((t) => t.verdict === 'ACCEPTED').length
     : 0;
 
   const { data: contestPorblemData } = useGetContestProblemById(codeId);
@@ -119,9 +115,7 @@ const TestcaseResultPanel = ({
               <tbody>
                 {testcaseData.map((test, idx) => {
                   const verdictText = getVerdictMessage(test);
-                  const isAccepted =
-                    test.verdict === 'ACCEPTED' &&
-                    test.output === test.expectedOutput;
+                  const isAccepted = test.verdict === 'ACCEPTED';
                   const colorClass = getVerdictColor(test.verdict, isAccepted);
 
                   return (
