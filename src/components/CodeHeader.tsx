@@ -3,8 +3,8 @@
 import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import Clock from '@/assets/Clock';
-import RemainingTime from './RemainingTime';
 import { PathUtil } from '@/lib/util';
+import { useRemainingTime } from '@/hooks/useRemainingTime';
 
 interface ProblemIds {
   id: number;
@@ -18,6 +18,7 @@ interface ContestDetail {
 const CodeHeader = ({ endTime, problems }: ContestDetail) => {
   const router = useRouter();
   const pathname = usePathname();
+  const remaining = useRemainingTime(endTime);
 
   const currentProblemId = Number(PathUtil(pathname, 3));
   const contestId = PathUtil(pathname, 1);
@@ -54,7 +55,7 @@ const CodeHeader = ({ endTime, problems }: ContestDetail) => {
 
       <div className="flex items-center justify-center gap-2 px-4 py-2 border border-white rounded">
         <Clock />
-        <RemainingTime targetDate={endTime} />
+        {remaining}
       </div>
 
       <div className="flex items-center gap-2">
