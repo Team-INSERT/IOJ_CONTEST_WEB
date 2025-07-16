@@ -28,6 +28,7 @@ export const useGetContestProblemById = (id: number) => {
   return useQuery({
     queryKey: [contestKeys.getContestProblem, id],
     queryFn: () => API.getContestProblem(id),
+    refetchOnMount: false,
   });
 };
 
