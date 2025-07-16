@@ -544,7 +544,6 @@ const Code = () => {
       <TestCaseModal
         isOpen={isTestCaseModalOpen}
         onClose={() => setIsTestCaseModalOpen(false)}
-        problemId={PathUtil(pathname, 3)}
         problemKey={`testcase-modal-${PathUtil(pathname, 3)}`}
         sourcecode={code}
         language={language}

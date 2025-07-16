@@ -5,7 +5,15 @@ function formatTime(ms: number) {
   const h = Math.floor(total / 3600);
   const m = Math.floor((total % 3600) / 60);
   const s = total % 60;
-  return `${String(h).padStart(2, '0')}시간 ${String(m).padStart(2, '0')}분 ${String(s).padStart(2, '0')}초`;
+  return `종료까지 ${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+}
+
+function formatEndedDate(d: Date) {
+  const M = String(d.getMonth() + 1).padStart(2, '0');
+  const D = String(d.getDate()).padStart(2, '0');
+  const h = String(d.getHours()).padStart(2, '0');
+  const m = String(d.getMinutes()).padStart(2, '0');
+  return `${M}/${D} ${h}:${m}에 종료됨`;
 }
 
 export function useRemainingTime(targetDate?: string | number | Date | null) {
@@ -36,7 +44,7 @@ export function useRemainingTime(targetDate?: string | number | Date | null) {
     const tick = () => {
       const diff = target.getTime() - Date.now();
       if (diff <= 0) {
-        setRemaining('00시간 00분 00초');
+        setRemaining(formatEndedDate(target));
         return;
       }
       const text = formatTime(diff);

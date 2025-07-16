@@ -1,10 +1,10 @@
+import AddIcon from '@/assets/AddIcon';
 import RemoveIcon from '@/assets/RemoveIcon';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 interface TestCaseModalProps {
   isOpen: boolean;
   onClose: () => void;
-  problemId: number;
   sourcecode: string;
   language: 'C' | 'CPP' | 'JAVA' | 'PYTHON';
   onAlert: (status: 'success' | 'error', message: string) => void;
@@ -16,7 +16,6 @@ interface TestCaseModalProps {
 const TestCaseModal = ({
   isOpen,
   onClose,
-  problemId,
   onAlert,
   initialTestcases,
   problemKey,
@@ -26,6 +25,24 @@ const TestCaseModal = ({
   >([]);
 
   const STORAGE_KEY = problemKey;
+
+  const textareaRefs = useRef<
+    { input?: HTMLTextAreaElement; output?: HTMLTextAreaElement }[]
+  >([]);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const syncHeights = (i: number) => {
+    const inp = textareaRefs.current[i]?.input;
+    const out = textareaRefs.current[i]?.output;
+    if (!inp || !out) return;
+
+    inp.style.height = 'auto';
+    out.style.height = 'auto';
+    const targetH = Math.max(inp.scrollHeight, out.scrollHeight);
+
+    inp.style.height = `${targetH}px`;
+    out.style.height = `${targetH}px`;
+  };
 
   const loadTestcases = () => {
     try {
@@ -53,12 +70,18 @@ const TestCaseModal = ({
         setTestCases([]);
       }
     }
-  }, [isOpen, problemId]);
+  }, [isOpen]);
+
+  useEffect(() => {
+    const c = containerRef.current;
+    if (c) {
+      c.scrollTop = c.scrollHeight;
+    }
+  }, [testCases.length]);
 
   const handleAdd = () => {
     const updated = [...testCases, { input: '', expectedOutput: '' }];
     setTestCases(updated);
-    saveTestcases(updated);
   };
 
   const handleChange = (
@@ -69,15 +92,23 @@ const TestCaseModal = ({
     const updated = [...testCases];
     updated[index][key] = value;
     setTestCases(updated);
-    saveTestcases(updated);
   };
 
   const handleRemove = (index: number) => {
     const updated = [...testCases];
     updated.splice(index, 1);
     setTestCases(updated);
-    saveTestcases(updated);
   };
+
+  useEffect(() => {
+    if (isOpen && testCases.length > 0) {
+      setTimeout(() => {
+        textareaRefs.current.forEach((_, i) => {
+          syncHeights(i);
+        });
+      }, 0);
+    }
+  }, [isOpen, testCases.length]);
 
   const handleCreateTestcase = () => {
     saveTestcases(testCases);
@@ -87,96 +118,100 @@ const TestCaseModal = ({
   if (!isOpen) return null;
 
   return (
-    <div
-      onClick={onClose}
-      className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50 font-pRegular"
-    >
-      <main
-        onClick={(e) => e.stopPropagation()}
-        className="flex flex-col justify-between w-[60%] h-[70%] py-9 px-8 bg-white rounded gap-4"
-      >
-        <section className="border rounded overflow-x-auto w-full">
-          <div
-            style={{ gridTemplateColumns: '65% 35%' }}
-            className="grid items-center border-b bg-gray-50"
-          >
-            <div className="flex justify-between items-center py-2 px-4">
-              <span className="font-semibold text-gray-800">Input</span>
-              <button
-                onClick={handleAdd}
-                className="py-1 px-4 bg-ut-insertBlue text-white rounded"
-              >
-                추가
-              </button>
-            </div>
-            <div className="py-2 px-4">
-              <span className="font-semibold text-gray-800">Output</span>
-            </div>
+    <div className="fixed inset-0 z-40 flex items-center justify-center bg-black bg-opacity-50">
+      <div className="flex flex-col gap-3 w-[60%] h-[70%] bg-white rounded-md py-10 px-[3.25rem] max-h-[60vh]">
+        <h2 className="font-semibold text-2xl">테스트케이스 추가</h2>
+        <div className="w-full border-t border-[#D9D9D9]" />
+        <div
+          className="grid grid-cols-10 w-full border font-mono overflow-scroll overflow-x-hidden"
+          ref={containerRef}
+        >
+          <div className="col-span-6 border px-4 py-2 bg-[#FAFAFA] text-[#4D4D4D]">
+            Input
           </div>
-
-          {initialTestcases?.map((tc, i) => (
-            <div
-              key={`init-${i}`}
-              className="grid grid-cols-[65%_35%] items-start my-4 mx-4 gap-4"
-            >
-              <div className="p-3 bg-gray-50 border rounded-md whitespace-pre-wrap h-full font-mono text-gray-700">
-                {tc.input.replace(/\\n/g, '\n')}
+          <div className="col-span-4 border px-4 py-2 bg-[#FAFAFA] text-[#4D4D4D]">
+            Output
+          </div>
+          {initialTestcases.map((testcase, i) => (
+            <React.Fragment key={i}>
+              <div className="flex w-full col-span-6 border px-4 py-2">
+                <p className="w-full items-stretch bg-gray-50 rounded-[4px] p-3 my-3 whitespace-pre-wrap border border-gray-200">
+                  {testcase.input}
+                </p>
               </div>
-              <div className="p-3 bg-gray-50 border rounded-md whitespace-pre-wrap h-full font-mono text-gray-700">
-                {tc.output.replace(/\\n/g, '\n')}
+              <div className="flex col-span-4 border px-4 py-2">
+                <p className="w-full items-stretch bg-gray-50 rounded-[4px] p-3 my-3 whitespace-pre-wrap border border-gray-200">
+                  {testcase.output}
+                </p>
               </div>
-            </div>
+            </React.Fragment>
           ))}
-
-          {testCases.map((tc, idx) => (
-            <div
-              key={`user-${idx}`}
-              className="grid grid-cols-[65%_35%] items-stretch my-4 mx-4 gap-4"
-            >
-              {/* 입력란 */}
-              <textarea
-                placeholder="Input"
-                value={tc.input}
-                onChange={(e) => handleChange(idx, 'input', e.target.value)}
-                onInput={(e) => {
-                  const t = e.currentTarget;
-                  t.style.height = 'auto';
-                  t.style.height = `${t.scrollHeight}px`;
-                }}
-                className="p-3 bg-gray-50 border rounded-md whitespace-pre-wrap h-full font-mono text-gray-700"
-              />
-
-              <div className="flex items-center gap-4 mr-4">
+          {testCases.map((testcase, i) => (
+            <React.Fragment key={i}>
+              <div className="flex w-full col-span-6 border px-4 py-2">
                 <textarea
-                  placeholder="Output"
-                  value={tc.expectedOutput}
-                  onChange={(e) =>
-                    handleChange(idx, 'expectedOutput', e.target.value)
-                  }
-                  onInput={(e) => {
-                    const t = e.currentTarget;
-                    t.style.height = 'auto';
-                    t.style.height = `${t.scrollHeight}px`;
+                  className="w-full items-stretch bg-[#F9F9F9] rounded-[4px] p-3 my-3 whitespace-pre-wrap resize-none border border-gray-200 outline-blue-300"
+                  ref={(el) => {
+                    textareaRefs.current[i] = {
+                      ...textareaRefs.current[i],
+                      input: el ?? undefined,
+                    };
                   }}
-                  className="p-3 bg-gray-50 border rounded-md whitespace-pre-wrap h-full w-full font-mono text-gray-700"
+                  value={testcase.input}
+                  onChange={(e) => handleChange(i, 'input', e.target.value)}
+                  onInput={() => {
+                    syncHeights(i);
+                  }}
+                />
+              </div>
+              <div className="flex items-center gap-3 col-span-4 border px-4 py-2">
+                <textarea
+                  className="w-full items-stretch bg-[#F9F9F9] rounded-[4px] p-3 my-3 whitespace-pre-wrap resize-none border border-gray-200 outline-blue-300"
+                  ref={(el) => {
+                    textareaRefs.current[i] = {
+                      ...textareaRefs.current[i],
+                      output: el ?? undefined,
+                    };
+                  }}
+                  value={testcase.expectedOutput}
+                  onChange={(e) =>
+                    handleChange(i, 'expectedOutput', e.target.value)
+                  }
+                  onInput={() => {
+                    syncHeights(i);
+                  }}
                 />
                 <RemoveIcon
-                  onClick={() => handleRemove(idx)}
-                  className="hover:text-red-500 cursor-pointer"
+                  onClick={() => handleRemove(i)}
+                  className="cursor-pointer hover:text-red-600"
                 />
               </div>
-            </div>
+            </React.Fragment>
           ))}
-        </section>
-        <button
-          onClick={() => {
-            handleCreateTestcase();
-          }}
-          className="w-fit ml-auto py-1 px-4 bg-ut-insertBlue rounded text-white"
-        >
-          확인
-        </button>
-      </main>
+          <div className="flex w-full justify-center items-center gap-3 col-span-10 px-4 py-2 text-[#808080]">
+            <div
+              className="group flex justify-center bg-[#F9F9F9] w-full py-5 rounded-md cursor-pointer"
+              onClick={() => handleAdd()}
+            >
+              <AddIcon className="cursor-pointer group-hover:text-blue-normal" />
+            </div>
+          </div>
+        </div>
+        <div className="flex justify-end gap-4">
+          <button
+            className="bg-red-500 py-1 px-4 text-white rounded-[4px] w-fit"
+            onClick={onClose}
+          >
+            취소
+          </button>
+          <button
+            className="bg-blue-normal py-1 px-4 text-white rounded-[4px] w-fit"
+            onClick={handleCreateTestcase}
+          >
+            저장
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
