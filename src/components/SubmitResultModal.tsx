@@ -126,7 +126,9 @@ const SubmitResultModal = ({
             <div className="flex items-center self-stretch gap-5 py-[20px]">
               <div className="flex gap-2 flex-shrink-0 min-w-[160px] text-[#666] font-bold items-center self-stretch">
                 <Subtask />
-                서브테스크 {i + 1}
+                {submission.subtaskInfos.length === 1
+                  ? '단일 채점'
+                  : `서브태스크 ${i + 1}`}
               </div>
               <div className="flex-shrink-0 min-w-[140px]">
                 <span className="font-bold text-[#1C1C1C]">
