@@ -13,3 +13,8 @@ export interface ContestResponse {
   problems: ContestProblem[];
   title: string;
 }
+
+export interface ContestDetailResponse {
+  endtime: string;
+  problemIds: { id: number; orderId: number }[];
+}

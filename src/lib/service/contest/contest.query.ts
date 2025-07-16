@@ -1,7 +1,11 @@
 import { useQuery } from '@tanstack/react-query';
 import API from './contest.api';
 import { contestKeys } from './contest.keys';
-import { ContestResponse } from '@/lib/types/contest.types';
+import {
+  ContestDetailResponse,
+  ContestResponse,
+} from '@/lib/types/contest.types';
+import { RankingResponse } from '@/lib/types/contestSubmitType';
 
 export const useGetContestList = (params: { page?: number; size?: number }) => {
   return useQuery({
@@ -18,7 +22,7 @@ export const useGetContestById = (id: number) => {
 };
 
 export const useGetContestDetail = (id: number) => {
-  return useQuery({
+  return useQuery<ContestDetailResponse>({
     queryKey: [contestKeys.getContestById, id],
     queryFn: () => API.getContestDetailById(id),
   });
@@ -49,7 +53,7 @@ export const useGetSubmitProblemStatus = (submissionId: string) => {
 };
 
 export const useGetRankingById = (contestId: number) => {
-  return useQuery({
+  return useQuery<RankingResponse>({
     queryKey: [contestKeys.getRankingById, contestId],
     queryFn: () => API.getRankingById(contestId),
   });

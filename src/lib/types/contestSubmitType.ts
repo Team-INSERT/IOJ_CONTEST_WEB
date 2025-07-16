@@ -47,7 +47,6 @@ export type RankingUser = {
   userName: string;
   totalScore: number;
   achievedAt: string;
-  penalty: number;
 };
 
 export type SubmissionProblem = {
@@ -65,4 +64,5 @@ export type RankingResponse = {
   problemOrders: ProblemOrder[];
   rankings: RankingUser[];
   submissions: UserSubmission[];
+  startTime: string;
 };

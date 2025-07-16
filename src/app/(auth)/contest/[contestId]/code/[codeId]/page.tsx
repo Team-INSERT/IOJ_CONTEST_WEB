@@ -364,8 +364,8 @@ const Code = () => {
   return (
     <>
       <CodeHeader
-        endTime={contestDetail?.endtime}
-        problems={contestDetail?.problemIds}
+        endTime={contestDetail?.endtime ?? ''}
+        problems={contestDetail?.problemIds ?? []}
       />
       <div ref={containerRef} className="flex w-full h-full pt-[64px]">
         {/* 좌측 문제 패널 */}
