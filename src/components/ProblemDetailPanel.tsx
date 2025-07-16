@@ -1,6 +1,10 @@
 import React from 'react';
 import 'katex/dist/katex.min.css';
+import remarkMath from 'remark-math';
+import rehypeKatex from 'rehype-katex';
 import Latex from 'react-latex-next';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import StarStatus from '@/components/StarStatus';
 
 interface ProblemDetailPanelProps {
@@ -42,7 +46,30 @@ const ProblemDetailPanel = ({
           <h3 className="pb-1 border-b-2 border-ut-insertBlue w-fit text-bt font-pSemibold">
             문제
           </h3>
-          <Latex>{codeData.content}</Latex>
+          <ReactMarkdown
+            remarkPlugins={[remarkGfm, remarkMath]}
+            rehypePlugins={[rehypeKatex]}
+            components={{
+              table: (props) => (
+                <table
+                  className="min-w-full border-collapse border border-gray-300"
+                  {...props}
+                />
+              ),
+              thead: (props) => <thead className="bg-gray-100" {...props} />,
+              th: (props) => (
+                <th
+                  className="border border-gray-300 px-3 py-1 text-left"
+                  {...props}
+                />
+              ),
+              td: (props) => (
+                <td className="border border-gray-300 px-3 py-1" {...props} />
+              ),
+            }}
+          >
+            {codeData.content}
+          </ReactMarkdown>
         </div>
         {codeData.subtasks.length > 1 && (
           <div>
@@ -52,8 +79,7 @@ const ProblemDetailPanel = ({
             {codeData.subtasks.map((subtask, i) => (
               <div key={i} className="py-1 whitespace-pre-wrap">
                 <Latex>
-                  {(i + 1).toString()}. ({subtask.score}점){' '}
-                  {subtask.description}
+                  {`${i + 1} . (${subtask.score}점) ${subtask.description}`}
                 </Latex>
               </div>
             ))}
