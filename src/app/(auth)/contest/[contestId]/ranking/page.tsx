@@ -11,6 +11,8 @@ import {
   RankingUser,
 } from '@/lib/types/contestSubmitType';
 import Loading from '@/components/Loading';
+import CorrectIcon from '@/assets/CorrectIcon';
+import WrongIcon from '@/assets/WrongIcon';
 
 const getColumnHeaders = (count: number): string[] =>
   Array.from({ length: count }, (_: undefined, i: number) =>
@@ -65,55 +67,49 @@ const Ranking = () => {
   return (
     <>
       {gradingModal && <GradingModal onClose={() => setGradingModal(false)} />}
-      <div className="px-40 py-20 space-y-6 font-pRegular">
-        <div className="flex items-center justify-between px-6 py-4 bg-gray-100 rounded-xl">
-          <h1 className="text-xl font-bold">랭킹</h1>
+      <div className="flex flex-col px-40 py-16 gap-12 font-pRegular">
+        <div className="flex items-center justify-between px-6 py-7 text-white bg-[linear-gradient(90deg,#004A99_0%,#FFF_100%)] rounded-[4px]">
+          <h1 className="text-2xl font-pBold">2025학년도 알고리즘 경진대회</h1>
           <div className="flex gap-2">
             <button
-              className="h-8 px-4 text-white bg-gray-700 rounded text-stext font-pBold"
+              className="py-1 px-4 text-white bg-gray-700 rounded-[4px] font-bold"
               onClick={() => setGradingModal(true)}
             >
               채점기준
             </button>
             <button
-              className="h-8 px-4 text-white rounded text-stext font-pBold bg-ut-warningRed"
+              className="py-1 px-4 text-white rounded-[4px] font-bold bg-ut-warningRed"
               onClick={() => navigate.back()}
             >
               나가기
             </button>
           </div>
         </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full text-center border-separate table-fixed border-spacing-y-5">
-            <thead>
-              <tr className="border-b-[2px] border-blue-500 text-gray-800">
-                <th className="w-[3rem] text-xl">순위</th>
-                <th className="w-[12rem] text-xl">이름</th>
-                <th className="w-[6rem] text-xl">점수</th>
-                <th className="w-[6rem] text-xl">패널티</th>
-                {columns.map((col: string) => (
-                  <th key={col} className="w-[4rem] text-xl font-semibold">
-                    {col}
-                  </th>
-                ))}
-              </tr>
-              <tr>
-                <td
-                  colSpan={4 + columns.length}
-                  className="h-[2px] bg-gradient-to-r from-[#F2F2F2] to-[#007CFF]"
-                />
-              </tr>
-            </thead>
-            <tbody>
-              {rankingData.rankings.map((user: RankingUser, idx: number) => (
-                <tr key={user.userId} className="h-10 text-sm">
-                  <td className="font-bold text-blue-normal text-Ntext ">
-                    {idx + 1}
-                  </td>
-                  <td className="text-xl font-semibold">{user.userName}</td>
-                  <td className="text-xl">{user.totalScore}</td>
-                  <td className="text-xl">{user.penalty}</td>
+        <div className="flex flex-col gap-4 font-nGothic text-xl">
+          <div className="flex gap-10">
+            <div className="flex gap-5 basis-1/5">
+              <p className="w-1/4">순위</p>
+              <p className="w-3/4">이름</p>
+            </div>
+            <div className="flex justify-between basis-3/5">
+              {columns.map((col, i) => (
+                <p className="flex-1 text-center" key={i}>
+                  {col}
+                </p>
+              ))}
+            </div>
+            <p>총점</p>
+            <p>패널티</p>
+          </div>
+          <div className="h-[2px] bg-gradient-to-r from-[#F2F2F2] to-[#007CFF] rounded-sm" />
+          <div>
+            {rankingData.rankings.map((user: RankingUser, idx: number) => (
+              <div key={user.userId} className="flex items-center gap-10 h-14">
+                <div className="flex gap-5 basis-1/5">
+                  <p className="w-1/4">{idx + 1}</p>
+                  <p className="w-3/4">{user.userName}</p>
+                </div>
+                <div className="flex justify-between basis-3/5 gap-2 h-full">
                   {rankingData.problemOrders.map((problem: ProblemOrder) => {
                     const status = getProblemStatus(
                       user.userId,
@@ -124,28 +120,55 @@ const Ranking = () => {
                       problem.problemId
                     );
 
-                    return (
-                      <td key={problem.problemId} className="w-[4rem] px-1">
-                        <div className="flex justify-center text-[16px]">
-                          {status === 'accepted' ? (
-                            <div className="flex items-center justify-center w-full h-8 bg-green-500 rounded"/>
-                          ) : status === 'partial' ? (
-                            <div className="flex items-center justify-center w-full h-8 text-white bg-orange-500 rounded">
-                              {score}
-                            </div>
-                          ) : status === 'failed' ? (
-                            <div className="flex items-center justify-center w-full h-8 bg-red-400 rounded" />
-                          ) : (
-                            <div className="flex items-center justify-center w-full h-8" />
-                          )}
-                        </div>
-                      </td>
-                    );
+                    switch (status) {
+                      case 'accepted':
+                        return (
+                          <div
+                            key={problem.problemId}
+                            className="flex-1 bg-[#24B984] transform -skew-x-[7.5deg] flex items-center justify-center my-1"
+                          >
+                            <CorrectIcon className="skew-x-[7.5deg]" />
+                          </div>
+                        );
+                      case 'partial':
+                        return (
+                          <div
+                            key={problem.problemId}
+                            className="flex-1 bg-[#FF984D] transform -skew-x-[7.5deg] flex items-center justify-center my-1"
+                          >
+                            <p className="skew-x-[7.5deg] text-white">
+                              {score} / 100
+                            </p>
+                          </div>
+                        );
+                      case 'failed':
+                        return (
+                          <div
+                            key={problem.problemId}
+                            className="flex-1 bg-[#F85353] transform -skew-x-[7.5deg] flex items-center justify-center my-1"
+                          >
+                            <WrongIcon className="skew-x-[7.5deg]" />
+                          </div>
+                        );
+                      default:
+                        return (
+                          <div key={problem.problemId} className="flex-1" />
+                        );
+                    }
                   })}
-                </tr>
-              ))}
-            </tbody>
-          </table>
+                </div>
+                <p>{user.totalScore}</p>
+                <p>
+                  -
+                  {(
+                    (new Date(user.achievedAt).getTime() -
+                      new Date(rankingData.startTime).getTime()) /
+                    (60 * 1000)
+                  ).toFixed(0)}
+                </p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </>
