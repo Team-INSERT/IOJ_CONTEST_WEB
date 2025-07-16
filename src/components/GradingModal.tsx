@@ -27,23 +27,28 @@ const GradingModal = ({ onClose }: Props) => {
                   <br />각 문제는 정답 시{' '}
                   <span className="font-semibold text-blue-600">100점</span>으로
                   처리됩니다.
+                  <br />
+                  서브태스크 문제는{' '}
+                  <span className="font-semibold text-blue-600">
+                    각 문제 설명에 있는 기준
+                  </span>
+                  으로
+                  <br />
+                  점수를 산정합니다.
                 </p>
               </div>
 
               <div>
-                <h2 className="mb-1 text-xl font-bold">패널티</h2>
+                <h2 className="mb-1 text-xl font-bold">동점 처리 방식</h2>
                 <p className="text-sm leading-relaxed text-gray-700">
                   문제 해결 수가 동일할 경우,
                   <br />
                   <span className="font-semibold text-blue-600">
-                    페널티가 적은 참가자
+                    마지막으로 정답을 맞춘 문제의 제출 시간이 빠른 순
                   </span>
-                  가 상위 순위를 차지합니다.
+                  으로
                   <br />
-                  패널티 ={' '}
-                  <span className="font-semibold text-blue-600">
-                    (대회 시작 시간 - 문제 해결 시간)분
-                  </span>
+                  순위를 판단합니다.
                   <br />
                 </p>
               </div>
@@ -67,7 +72,7 @@ const GradingModal = ({ onClose }: Props) => {
                 <p className="text-sm leading-relaxed text-gray-700">
                   문제별 시간 제한은 언어에 따라 달라집니다.
                   <br />
-                  문제의 기본 시간 제한을 T라고 하면
+                  문제의 기본 시간 제한을 T라고 가정하면,
                   <br />
                   <span className="font-semibold text-blue-600">
                     python: 3*T + 2{' '}
@@ -77,7 +82,8 @@ const GradingModal = ({ onClose }: Props) => {
                     Java: 2*T + 1
                   </span>{' '}
                   |{' '}
-                  <span className="font-semibold text-blue-600">C/C++: T</span>
+                  <span className="font-semibold text-blue-600">C/C++: T </span>
+                  입니다.
                 </p>
               </div>
             </div>
