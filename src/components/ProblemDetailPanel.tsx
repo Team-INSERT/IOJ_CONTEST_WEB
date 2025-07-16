@@ -38,7 +38,7 @@ const ProblemDetailPanel = ({
         {codeData.memoryLimit / 1024} MB
       </div>
       <div className="mt-6 space-y-6">
-        <div className="flex flex-col gap-3 text-[17px]">
+        <div className="flex flex-col gap-3 text-[17px] whitespace-pre-wrap">
           <h3 className="pb-1 border-b-2 border-ut-insertBlue w-fit text-bt font-pSemibold">
             문제
           </h3>
@@ -50,7 +50,7 @@ const ProblemDetailPanel = ({
               서브태스크
             </h4>
             {codeData.subtasks.map((subtask, i) => (
-              <div key={i} className="py-1">
+              <div key={i} className="py-1 whitespace-pre-wrap">
                 <Latex>
                   {(i + 1).toString()}. ({subtask.score}점){' '}
                   {subtask.description}
@@ -59,13 +59,13 @@ const ProblemDetailPanel = ({
             ))}
           </div>
         )}
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 whitespace-pre-wrap">
           <h3 className="pb-1 border-b-2 border-ut-insertBlue w-fit text-bt font-pSemibold">
             입력
           </h3>
           <Latex>{codeData.inputContent}</Latex>
         </div>
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 whitespace-pre-wrap">
           <h3 className="pb-1 border-b-2 border-ut-insertBlue w-fit text-bt font-pSemibold">
             출력
           </h3>
